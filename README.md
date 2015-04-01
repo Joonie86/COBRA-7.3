@@ -15,7 +15,7 @@ Following has been changed and updated since 4.46 COBRA 7
 
 * Stage0 Base payload developed by Habib, this clears stage1 when stage2 is not loaded on LV2, which completely disabled COBRA mode
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
-*Syscall 11 is added to support full lv1 peek
+* Syscall 11 is added to support full lv1 peek
 
 [KW's changes]
 
@@ -24,7 +24,7 @@ Following has been changed and updated since 4.46 COBRA 7
 
 [ Dean's changes ] 
 
-* Permission protection is disabled to increase game compatiblity and full DEX support. [no more issue with Target Manager or CCAPI]
+* Permission protection is disabled to increase game compatiblity and full DEX support.[no more issue with Target Manager or CCAPI]
 * 80010017 / 8001002B Error fix is added since 4.60, this was developed to prevent issues with games when game disc is inserted in BD Drive.
 * LIC.DAT check is patched to fix the issue with launching homebrew since 4.60 
 
@@ -36,7 +36,7 @@ Following has been changed and updated since 4.46 COBRA 7
 [ Aldo's changes ]
 
 * Improved PSX media type support, now it supports following disc types
-	* 2048 // 2352 // 2336 / 2448
+	* 2048 // 2352 // 2336 // 2448 *
 * Improved Video mode patch with proper region detection
  Original COBRA payload was relying on ps1emu's detection method, now COBRA has extra pre-processing that can detect region properly and force apply correct refresh rate depending on the game's region.
  
