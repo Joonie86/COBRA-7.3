@@ -22,11 +22,11 @@
 #include "syscall8.h"
 #include "self.h"
 
-#define MAX_VSH_PLUGINS			7
-#define BOOT_PLUGINS_FILE		"/dev_hdd0/boot_plugins.txt"
+#define MAX_VSH_PLUGINS				7
+#define BOOT_PLUGINS_FILE			"/dev_hdd0/boot_plugins.txt"
 #define BOOT_PLUGINS_FIRST_SLOT		1
-#define MAX_BOOT_PLUGINS 		(MAX_VSH_PLUGINS-BOOT_PLUGINS_FIRST_SLOT)
-#define PRX_PATH			"/dev_flash/vsh/module/webftp_server.sprx"
+#define MAX_BOOT_PLUGINS 			(MAX_VSH_PLUGINS-BOOT_PLUGINS_FIRST_SLOT)
+#define PRX_PATH					"/dev_flash/vsh/module/webftp_server.sprx"
 
 LV2_EXPORT int decrypt_func(uint64_t *, uint32_t *);
 

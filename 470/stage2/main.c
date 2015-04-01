@@ -718,6 +718,10 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 			return sys_prx_load_vsh_plugin(param1, (char *)param2, (void *)param3, param4);
 		break;
 		
+		case SYSCALL8_OPCODE_UNLOAD_VSH_PLUGIN:
+			return sys_prx_unload_vsh_plugin(param1);
+		break;
+		
 		case SYSCALL8_OPCODE_DRM_GET_DATA:
 			return sys_drm_get_data((void *)param1, param2);
 		break;
