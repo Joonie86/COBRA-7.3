@@ -19,7 +19,6 @@
 #include "config.h"
 #include "storage_ext.h"
 #include "psp.h"
-#include "cobra.h"
 #include "syscall8.h"
 #include "self.h"
 
@@ -106,7 +105,7 @@ uint8_t condition_psp_prometheus = 0;
 //uint8_t psx_type_orig=0;
 uint64_t vsh_check;
 
-uint8_t block_peek = 0;
+//uint8_t block_peek = 0;
 
 // Plugins
 sys_prx_id_t vsh_plugins[MAX_VSH_PLUGINS];
@@ -373,60 +372,65 @@ PatchTableEntry patch_table[] =
 
 static char *hash_to_name(uint64_t hash)
 {
-        if ((hash == VSH_DEX_HASH) || (hash == VSH_CEX_HASH ))
+    switch(hash)
 	{
-		return "vsh.self";
+		case VSH_DEX_HASH:
+		case VSH_CEX_HASH:
+			return "vsh.self";
+		break;
+		
+		case EXPLORE_PLUGIN_HASH:
+			return "explore_plugin.sprx";
+		break;
+		
+		case EXPLORE_CATEGORY_GAME_HASH:
+			return "explore_category_game.sprx";
+		break;
+		
+		case BDP_DISC_CHECK_PLUGIN_HASH:
+			return "bdp_disccheck.sprx";
+		break;
+		
+		case PS1_EMU_HASH:
+			return "ps1_emu.self";
+		break;
+		
+		case PS1_NETEMU_HASH:
+			return "ps1_netemu.self";
+		break;
+		
+		case GAME_EXT_PLUGIN_HASH:
+			return "game_ext_plugin.sprx";
+		break;
+		
+		case PSP_EMULATOR_HASH:
+			return "psp_emulator.self";
+		break;
+		
+		case EMULATOR_API_HASH:
+			return "emulator_api.sprx";
+		break;
+		
+		case PEMUCORELIB_HASH:
+			return "PEmuCoreLib.sprx";
+		break;
+		
+		case LIBFS_EXTERNAL_HASH:
+			return "libfs.sprx";
+		break;
+		
+		case LIBSYSUTIL_SAVEDATA_PSP_HASH:
+			return "libsysutil_savedata_psp.sprx";
+		break;
+		
+		case BASIC_PLUGINS_HASH:
+			return "basic_plugins.sprx";
+		break;
+		
+		default:
+			return "UNKNOWN";
+		break;		
 	}
-	else if (hash == EXPLORE_PLUGIN_HASH)
-	{
-		return "explore_plugin.sprx";
-	}
-	else if (hash == EXPLORE_CATEGORY_GAME_HASH)
-	{
-		return "explore_category_game.sprx";
-	}
-	else if (hash == BDP_DISC_CHECK_PLUGIN_HASH)
-	{
-		return "bdp_disccheck.sprx";
-	}
-	else if (hash == PS1_EMU_HASH)
-	{
-		return "ps1_emu.self";
-	}
-	else if (hash == PS1_NETEMU_HASH)
-	{
-		return "ps1_netemu.self";
-	}
-	else if (hash == GAME_EXT_PLUGIN_HASH)
-	{
-		return "game_ext_plugin.sprx";
-	}
-	else if (hash == PSP_EMULATOR_HASH)
-	{
-		return "psp_emulator.self";
-	}
-	else if (hash == EMULATOR_API_HASH)
-	{
-		return "emulator_api.sprx";
-	}
-	else if (hash == PEMUCORELIB_HASH)
-	{
-		return "PEmuCoreLib.sprx";
-	}
-	else if (hash == LIBFS_EXTERNAL_HASH)
-	{
-		return "libfs.sprx";
-	}
-	else if (hash == LIBSYSUTIL_SAVEDATA_PSP_HASH)
-	{
-		return "libsysutil_savedata_psp.sprx";
-	}
-	else if (hash== BASIC_PLUGINS_HASH)
-	{
-		return "basic_plugins.sprx";
-	}
-
-	return "UNKNOWN";
 }
 
 #endif
@@ -442,7 +446,9 @@ LV2_HOOKED_FUNCTION_PRECALL_2(int, post_lv1_call_99_wrapper, (uint64_t *spu_obj,
 	if (process)
 	{
 		caller_process = process->pid;
-		//DPRINTF("caller_process = %08X\n", caller_process);
+			#ifdef  DEBUG
+			//DPRINTF("caller_process = %08X\n", caller_process);
+			#endif
 	}
 
 	return 0;
@@ -468,8 +474,12 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 	self = (SELF *)sce_hdr;
 
 	uint32_t *p = (uint32_t *)arg1[0x18/8];
-
+	
+	#ifdef  DEBUG
 	//DPRINTF("Flags = %x      %x\n", self->flags, (p[0x30/4] >> 16));
+	#endif
+
+
 
 	// +4.30 -> 0x13 (exact firmware since it happens is unknown)
 	// 3.55 -> 0x29
@@ -478,8 +488,11 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 #else
 	if ((p[0x30/4] >> 16) == 0x13)
 #endif
-	{
+	{	
+		#ifdef  DEBUG
 		//DPRINTF("We are in decrypted module or in cobra encrypted\n");
+		#endif
+		
 
 		int last_chunk = 0;
 		KeySet *keySet = NULL;
@@ -504,27 +517,31 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		int dongle_decrypt = 0;
 
 		if (magic == SPRX_EXT_MAGIC)
-		{
-			if (keyIndex >= N_SPRX_KEYS_1)
-			{
-				//DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
-			}
-			else
+		{	
+			if (N_SPRX_KEYS_1 > keyIndex)
 			{
 				keySet = &sprx_keys_set1[keyIndex];
 			}
+			#ifdef  DEBUG
+			else
+			{
+				//DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
+			}
+			#endif
 
 		}
 		else if (magic == SPRX_EXT_MAGIC2)
 		{
-			if (keyIndex >= N_SPRX_KEYS_2)
+			if (N_SPRX_KEYS_2 > keyIndex)
+			{
+				keySet = &sprx_keys_set1[keyIndex];
+			}
+			#ifdef  DEBUG
+			else
 			{
 				//DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
 			}
-			else
-			{
-				keySet = &sprx_keys_set2[keyIndex];
-			}
+			#endif
 		}
 
 		if (keySet)
@@ -569,11 +586,13 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		{
 			buf = (uint32_t *)saved_buf;
 		}
-
+		
+		#ifdef  DEBUG
 		if (last_chunk)
 		{
 			//DPRINTF("Total section size: %x\n", total+ptr32[4/4]);
 		}
+		#endif
 
 		saved_buf += ptr32[4/4];
 	}
@@ -596,41 +615,52 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 
 		hash = (hash << 32) | total;
 		total = 0;
-		//DPRINTF("hash = %lx\n", hash);
 		
-		if((hash==VSH_CEX_HASH) || (hash==VSH_DEX_HASH))
+		#ifdef  DEBUG
+		//DPRINTF("hash = %lx\n", hash);
+		#endif
+		
+		switch(hash)
 		{
-		vsh_check=hash;
+		
+			case VSH_CEX_HASH:
+			case VSH_DEX_HASH:
+				vsh_check = hash;
+			break;
+			
+			case EMULATOR_DRM_HASH:
+				if (condition_psp_keys)
+					buf[psp_drm_tag_overwrite/4] = LI(R5, psp_code);
+			break;
+			
+			case EMULATOR_DRM_DATA_HASH:
+				if (condition_psp_keys)
+				{
+					buf[psp_drm_key_overwrite/4] = psp_tag;
+					memcpy(buf+((psp_drm_key_overwrite+8)/4), psp_keys, 16);
+				}
+			break;
+			
+			case BASIC_PLUGINS_HASH:
+				if (condition_psp_change_emu)
+				{
+					memcpy(((char *)buf)+pspemu_path_offset, pspemu_path, sizeof(pspemu_path));
+					memcpy(((char *)buf)+psptrans_path_offset, psptrans_path, sizeof(psptrans_path));
+				}
+			break;
+			
+			default:
+				//Do nothing
+			break;
 		}
-
-		if (condition_psp_keys)
-		{
-			if (hash == EMULATOR_DRM_HASH)
-			{
-				buf[psp_drm_tag_overwrite/4] = LI(R5, psp_code);
-			}
-			else if (hash == EMULATOR_DRM_DATA_HASH)
-			{
-				buf[psp_drm_key_overwrite/4] = psp_tag;
-				memcpy(buf+((psp_drm_key_overwrite+8)/4), psp_keys, 16);
-			}
-		}
-
-		if (condition_psp_change_emu)
-		{
-			if (hash == BASIC_PLUGINS_HASH)
-			{
-				memcpy(((char *)buf)+pspemu_path_offset, pspemu_path, sizeof(pspemu_path));
-				memcpy(((char *)buf)+psptrans_path_offset, psptrans_path, sizeof(psptrans_path));
-			}
-		}
-
 
 		for (int i = 0; i < N_PATCH_TABLE_ENTRIES; i++)
 		{
 			if (patch_table[i].hash == hash)
-			{
+			{		
+				#ifdef  DEBUG
 				DPRINTF("Now patching  %s %lx\n", hash_to_name(hash), hash);
+				#endif
 
 				int j = 0;
 				SprxPatch *patch = &patch_table[i].patch_table[j];
@@ -640,8 +670,10 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 					if (*patch->condition)
 					{
 						buf[patch->offset/4] = patch->data;
-                     DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)patch->offset, (uint32_t)patch->data);
-                     //DPRINTF("Offset: %lx\n", &buf[patch->offset/4]);
+						#ifdef  DEBUG
+						DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)patch->offset, (uint32_t)patch->data);
+						//DPRINTF("Offset: %lx\n", &buf[patch->offset/4]);
+						#endif
 					}
 
 					j++;
@@ -651,6 +683,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 				break;
 			}
 		}
+		
 	}
 
 	return 0;
@@ -661,7 +694,9 @@ LV2_HOOKED_FUNCTION_COND_POSTCALL_2(int, pre_modules_verification, (uint32_t *re
 {
 /*
 	// Patch original from psjailbreak. Needs some tweaks to fix some games
+	#ifdef  DEBUG
 	DPRINTF("err = %x\n", error);
+	#endif
 	if (error == 0x13)
 	{
 		//dump_stack_trace2(10);
@@ -683,33 +718,34 @@ void pre_map_process_memory(void *object, uint64_t process_addr, uint64_t size, 
 
 uint8_t cleared_stage1 = 0;
 
-static void clear_stage1(void)
-{
-	memset((void *)MKA(0x7f0000), 0, 0x10000);
-}
-
 LV2_HOOKED_FUNCTION_POSTCALL_7(void, pre_map_process_memory, (void *object, uint64_t process_addr, uint64_t size, uint64_t flags, void *unk, void *elf, uint64_t *out))
 {
+	#ifdef  DEBUG
 	//DPRINTF("Map %lx %lx %s\n", process_addr, size, get_current_process() ? get_process_name(get_current_process())+8 : "KERNEL");
+	#endif
 	
 	// Not the call address, but the call to the caller (process load code for .self)
 	if (get_call_address(1) == (void *)MKA(process_map_caller_call))
 	{       
 		if ((process_addr == 0x10000) && (size == dex_vsh_text_size) && (flags == 0x2008004) && (cleared_stage1 == 0))
 		{        
-           DPRINTF("Making DEBUG VSH text writable, Size: 0x%lx\n", size);   
+           #ifdef  DEBUG
+			DPRINTF("Making DEBUG VSH text writable, Size: 0x%lx\n", size);   
+			#endif
 			// Change flags, RX -> RWX, make vsh text writable
 			set_patched_func_param(4, 0x2004004);
 			// We can clear stage1. 
-			if (cleared_stage1 == 0) {cleared_stage1 = 1; clear_stage1();}
+			if (cleared_stage1 == 0) {cleared_stage1 = 1; memset((void *)MKA(0x7f0000), 0, 0x10000);}
 		}
        else if ((process_addr == 0x10000) && (size == cex_vsh_text_size) && (flags == 0x2008004) && (cleared_stage1 == 0))
 		{
+			#ifdef  DEBUG
 			DPRINTF("Making Retail VSH text writable, Size: 0x%lx\n", size);   
-           // Change flags, RX -> RWX, make vsh text writable
+			#endif
+			// Change flags, RX -> RWX, make vsh text writable
 			set_patched_func_param(4, 0x2004004);
 			// We can clear stage1. 
-			if (cleared_stage1 == 0) {cleared_stage1 = 1; clear_stage1();}
+			if (cleared_stage1 == 0) {cleared_stage1 = 1; memset((void *)MKA(0x7f0000), 0, 0x10000);}
 		}
 		else if  (flags == 0x2008004) set_patched_func_param(4, 0x2004004);// Change flags, RX -> RWX
 	}	
@@ -717,7 +753,9 @@ LV2_HOOKED_FUNCTION_POSTCALL_7(void, pre_map_process_memory, (void *object, uint
 
 LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t process, int fd, char *path, int r6, uint64_t r7, uint64_t r8, uint64_t r9, uint64_t r10, uint64_t sp_70))
 {
+	#ifdef  DEBUG
 	DPRINTF("PROCESS %s (%08X) loaded\n", path, process->pid);
+	#endif
 
 	if (!vsh_process)
 	{
@@ -727,11 +765,17 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t proce
 		}
 		else if (strcmp(path, "emer_init.self") == 0)
 		{
+			#ifdef  DEBUG
 			DPRINTF("COBRA: Safe mode detected\n");
+			#endif
 			safe_mode = 1;
 		}		
 	}
-
+	
+	#ifndef  DEBUG
+	if (vsh_process) unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9); //Hook no more needed
+	#endif
+	
 	return 0;
 }
 
@@ -824,8 +868,10 @@ int prx_load_vsh_plugin(unsigned int slot, char *path, void *arg, uint32_t arg_s
 		prx_stop_module_with_thread(prx, vsh_process, 0, 0);
 		prx_unload_module(prx, vsh_process);
 	}
-
+	
+	#ifndef  DEBUG
 	DPRINTF("Vsh plugin load: %x\n", ret);
+	#endif
 
 	return ret;
 
@@ -843,14 +889,20 @@ int prx_unload_vsh_plugin(unsigned int slot)
 {
 	int ret;
 	sys_prx_id_t prx;
-
+	
+	#ifndef  DEBUG
 	DPRINTF("Trying to unload vsh plugin %x\n", slot);
+	#endif
 
 	if (slot >= MAX_VSH_PLUGINS)
 		return EINVAL;
 
 	prx = vsh_plugins[slot];
+		
+	#ifndef  DEBUG
 	DPRINTF("Current plugin: %08X\n", prx);
+	#endif
+
 
 	if (prx == 0)
 		return ENOENT;
@@ -859,21 +911,27 @@ int prx_unload_vsh_plugin(unsigned int slot)
 	if (ret == 0)
 	{
 		ret = prx_unload_module(prx, vsh_process);
-	}
+	}		
+	#ifndef  DEBUG
 	else
 	{
 		DPRINTF("Stop failed: %x!\n", ret);
 	}
+	#endif
 
 	if (ret == 0)
 	{
 		vsh_plugins[slot] = 0;
+		#ifndef  DEBUG
 		DPRINTF("Vsh plugin unloaded succesfully!\n");
+		#endif
 	}
+	#ifndef  DEBUG
 	else
 	{
 		DPRINTF("Unload failed : %x!\n", ret);
 	}
+	#endif
 
 	return ret;
 }
@@ -1004,7 +1062,9 @@ void load_boot_plugins(void)
 	//Loading webman from flash - must first detect if the toogle is activated
 	if ( prx_load_vsh_plugin(current_slot, PRX_PATH, NULL, 0) >=0)
 	{
+		#ifndef  DEBUG
 		DPRINTF("Loading integrated webMAN plugin into slot %x\n", current_slot);
+		#endif
        current_slot++;
 		num_loaded++;
 		webman_loaded=1;
@@ -1025,7 +1085,9 @@ void load_boot_plugins(void)
 			if ((!webman_loaded) || (!strstr(path, "webftp_server")) ) 		
 			{
 				int ret = prx_load_vsh_plugin(current_slot, path, NULL, 0);	
+				#ifndef  DEBUG
 				DPRINTF("Load boot plugin %s -> %x\n", path, current_slot);
+				#endif
 				if (ret >= 0)
 				{
 					current_slot++;
@@ -1049,7 +1111,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, create_process_common_hooked, (proces
 									  uint64_t *sp_A8))
 {
 	char *parent_name = get_process_name(parent);
-	DPRINTF("PROCESS %s (%s) (%08X) created from parent process: %s\n", path, get_process_name(*process), *pid, ((int64_t)parent_name < 0) ? parent_name : "");
+	DPRINTF("PROCESS %s (%s) (%08X) created from parent process: %s\n", path, get_process_name(*process), *pid, ((int64_t)parent_name < 0) ? parent_name : "KERNEL");
 
 	return 0;
 }
@@ -1083,9 +1145,9 @@ void unhook_all_modules(void)
 	suspend_intr();
 	unhook_function_with_precall(lv1_call_99_wrapper_symbol, post_lv1_call_99_wrapper, 2);
 	unhook_function_with_cond_postcall(modules_verification_symbol, pre_modules_verification, 2);
-	unhook_function_with_postcall(map_process_memory_symbol, pre_map_process_memory, 7);	
-	unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9);	
+	unhook_function_with_postcall(map_process_memory_symbol, pre_map_process_memory, 7);		
 #ifdef DEBUG
+	unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9); //Auto unload if not def DEBUG	
 	unhook_function_on_precall_success(create_process_common_symbol, create_process_common_hooked, 16);
 	//unhook_function_with_postcall(create_process_common_symbol, create_process_common_hooked_pre, 8);
 #endif
@@ -1094,7 +1156,7 @@ void unhook_all_modules(void)
 
 int ps3mapi_unload_vsh_plugin(char *name)
 {
-	if (vsh_process <= 0) return ESRCH;
+    if (vsh_process <= 0) return ESRCH;
 	for (unsigned int slot = 0; slot < MAX_VSH_PLUGINS; slot++)
 	{
 		if (vsh_plugins[slot] == 0) continue;
@@ -1113,8 +1175,7 @@ int ps3mapi_unload_vsh_plugin(char *name)
 				{
 					dealloc(filename, 0x35);
 					dealloc(segments, 0x35);
-					ret = prx_unload_vsh_plugin(slot);
-					break;
+					return prx_unload_vsh_plugin(slot);
 				}				
 		}
 		dealloc(filename, 0x35);
@@ -1125,8 +1186,8 @@ int ps3mapi_unload_vsh_plugin(char *name)
 
 int ps3mapi_get_vsh_plugin_info(unsigned int slot, char *name, char *filename)
 {
-	if (vsh_plugins[slot] == 0) return ESRCH;
 	if (vsh_process <= 0) return ESRCH;
+	if (vsh_plugins[slot] == 0) return ENOENT;
 	char *tmp_filename = alloc(256, 0x35);
 	if (!tmp_filename) return ENOMEM;
 	sys_prx_segment_info_t *segments = alloc(sizeof(sys_prx_segment_info_t), 0x35);

@@ -264,8 +264,12 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id)
 
 int ps3mapi_check_syscall(int num)
 {
-	uint64_t syscall_not_impl = *(uint64_t *)MKA(syscall_table_symbol);
-	if ((*(uint64_t *)MKA(syscall_table_symbol + 8 * num)) != syscall_not_impl) return SUCCEEDED;
+	uint64_t sc_null = *(uint64_t *)MKA(syscall_table_symbol);
+	if (*(uint64_t *)MKA(syscall_table_symbol + (8 * num)) != sc_null)
+	{
+		uint64_t syscall_not_impl = *(uint64_t *)sc_null;
+		if ((*(uint64_t *)MKA(syscall_table_symbol + (8 * num))) != syscall_not_impl) return SUCCEEDED;
+	}
 	return ENOSYS;
 }
 

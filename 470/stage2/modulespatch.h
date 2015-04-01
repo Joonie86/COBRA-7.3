@@ -160,16 +160,12 @@ extern uint8_t condition_psp_prometheus;
 //extern uint8_t psx_type_orig;
 extern uint64_t vsh_check;
 
-extern uint8_t block_peek;
+//extern uint8_t block_peek;
 
 extern process_t vsh_process;
 extern uint8_t safe_mode;
 
 /* Functions for kernel */
-void unhook_all_modules(void); // PSNPATCH Stealth Plugin
-// PS3Mapi v1.2
-int ps3mapi_unload_vsh_plugin(char* name); 
-int ps3mapi_get_vsh_plugin_info(unsigned int slot, char *name, char *filename);
 void modules_patch_init(void);
 //void do_spoof_patches(void);  Spoof is not needed due to REX's static spoof 
 void load_boot_plugins(void);
@@ -181,6 +177,11 @@ int prx_unload_vsh_plugin(unsigned int slot);
 int sys_prx_load_vsh_plugin(unsigned int slot, char *path, void *arg, uint32_t arg_size);
 int sys_prx_unload_vsh_plugin(unsigned int slot);
 int sys_thread_create_ex(sys_ppu_thread_t *thread, void *entry, uint64_t arg, int prio, uint64_t stacksize, uint64_t flags, const char *threadname);
+
+// PS3Mapi v1.2.1
+int ps3mapi_unload_vsh_plugin(char* name); 
+void unhook_all_modules(void);
+int ps3mapi_get_vsh_plugin_info(unsigned int slot, char *name, char *filename);
 
 #endif /* __MODULESPATCH_H__ */
 
