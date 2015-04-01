@@ -373,7 +373,7 @@ PatchTableEntry patch_table[] =
 
 static char *hash_to_name(uint64_t hash)
 {
-	if (hash == VSH_DEX_HASH || VSH_CEX_HASH )
+	if (hash == VSH_DEX_HASH || hash == VSH_CEX_HASH )
 	{
 		return "vsh.self";
 	}
