@@ -13,7 +13,7 @@ Following has been changed and updated since 4.46 COBRA 7
 
 [ Habib's changes ]
 
-* Stage0 Base payload developed by Habib, this clears stage1 when stage2 is not loaded on LV2, which completely disabled COBRA mode
+* Stage0 Base payload, this clears stage1 when stage2 is not loaded on LV2, which completely disabled COBRA mode
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
 * Syscall 11 is added to support full lv1 peek
 
