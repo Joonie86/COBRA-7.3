@@ -1,8 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define MAX_SPOOF_VERSION		0x0999
-#define MAX_SPOOF_REVISION		99999
+#define MAX_SPOOF_VERSION			0x0999
+#define MAX_SPOOF_REVISION			99999
 #define MAX_SPOOF_REVISION_CHARS	5
 
 typedef struct

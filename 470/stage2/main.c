@@ -21,7 +21,7 @@
 #include <lv1/patch.h>
 #include "common.h"
 #include "syscall8.h"
-#include "cobra.h"
+//#include "cobra.h"
 #include "modulespatch.h"
 #include "mappath.h"
 #include "storage_ext.h"
@@ -377,7 +377,7 @@ static inline void ps3mapi_unhook_all(void)
 	unhook_all_region();
 	unhook_all_map_path();
     unhook_all_storage_ext();
-	unhook_all_permissions();
+	//unhook_all_permissions();
 }
 
 int ps3mapi_partial_disable_syscall8 = 0;
@@ -444,6 +444,8 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		}
 		else return ENOSYS;
 	}
+			
+	if ((function != SYSCALL8_OPCODE_PS3MAPI) && (2 <= ps3mapi_partial_disable_syscall8))	return ENOSYS;	
 	
 	switch (function)
 	{       	
@@ -451,7 +453,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 			switch ((int)param1)
 			{
 				#ifdef DEBUG
-				DPRINTF("syscall8: PS3M_API function 0x%x\n", (int)param1);
+				//DPRINTF("syscall8: PS3M_API function 0x%x\n", (int)param1);
 				#endif	
 				//----------
 				//CORE
@@ -572,8 +574,6 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 			}
 		break;
 		
-		if (2 <= ps3mapi_partial_disable_syscall8)	return ENOSYS;	
-		
 		case SYSCALL8_OPCODE_STEALTH_TEST:  //KW PSNPatch stealth extension compatibility
 			return SYSCALL8_STEALTH_OK;
 		break;
@@ -666,7 +666,8 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		break;	
 		
 		case SYSCALL8_OPCODE_COBRA_USB_COMMAND:
-			return sys_cobra_usb_command(param1, param2, param3, (void *)param4, param5);
+			//return sys_cobra_usb_command(param1, param2, param3, (void *)param4, param5);
+			return 0;
 		break;
 		
 		case SYSCALL8_OPCODE_SET_PSP_UMDFILE:

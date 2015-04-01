@@ -19,7 +19,6 @@
 #include "common.h"
 #include "storage_ext.h"
 #include "scsi.h"
-#include "cobra.h"
 #include "config.h"
 #include "crypto.h"
 #include "mappath.h"

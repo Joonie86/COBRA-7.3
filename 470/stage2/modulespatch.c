@@ -372,60 +372,65 @@ PatchTableEntry patch_table[] =
 
 static char *hash_to_name(uint64_t hash)
 {
-        if ((hash == VSH_DEX_HASH) || (hash == VSH_CEX_HASH ))
+    switch(hash)
 	{
-		return "vsh.self";
+		case VSH_DEX_HASH:
+		case VSH_CEX_HASH:
+			return "vsh.self";
+		break;
+		
+		case EXPLORE_PLUGIN_HASH:
+			return "explore_plugin.sprx";
+		break;
+		
+		case EXPLORE_CATEGORY_GAME_HASH:
+			return "explore_category_game.sprx";
+		break;
+		
+		case BDP_DISC_CHECK_PLUGIN_HASH:
+			return "bdp_disccheck.sprx";
+		break;
+		
+		case PS1_EMU_HASH:
+			return "ps1_emu.self";
+		break;
+		
+		case PS1_NETEMU_HASH:
+			return "ps1_netemu.self";
+		break;
+		
+		case GAME_EXT_PLUGIN_HASH:
+			return "game_ext_plugin.sprx";
+		break;
+		
+		case PSP_EMULATOR_HASH:
+			return "psp_emulator.self";
+		break;
+		
+		case EMULATOR_API_HASH:
+			return "emulator_api.sprx";
+		break;
+		
+		case PEMUCORELIB_HASH:
+			return "PEmuCoreLib.sprx";
+		break;
+		
+		case LIBFS_EXTERNAL_HASH:
+			return "libfs.sprx";
+		break;
+		
+		case LIBSYSUTIL_SAVEDATA_PSP_HASH:
+			return "libsysutil_savedata_psp.sprx";
+		break;
+		
+		case BASIC_PLUGINS_HASH:
+			return "basic_plugins.sprx";
+		break;
+		
+		default:
+			return "UNKNOWN";
+		break;		
 	}
-	else if (hash == EXPLORE_PLUGIN_HASH)
-	{
-		return "explore_plugin.sprx";
-	}
-	else if (hash == EXPLORE_CATEGORY_GAME_HASH)
-	{
-		return "explore_category_game.sprx";
-	}
-	else if (hash == BDP_DISC_CHECK_PLUGIN_HASH)
-	{
-		return "bdp_disccheck.sprx";
-	}
-	else if (hash == PS1_EMU_HASH)
-	{
-		return "ps1_emu.self";
-	}
-	else if (hash == PS1_NETEMU_HASH)
-	{
-		return "ps1_netemu.self";
-	}
-	else if (hash == GAME_EXT_PLUGIN_HASH)
-	{
-		return "game_ext_plugin.sprx";
-	}
-	else if (hash == PSP_EMULATOR_HASH)
-	{
-		return "psp_emulator.self";
-	}
-	else if (hash == EMULATOR_API_HASH)
-	{
-		return "emulator_api.sprx";
-	}
-	else if (hash == PEMUCORELIB_HASH)
-	{
-		return "PEmuCoreLib.sprx";
-	}
-	else if (hash == LIBFS_EXTERNAL_HASH)
-	{
-		return "libfs.sprx";
-	}
-	else if (hash == LIBSYSUTIL_SAVEDATA_PSP_HASH)
-	{
-		return "libsysutil_savedata_psp.sprx";
-	}
-	else if (hash== BASIC_PLUGINS_HASH)
-	{
-		return "basic_plugins.sprx";
-	}
-
-	return "UNKNOWN";
 }
 
 #endif
@@ -615,33 +620,39 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		//DPRINTF("hash = %lx\n", hash);
 		#endif
 		
-		if((hash==VSH_CEX_HASH) || (hash==VSH_DEX_HASH))
+		switch(hash)
 		{
-			vsh_check=hash;
+		
+			case VSH_CEX_HASH:
+			case VSH_DEX_HASH:
+				vsh_check = hash;
+			break;
+			
+			case EMULATOR_DRM_HASH:
+				if (condition_psp_keys)
+					buf[psp_drm_tag_overwrite/4] = LI(R5, psp_code);
+			break;
+			
+			case EMULATOR_DRM_DATA_HASH:
+				if (condition_psp_keys)
+				{
+					buf[psp_drm_key_overwrite/4] = psp_tag;
+					memcpy(buf+((psp_drm_key_overwrite+8)/4), psp_keys, 16);
+				}
+			break;
+			
+			case BASIC_PLUGINS_HASH:
+				if (condition_psp_change_emu)
+				{
+					memcpy(((char *)buf)+pspemu_path_offset, pspemu_path, sizeof(pspemu_path));
+					memcpy(((char *)buf)+psptrans_path_offset, psptrans_path, sizeof(psptrans_path));
+				}
+			break;
+			
+			default:
+				//Do nothing
+			break;
 		}
-
-		if (condition_psp_keys)
-		{
-			if (hash == EMULATOR_DRM_HASH)
-			{
-				buf[psp_drm_tag_overwrite/4] = LI(R5, psp_code);
-			}
-			else if (hash == EMULATOR_DRM_DATA_HASH)
-			{
-				buf[psp_drm_key_overwrite/4] = psp_tag;
-				memcpy(buf+((psp_drm_key_overwrite+8)/4), psp_keys, 16);
-			}
-		}
-
-		if (condition_psp_change_emu)
-		{
-			if (hash == BASIC_PLUGINS_HASH)
-			{
-				memcpy(((char *)buf)+pspemu_path_offset, pspemu_path, sizeof(pspemu_path));
-				memcpy(((char *)buf)+psptrans_path_offset, psptrans_path, sizeof(psptrans_path));
-			}
-		}
-
 
 		for (int i = 0; i < N_PATCH_TABLE_ENTRIES; i++)
 		{
@@ -672,6 +683,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 				break;
 			}
 		}
+		
 	}
 
 	return 0;

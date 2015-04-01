@@ -111,8 +111,10 @@ int sys_psp_read_header(int fd, char *buf, uint64_t nbytes, uint64_t *nread)
 	sys_prx_id_t *list;
 	uint32_t *unk;
 	process_t process;
-		
+	
+	#ifdef DEBUG
 	DPRINTF("umd read header: %p %lx\n", buf, nbytes);
+	#endif
 	
 	buf = get_secure_user_ptr(buf);
 	nread = get_secure_user_ptr(nread);
@@ -145,12 +147,16 @@ int sys_psp_read_header(int fd, char *buf, uint64_t nbytes, uint64_t *nread)
 				if (strstr(filename, "/emulator_api.sprx"))
 				{
 					emulator_api_base = segments[0].base;
+					#ifdef DEBUG
 					DPRINTF("emulator_api base = %08lx\n", emulator_api_base);
+					#endif	
 				}
 				else if (strstr(filename, "/PEmuCoreLib.sprx"))
 				{
-					pemucorelib_base = segments[0].base;
+					pemucorelib_base = segments[0].base;						
+					#ifdef DEBUG
 					DPRINTF("PEmuCoreLib base = %08lx\n", pemucorelib_base);
+					#endif
 				}
 			}
 		}
@@ -178,8 +184,10 @@ int sys_psp_read_header(int fd, char *buf, uint64_t nbytes, uint64_t *nread)
 	*(uint32_t *)(buf+0x0c) = 0x10;
 	*(uint32_t *)(buf+0x64) = (umd_size/0x800)-1; // Last sector of umd	
 	strncpy(buf+0x70, psp_id, 10);
-	
+						
+	#ifdef DEBUG
 	DPRINTF("ID: %s\n", psp_id);
+	#endif
 	
 	if (mutex && user_mutex)
 	{
@@ -195,8 +203,11 @@ int sys_psp_read_umd(int unk, void *buf, uint64_t sector, uint64_t ofs, uint64_t
 {
 	uint64_t offset, dummy;
 	int ret;
-	
+							
+	#ifdef DEBUG
 	DPRINTF("umd read %lx %lx %lx\n", sector, ofs, size);
+	#endif
+
 		
 	if (!mutex)
 	{
@@ -207,13 +218,17 @@ int sys_psp_read_umd(int unk, void *buf, uint64_t sector, uint64_t ofs, uint64_t
 				
 		if (ret != 0)
 		{
+			#ifdef DEBUG
 			DPRINTF("Cannot open user mutex, using an own one\n");
+			#endif
 			mutex_create(&mutex, SYNC_PRIORITY, SYNC_NOT_RECURSIVE);
 			user_mutex = 0;
 		}
 		else
 		{
+			#ifdef DEBUG
 			DPRINTF("user mutex opened succesfully\n");
+			#endif
 			user_mutex = 1;
 			close_kernel_object_handle(object_table, obj_handle);
 		}
@@ -309,48 +324,61 @@ int sys_psp_set_umdfile(char *file, char *id, int prometheus)
 #endif
 	if (!patches_backup)
 	{
-       if(vsh_check==VSH_CEX_HASH)
-		DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
-       else if(vsh_check==VSH_DEX_HASH)
-		DPRINTF("Now patching PSP DRM In DEBUG VSH..\n");
-	      
-		if(vsh_check==VSH_CEX_HASH)
+		switch(vsh_check)
 		{
+			case VSH_CEX_HASH:
+				#ifdef DEBUG
+				DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
+				#endif
+				patches_backup = alloc(sizeof(psp_drm_patches), 0x27);
 			
-		patches_backup = alloc(sizeof(psp_drm_patches), 0x27);
-	
-		memcpy(patches_backup, &psp_drm_patches, sizeof(psp_drm_patches));
+				memcpy(patches_backup, &psp_drm_patches, sizeof(psp_drm_patches));
+					
+				for (int i = 0; psp_drm_patches[i].offset != 0; i++)
+				{
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_patches[i].offset, (uint32_t)psp_drm_patches[i].data);
+					#endif
 			
-		for (int i = 0; psp_drm_patches[i].offset != 0; i++)
-		{
-        DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_patches[i].offset, (uint32_t)psp_drm_patches[i].data);
-	
-			copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+					copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+				
+					if (copy_to_process(vsh_process, &psp_drm_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_patches[i].offset), 4) != 0)
+					{
+						fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
+					}
+				}
+			break;
 		
-			if (copy_to_process(vsh_process, &psp_drm_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_patches[i].offset), 4) != 0)
-			{
-				fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
-			}
-		}
-		}
-	    else if(vsh_check==VSH_DEX_HASH)
-		{			
-		patches_backup = alloc(sizeof(psp_drm_dex_patches), 0x27);
-	
-		memcpy(patches_backup, &psp_drm_dex_patches, sizeof(psp_drm_dex_patches));
+			case VSH_DEX_HASH:
+				#ifdef DEBUG
+				DPRINTF("Now patching PSP DRM In DEBUG VSH..\n");
+				#endif
+				patches_backup = alloc(sizeof(psp_drm_dex_patches), 0x27);
 			
-		for (int i = 0; psp_drm_dex_patches[i].offset != 0; i++)
-		{
-        DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_dex_patches[i].offset, (uint32_t)psp_drm_dex_patches[i].data);
-	
-			copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+				memcpy(patches_backup, &psp_drm_dex_patches, sizeof(psp_drm_dex_patches));
+					
+				for (int i = 0; psp_drm_dex_patches[i].offset != 0; i++)
+				{
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_dex_patches[i].offset, (uint32_t)psp_drm_dex_patches[i].data);
+					#endif
+			
+					copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+				
+					if (copy_to_process(vsh_process, &psp_drm_dex_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_dex_patches[i].offset), 4) != 0)
+					{
+						fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
+					}
+				}
+			break;
+			
+			default:
+				#ifdef DEBUG
+				DPRINTF("Unknown VSH HASH, PSP DRM was not patched!\n");
+				#endif
+			break;
+		}
 		
-			if (copy_to_process(vsh_process, &psp_drm_dex_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_dex_patches[i].offset), 4) != 0)
-			{
-				fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
-			}
-		}
-		}
 	}
 
 	return 0;
@@ -415,7 +443,9 @@ int sys_psp_set_emu_path(char *path)
 		return 0;
 	}
 	
+	#ifdef DEBUG
 	//DPRINTF("sys_psp_set_emu_path has been deleted\n");
+	#endif
 	
 	/*DPRINTF("pspemu path set to %s\n", path);
 	
@@ -430,7 +460,9 @@ int sys_psp_set_emu_path(char *path)
 
 int sys_psp_post_savedata_initstart(int result, void *param)
 {
+	#ifdef DEBUG
 	DPRINTF("Savedata init start\n");
+	#endif
 	
 	if (result == 0)
 	{
@@ -442,11 +474,15 @@ int sys_psp_post_savedata_initstart(int result, void *param)
 
 int sys_psp_post_savedata_shutdownstart(void)
 {
+	#ifdef DEBUG
 	DPRINTF("Savedata shutdown start\n");
+	#endif
 	
 	if (savedata_param)
 	{
+		#ifdef DEBUG
 		DPRINTF("Original bind: %08X\n", savedata_param[0x34/4]);
+		#endif
 		savedata_param[0x34/4] = swap32(1); // SCE_UTILITY_SAVEDATA_BIND_OK
 		savedata_param = NULL;
 	}

@@ -6,8 +6,8 @@
 #define SYS_MAP_PATH	35
 #define SYS_MAP_GAME	36
 
-#define FLAG_COPY	1
-#define FLAG_TABLE	2
+#define FLAG_COPY		1
+#define FLAG_TABLE		2
 #define FLAG_PROTECT	4
 
 void	map_path_patches(int syscall);
