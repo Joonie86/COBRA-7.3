@@ -24,6 +24,7 @@ Following has been changed and updated since 4.46 COBRA 7
 
 [ Dean's changes ] 
 
+* Improved map_path, to fix the issue with games like Shadow of Mordor
 * Permission protection is disabled to increase game compatiblity and full DEX support.[no more issue with Target Manager or CCAPI]
 * 80010017 / 8001002B Error fix is added since 4.60, this was developed to prevent issues with games when game disc is inserted in BD Drive.
 * LIC.DAT check is patched to fix the issue with launching homebrew since 4.60 
