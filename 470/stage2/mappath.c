@@ -196,26 +196,23 @@ int sys_map_paths(char *paths[], char *new_paths[], unsigned int num)
 
 LV2_HOOKED_FUNCTION_POSTCALL_2(void, open_path_hook, (char *path0, int mode))
 {
-	/*if(path0[7]=='v')// && map_table[0].newpath)
-	{
-		if(!map_table[0].newpath) map_table[0].newpath = alloc(0x400, 0x27);
-		strcpy(map_table[0].newpath, (char*)"/dev_hdd0/GAMES/BLES01674"); 
-		strcpy(map_table[0].newpath+25, path0+9);
-		DPRINTF(">: [%s]\n", map_table[0].newpath);
-		set_patched_func_param(1, (uint64_t)map_table[0].newpath);
-	}*/
-
-
 	if (path0[0]=='/')
 	{
 		char *path=path0;
 		if(path[1]=='/') path++; //if(path[1]=='/') path++;
-		//if(path[7]=='v' || path[7]=='m')
+
+            	// _NzV_ : force redirect /dev_bdvd/PS3_UPDATE/PS3UPDAT.PUP
+		if (path && strcmp(path, "/dev_bdvd/PS3_UPDATE/PS3UPDAT.PUP") == 0)
 		{
-			//DPRINTF("?: [%s]\n", path);
-	
-			//if(path[1]=='/') DPRINTF("!!! This will usually error out!\n");//path++;
-			//if(path[0]=='/')
+            		char not_update[40];
+		        sprintf(not_update, "/dev_bdvd/PS3_NOT_UPDATE/PS3UPDAT.PUP");
+            		set_patched_func_param(1, (uint64_t)not_update);
+            		#ifdef  DEBUG
+            		DPRINTF("Update from disc blocked!");
+            		#endif
+            	}
+            	else
+		{
 			for (int i = MAX_TABLE_ENTRIES-1; i >= 0; i--)
 			{
 				if (map_table[i].oldpath)
