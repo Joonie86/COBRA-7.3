@@ -111,8 +111,10 @@ int read_cobra_config(void)
 	dvd_video_region = config.dvd_video_region;
 	// Removed. Now condition_ps2softemu has another meaning and it is set automatically in storage_ext if no BC console
 	//condition_ps2softemu = config.ps2softemu;
+	#ifdef  DEBUG
 	DPRINTF("Configuration read. bd_video_region=%d,dvd_video_region=%d\nspoof_version = %04X, spoof_revision = %d\n", bd_video_region, dvd_video_region, config.spoof_version, config.spoof_revision);
-		
+	#endif
+	
 	return 0;
 }
 
@@ -153,7 +155,9 @@ int sys_read_cobra_config(CobraConfig *cfg)
 	if (copy_size < 0)
 		copy_size = 0;
 	
+	#ifdef  DEBUG
 	//DPRINTF("erase = %d, copy = %d\n", erase_size, copy_size);
+	#endif
 	
 	memcpy(&cfg->checksum, &config.checksum, copy_size);
 	return 0;
@@ -178,7 +182,8 @@ int sys_write_cobra_config(CobraConfig *cfg)
 	memcpy(&config.checksum, &cfg->checksum, copy_size);
 	bd_video_region = config.bd_video_region;
 	dvd_video_region = config.dvd_video_region;
-	condition_ps2softemu = config.ps2softemu;
+	// Removed. Now condition_ps2softemu has another meaning and it is set automatically in storage_ext if no BC console
+	//condition_ps2softemu = config.ps2softemu;
 	
 	return write_cobra_config();
 }

@@ -21,19 +21,21 @@ Following has been changed and updated since 4.46 COBRA 7
 [KW's changes]
 
 * webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
-* PSN Patch stealth mode, it unhooks all cobra hooks to completely remove cobra payload from LV2
+* PSN Patch stealth mode, it remove custom syscall from the ps3
 
 [ Dean's changes ] 
 
 * Improved map_path, to fix the issue with games like Shadow of Mordor
 * Permission protection is disabled to increase game compatiblity and full DEX support.[no more issue with Target Manager or CCAPI]
 * 80010017 / 8001002B Error fix is added since 4.60, this was developed to prevent issues with games when game disc is inserted in BD Drive.
-* LIC.DAT check is patched to fix the issue with launching homebrew since 4.60 
+* LIC.DAT check is patched to fix the issue with launching homebrew since 4.60
 
 [ Nzv's changes]
 
-* PS3MAPI 1.2 support, it is similar feature comparing to CCAPI, but open sourced project and also can unload vsh plugins , attatch process on all type of EBOOT.
+* PS3MAPI 1.2.2 support, it is similar feature comparing to CCAPI, but open sourced project and also can unload vsh plugins , attatch process on all type of EBOOT.
    One of those great debugging features.
+* Partial disable syscall8 and unhooks all cobra hooks (Part of PS3MAPI)
+* Block update from disc
    
 [ Aldo's changes ]
 

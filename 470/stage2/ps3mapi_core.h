@@ -18,7 +18,7 @@
 //CORE
 //-----------------------------------------------
 
-#define PS3MAPI_CORE_VERSION			 		0x0120
+#define PS3MAPI_CORE_VERSION			 		0x0121
 #define PS3MAPI_CORE_MINVERSION			 		0x0111
 
 #if defined(FIRMWARE_3_55)

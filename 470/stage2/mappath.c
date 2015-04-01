@@ -31,7 +31,9 @@ int map_path(char *oldpath, char *newpath, uint32_t flags)
 	if (!oldpath || strlen(oldpath) == 0)
 		return -1;
 	
+	#ifdef  DEBUG
 	DPRINTF("Map path: %s -> %s\n", oldpath, newpath);
+	#endif
 	
 	if (newpath && strcmp(oldpath, newpath) == 0)
 		newpath = NULL;
@@ -109,7 +111,9 @@ int map_path_user(char *oldpath, char *newpath, uint32_t flags)
 {
 	char *oldp, *newp;
 	
+	#ifdef  DEBUG
 	DPRINTF("map_path_user, called by process %s: %s -> %s\n", get_process_name(get_current_process_critical()), oldpath, newpath); 
+	#endif
 	
 	if (oldpath == 0)
 		return -1;
@@ -208,8 +212,18 @@ LV2_HOOKED_FUNCTION_POSTCALL_2(void, open_path_hook, (char *path0, int mode))
 
 	if (path0[0]=='/')
 	{
-		char *path=path0;
-		if(path[1]=='/') path++; //if(path[1]=='/') path++;
+        char *path=path0;
+        if(path[1]=='/') path++; //if(path[1]=='/') path++;
+        if (path && strcmp(path, "/dev_bdvd/PS3_UPDATE/PS3UPDAT.PUP") == 0)
+        {    
+            char not_update[40];
+            sprintf(not_update, "/dev_bdvd/PS3_NOT_UPDATE/PS3UPDAT.PUP");
+            set_patched_func_param(1, (uint64_t)not_update);
+			#ifdef  DEBUG
+			DPRINTF("Update from disc blocked!");
+			#endif 
+        }
+		else
 		//if(path[7]=='v' || path[7]=='m')
 		{
 			//DPRINTF("?: [%s]\n", path);
@@ -227,14 +241,18 @@ LV2_HOOKED_FUNCTION_POSTCALL_2(void, open_path_hook, (char *path0, int mode))
 						strcpy(map_table[i].newpath+map_table[i].newpath_len, path+len);
 						set_patched_func_param(1, (uint64_t)map_table[i].newpath);
 						
+						#ifdef  DEBUG
 						//DPRINTF("=: [%s]\n", map_table[i].newpath);
+						#endif 
 						break;
 					}
 				}
 			}
 		}
 		
+		#ifdef  DEBUG
 		DPRINTF("open_path %s\n", path);
+		#endif 
 	}
 }
 
@@ -294,7 +312,10 @@ int sys_aio_copy_root(char *src, char *dst)
 					}
 				}
 				
-				DPRINTF("AIO: root replaced by %s\n", dst);				
+				#ifdef  DEBUG
+				DPRINTF("AIO: root replaced by %s\n", dst);		
+				#endif 	
+				
 				break;
 			}
 		}
