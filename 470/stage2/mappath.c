@@ -214,7 +214,7 @@ LV2_HOOKED_FUNCTION_POSTCALL_2(void, open_path_hook, (char *path0, int mode))
 	{
         char *path=path0;
         if(path[1]=='/') path++; //if(path[1]=='/') path++;
-        if (path && ((strcmp(path, "/dev_bdvd/PS3_UPDATE/PS3UPDAT.PUP") == 0) || (strcmp(path, "/dev_bdvd/PS3/UPDATE/PS3UPDAT.PUP") == 0)))
+        if (path && ((strcmp(path, "/dev_bdvd/PS3_UPDATE/PS3UPDAT.PUP") == 0)))  // Blocks FW update from Game discs!     
         {    
             char not_update[40];
             sprintf(not_update, "/dev_bdvd/PS3_NOT_UPDATE/PS3UPDAT.PUP");
