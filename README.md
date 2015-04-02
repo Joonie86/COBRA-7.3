@@ -18,7 +18,7 @@ Following has been changed and updated since 4.46 COBRA 7
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
 * Syscall 11 is added to support full lv1 peek
 
-[KW's changes]
+[ KW's changes ]
 
 * webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
 * PSN Patch stealth mode, it remove custom syscall from the ps3
