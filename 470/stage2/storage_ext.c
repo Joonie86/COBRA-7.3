@@ -2520,6 +2520,10 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, post_cellFsUtilMount, (const char *bl
 			}
 		}
 		mutex_unlock(mutex);
+		
+		#ifndef DEBUG
+		unhook_function_on_precall_success(cellFsUtilMount_symbol, post_cellFsUtilMount, 8); //Hook no more needed
+		#endif
 	}
 
 	return 0;
@@ -3683,7 +3687,9 @@ void unhook_all_storage_ext(void)
 	unhook_function_with_cond_postcall(storage_send_device_command_symbol, emu_storage_send_device_command, 7);
 	unhook_function_with_cond_postcall(get_syscall_address(SYS_STORAGE_ASYNC_SEND_DEVICE_COMMAND), emu_sys_storage_async_send_device_command, 7);
 	unhook_function_with_cond_postcall(get_syscall_address(864), emu_disc_auth, 2);
+	#ifdef DEBUG //Auto unload if not debug
 	unhook_function_on_precall_success(cellFsUtilMount_symbol, post_cellFsUtilMount, 8);
+	#endif
 	resume_intr();
 }
 
