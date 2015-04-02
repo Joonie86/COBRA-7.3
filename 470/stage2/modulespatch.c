@@ -113,7 +113,7 @@ static int loading_vsh_plugin;
 
 SprxPatch cex_vsh_patches[] =
 {
-	//{ cex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate },
+	//{ cex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate }, [DISABLED by DEFAULT since 4.46]
 	{ cex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ cex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
 	{ 0 }
@@ -122,6 +122,7 @@ SprxPatch cex_vsh_patches[] =
 SprxPatch dex_vsh_patches[] =
 {
 #ifdef FIRMWARE_4_70DEX
+// NPDRM FSELF fix for REBUG's DEBUG VSH. DEX ONLY to fully support npdrm fself files.
 	{ elf1_func1 + elf1_func1_offset, 0xF821FF81, &condition_true },
 	{ elf1_func1 + elf1_func1_offset + 4, 0x7C0802A6, &condition_true },
 	{ elf1_func2 + elf1_func2_offset, LI(R11, 0), &condition_true },
@@ -999,7 +1000,7 @@ static int read_text_line(int fd, char *line, unsigned int size, int *eof)
 
 	return i;
 }
-/*
+/* // Original code from COBRA 7 4.46
 void load_boot_plugins(void)
 {
 	int fd;
@@ -1042,6 +1043,7 @@ void load_boot_plugins(void)
 	cellFsClose(fd);
 }
 */
+// webMAN integration support
 void load_boot_plugins(void)
 {
 	int fd;

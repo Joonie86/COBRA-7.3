@@ -4,9 +4,9 @@ As of April the 1st.
 
 Following has been changed and updated since 4.46 COBRA 7
 
-[Joonie's Changes]
+[ Joonie's Changes ]
 
-* Cobra spoofer has been removed again, since this is no longer supporting PSN accesibility since 4.60 OFW update.
+* Cobra spoofer has been removed again [the same as COBRA 4.30], since this is no longer supporting PSN accesibility since 4.60 OFW update.
 * Kakaroto's sig check patch is removed from modulespatch.c since this is one of those pre-applied patches on 4.xx CFW
 * unknown E3 patches are removed to fix an issue with XMB, [Originally found by rancid-0, from his PS3ITA 4.50 COBRA]
 * Dual VSH supports for REBUG REX / D-REX CFW, proper hash check code was developed by habib and Nzv recently. 
@@ -18,7 +18,7 @@ Following has been changed and updated since 4.46 COBRA 7
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
 * Syscall 11 is added to support full lv1 peek
 
-[KW's changes]
+[ KW's changes ]
 
 * webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
 * PSN Patch stealth mode, it remove custom syscall from the ps3

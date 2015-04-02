@@ -198,7 +198,7 @@ static INLINE int process_read_iso_cmd(ReadIsoCmd *cmd)
 	remaining = cmd->size;
 
 	#ifdef DEBUG
-	DPRINTF("Read %lx %lx\n", cmd->offset, cmd->size);
+	//DPRINTF("Read %lx %lx\n", cmd->offset, cmd->size);
 	#endif
 	
 	if (disc_emulation == EMU_PS3 && remaining == 2048)
