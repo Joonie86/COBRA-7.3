@@ -7,7 +7,7 @@
 #include <ps2emu/patch.h>
 #include <ps2emu/symbols.h>
 
-#ifdef FIRMWARE_4_66
+#ifdef FIRMWARE_4_70
 #define EXTENDED_DATA	(0x821000+0x2953478) //working
 //#define EXTENDED_DATA	(0x31fe000) //working
 #endif
@@ -117,35 +117,37 @@ ufs_write(dump, 1, (void *)val, 8);
 	{
 //		if (strstr(path, "--COBRA--"))
 	//	{
-			int fd = ufs_open(0, CONFIG_FILE);
-			if (fd >= 0)
+
+		int fd = ufs_open(0, CONFIG_FILE);
+		if (fd >= 0)
+		{
+			uint8_t b;
+			
+			ufs_read(fd, 0, &b, 1);
+			vars->is_cd = (b&1);
+			
+			ufs_read(fd, 1, vars->iso_file, 0x6FF);
+			ufs_read(fd, 0x702, vars->mnt, 0xf0);
+			if((strstr(vars->mnt, "mount")) || (strstr(path, "--COBRA--")))
 			{
-				uint8_t b;
 				
-				ufs_read(fd, 0, &b, 1);
-				vars->is_cd = (b&1);
-				
-				ufs_read(fd, 1, vars->iso_file, 0x6FF);
-				ufs_read(fd, 0x702, vars->mnt, 0xf0);
-				if((strstr(vars->mnt, "mount")) || (strstr(path, "--COBRA--")))
+				if (vars->is_cd)
 				{
+					// Read number of tracks
+					uint8_t b;
 					
-					if (vars->is_cd)
-					{
-						// Read number of tracks
-						uint8_t b;
-						
-						ufs_read(fd, 0x800, &b, 1);						
-						vars->num_tracks = b;
-					}		
-				}
-				
-				else
-				{
-				vars->iso_file[0]=0;
-				}
+					ufs_read(fd, 0x800, &b, 1);						
+					vars->num_tracks = b;
+				}		
 			}
+			
+			else
+			{
+				vars->iso_file[0]=0;
+			}
+                        ufs_close(fd);
 //		}
+		}
 		
 		vars->setup_done = 1;
 	}

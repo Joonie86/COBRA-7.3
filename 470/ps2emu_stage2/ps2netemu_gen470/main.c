@@ -413,7 +413,7 @@ static int patch_emu(char *payload_map_file)
 	
 	if (ret == 0)
 	{
-		*(uint32_t *)&ps2_netemu[savedata_patch] = swap32(LI(0, 0x774));
+		*(uint32_t *)&ps2_netemu[savedata_patch] = swap32(LI(0, 0x26f4));
 	}
 	
 	fclose(map);

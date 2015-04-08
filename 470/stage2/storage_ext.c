@@ -2717,10 +2717,11 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 			}
 			else
 			{
-				CellFsStat emu_verify;
-				if(cellFsStat("/dev_hdd0/classic_ps2", &emu_verify)!=0)
+				cellFsUnlink(PS2EMU_CONFIG_FILE);
+				if (disc_emulation == EMU_PS2_CD || disc_emulation == EMU_PS2_DVD)
 				{
-					prepare_ps2emu = 1;  //if file present /dev_hdd0/classic_ps2 then classics would be loaded only else iso(sync fixes)
+				
+					prepare_ps2emu = 1; 
 				}
 				else
 				{
@@ -2757,15 +2758,7 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 					memcpy(buf+0x801, discfile_cd->tracks, discfile_cd->numtracks*sizeof(ScsiTrackDescriptor));
 				}
 
-				CellFsStat emu_verify_again;
-				if(cellFsStat("/dev_hdd0/classic_ps2", &emu_verify_again)!=0)
-				{
-					buf[0x702]=0x6d;
-				}
-				else
-				{
-					buf[0x702]=0x00;
-				}
+				buf[0x702]=0x6d;
 				buf[0x703]=0x6f;
 				buf[0x704]=0x75;
 				buf[0x705]=0x6e;
@@ -2789,15 +2782,6 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 		}
 
 		load_ps2emu_stage2(ps2emu_type);
-	}
-	CellFsStat emu_verify_again1;
-	if(cellFsStat("/dev_hdd0/classic_ps2", &emu_verify_again1)==0)
-	{
-		int fd1;
-		uint64_t position, writeon;
-		cellFsOpen(PS2EMU_CONFIG_FILE, CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &fd1, 0666, NULL, 0);
-		cellFsLseek(fd1, 0x702, SEEK_SET, &position);
-		cellFsWrite(fd1, (void *)0x00, 1, &writeon);
 	}
 	return 0;
 }
