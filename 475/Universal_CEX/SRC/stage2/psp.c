@@ -314,6 +314,8 @@ int sys_psp_set_umdfile(char *file, char *id, int prometheus)
 		switch(vsh_check)
 		{
 			case VSH_CEX_HASH:
+			case VSH_HAB_HASH:
+			case VSH_FER_HASH:			
 				#ifdef DEBUG
 				DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
 				#endif
