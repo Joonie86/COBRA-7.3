@@ -10,7 +10,7 @@ Currently following CFWs are supported.
 
 1. mine [unreleased]
 2. HABIB 4.75 Starbucks 1.00
-3. Ferrorx 4.75 1.00 [Untested but it should work]
+3. Ferrox 4.75 1.00 [Untested but it should work]
 
 this source is made based on both REBUG 4.70.1 COBRA 7.1 and HABIB 4.70 1.03 [including his latest ps2netemu fix]
 So on slim, there shouldn't be any problem with ps2games unless you don't follow tutorials.
@@ -28,7 +28,7 @@ however, I've found some bugs couple months ago but it seems like no one has rep
 Here's the list of bugs I've found
 
 1. PSX region bypass issue with old backward compatible consoles. [mostly CECHA/CECHB]
-CECHE01 didn't seem to have a problem from my test result.
+CECHE01 didn't seem to have a problem from my test result. [probably the same for CECHC]
 
 2. PS2 issue with backward compatible consoles when mixing various ps2 emulators 
 
@@ -57,6 +57,6 @@ It was just my preference, but you could enable this back as mmCM/IRISMAN don't 
 
 The only reason why I'm releasing this is because I'd like to benefit more people whom wanting to improve this scene including all developers and users,
 
-plus I didn't want this to be wasted while I was waiting for DEX OFW to be delieverd.
+plus I didn't want this to be wasted while I was waiting for DEX OFW to be delivered.
 
 Hope this helped for those who want to learn.
