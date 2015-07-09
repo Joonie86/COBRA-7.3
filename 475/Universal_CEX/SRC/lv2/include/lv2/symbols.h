@@ -2615,97 +2615,97 @@
 
 #define TOC							0x34FBB0 //done
 
-#define create_kernel_object_symbol			0x11FB0 // bytes matched: 0x44  F821FF617C0802A6FB610078F80100B0E80308007C9B2378FB8100802FA00000
-#define destroy_kernel_object_symbol			0x11914 // bytes matched: 0x80  F821FF717C0802A6FB810070FBA10078FBC10080FBE10088F80100A07C681B78
-#define destroy_shared_kernel_object_symbol		0x11288 // bytes matched: 0x80  5480063E3D6080012B80007F540A2536616B00057D0A1A14409D000C7D6307B4
-#define open_kernel_object_symbol			0x12600 // bytes matched: 0x80  F821FF517C0802A6FBA10098FBC100A0FBE100A8789E8402789FC622789D0620
-#define open_shared_kernel_object_symbol		0x12410 // bytes matched: 0x80  F821FF317C0802A6FB8100B0FBC100C0FBE100C8F80100E0789C84027CE03B78
-#define close_kernel_object_handle_symbol		0x11A30 // bytes matched: 0x44  F821FF517C0802A6FBA10098FBE100A8FB410080FB610088FB810090FBC100A0
+#define create_kernel_object_symbol			0x11FB0 // Confirmed
+#define destroy_kernel_object_symbol			0x11914 // Confirmed
+#define destroy_shared_kernel_object_symbol		0x11288 // Confirmed
+#define open_kernel_object_symbol			0x12600 // Confirmed
+#define open_shared_kernel_object_symbol		0x12410 // Confirmed
+#define close_kernel_object_handle_symbol		0x11A30 // Confirmed
 
-#define alloc_symbol					0x64824 // bytes matched: 0x80  2C2300007C85237838C000007C641B784D820020E9229EC8E86900004BFFFEB8
-#define dealloc_symbol					0x64C60 // bytes matched: 0x80  E9229EC87C85237838C000007C641B78E86900004BFFFBD0F821FF717C0802A6
-#define copy_to_user_symbol				0xF86C // bytes matched: 0x64  2C2500007C0802A6F821FF71FBA10078FBC10080FBE100887C7E1B78FB810070
-#define copy_from_user_symbol				0xFA88 // bytes matched: 0x64  2C2500007C0802A6F821FF71FBA10078FBC10080FBE10088FB8100707C7F1B78
-#define copy_to_process_symbol				0xF924 // bytes matched: 0x80  F821FF317C0802A62C250000FB6100A83F608001FB210098FB8100B0FAE10088
-#define copy_from_process_symbol			0xF734 // bytes matched: 0x80  F821FF417C0802A62C240000FB6100983F608001FB210088FB8100A0FB010080
-#define page_allocate_symbol				0x60394 // bytes matched: 0x60  7C8023787CA92B787CCB33787CE83B787C641B787C0503787D264B787D675B78
-#define page_free_symbol				0x5FDF8 // bytes matched: 0x80  E9629C987C0802A6F821FF61F80100B0FBC10090FBE10098E92B00007C7F1B78
-#define page_export_to_proc_symbol			0x60530 // bytes matched: 0x80  F821FF717C0802A63D20000CF80100A054A0031AFBE100887FA048003D208001
-#define page_unexport_from_proc_symbol		        0x5FCEC // bytes matched: 0x80  E8630030480110882BA3003C7C0802A6F821FF91F80100807C8B23787C601B78
-#define kernel_ea_to_lpar_addr_symbol			0x7014C // bytes matched: 0x80  E922A1787C0802A6F821FF51F80100C0FBC100A0FB610088EBC900007C9B2378
-#define process_ea_to_lpar_addr_ex_symbol		0x77760 // bytes matched: 0x80  F821FF517C0802A6FB610088F80100C0E96300087CBB2B78FB810090FBC100A0
-#define set_pte_symbol                                  0x5E390 // bytes matched: 0x70  F821FF217C0802A6FAE100987C771B787C8323787CA42B787D054378F80100F0
-#define map_process_memory_symbol			0x7726C // bytes matched: 0x7C  7D800026F821FEE1FAC100D07CF63B78FB810100EB82A3A8FB0100E07C781B78
+#define alloc_symbol					0x64824 // Confirmed
+#define dealloc_symbol					0x64C60 // Confirmed
+#define copy_to_user_symbol				0xF86C // Confirmed
+#define copy_from_user_symbol				0xFA88 // Confirmed
+#define copy_to_process_symbol				0xF924 // Confirmed
+#define copy_from_process_symbol			0xF734 // Confirmed
+#define page_allocate_symbol				0x60394 // Confirmed
+#define page_free_symbol				0x5FDF8 // Confirmed
+#define page_export_to_proc_symbol			0x60530 // Confirmed
+#define page_unexport_from_proc_symbol		        0x5FCEC // Confirmed
+#define kernel_ea_to_lpar_addr_symbol			0x7014C // Confirmed
+#define process_ea_to_lpar_addr_ex_symbol		0x77760 // Confirmed
+#define set_pte_symbol                                  0x5E390 // Confirmed
+#define map_process_memory_symbol			0x7726C // Confirmed
 #define panic_symbol					0x26D5C8 // Confirmed
 
-#define memcpy_symbol					0x7E92C // bytes matched: 0x80  2BA500077C6B1B78419D002C2C2500007C691B784D8200207CA903A688040000
-#define memset_symbol					0x4D66C // bytes matched: 0x80  2BA500177C6A1B78419D00242FA500004D9E00207C8023787CA903A6980A0000
-#define memcmp_symbol					0x4C97C // bytes matched: 0x80  38A500017CA903A642400030880300003863000189240000388400017F890000
-#define memchr_symbol					0x4C92C // bytes matched: 0x80  2C2500004182003C8803000039200000386300017F802000409E00184800002C
+#define memcpy_symbol					0x7E92C // Confirmed
+#define memset_symbol					0x4D66C // Confirmed
+#define memcmp_symbol					0x4C97C // Confirmed
+#define memchr_symbol					0x4C92C // Confirmed
 #define printf_symbol					0x2706AC // Confirmed
 #define printfnull_symbol				0x275120 // Confirmed
-#define sprintf_symbol					0x4EA94 // bytes matched: 0x80  F821FF817C0802A6F8A100C0F8010090380100C0E8A295A8F8C100C8F8610078
-#define snprintf_symbol					0x4EA00 // bytes matched: 0x80  F821FF717C0802A6F8C100D8F80100A0380100D8F8610078908100807CA32B78
-#define strcpy_symbol					0x4D818 // bytes matched: 0x80  880400002F800000980300004D9E00207C691B788C0400012F8000009C090001
-#define strncpy_symbol					0x4D8E0 // bytes matched: 0x80  2C2500004D820020880400007C6B1B78394000002F80000098030000419E0034
-#define strlen_symbol					0x4D840 // bytes matched: 0x80  7C691B7838600000880900002F8000004D9E00207D234B788C0300012F800000
-#define strcat_symbol					0x4D748 // bytes matched: 0x80  880300007C691B782F800000419E00108C0900012F800000409EFFF888040000
-#define strcmp_symbol					0x4D7C4 // bytes matched: 0x80  880300007C691B78896400007F8B00007C0B0050409E002C2F8B0000409E000C
-#define strncmp_symbol					0x4D86C // bytes matched: 0x80  2C2500004182005089640000892300005560063E7F895800409E00482F800000
-#define strchr_symbol					0x4D780 // bytes matched: 0x80  880300002F800000419E00247F802000409E000C48000024419A00208C030001
-#define strrchr_symbol					0x4D950 // bytes matched: 0x80  392000004800000C38630001419A0020880300007F8020002F000000409EFFEC
+#define sprintf_symbol					0x4EA94 // Confirmed
+#define snprintf_symbol					0x4EA00 // Confirmed
+#define strcpy_symbol					0x4D818 // Confirmed
+#define strncpy_symbol					0x4D8E0 // Confirmed
+#define strlen_symbol					0x4D840 // Confirmed
+#define strcat_symbol					0x4D748 // Confirmed
+#define strcmp_symbol					0x4D7C4 // Confirmed
+#define strncmp_symbol					0x4D86C // Confirmed
+#define strchr_symbol					0x4D780 // Confirmed
+#define strrchr_symbol					0x4D950 // Confirmed
 
 #define spin_lock_irqsave_ex_symbol			0x26D798 // Confirmed
 #define spin_unlock_irqrestore_ex_symbol		0x26D76C // Confirmed
 
 #define create_process_common_symbol			0x26B534 // Confirmed
 #define create_process_base_symbol			0x26ABF0 // Confirmed
-#define load_process_symbol				0x5004 // bytes matched: 0x80  7D800026F821FF11FAC100A0FB6100C8FB8100D07C7B1B787CB62B787C9C2378
+#define load_process_symbol				0x5004 // Confirmed
 #define process_kill_symbol				0x26B340 // Confirmed
 
-#define ppu_thread_create_symbol			0x13EC8 // bytes matched: 0x80  7D800026F821FF81FBC10070FBE100787C7E1B787CDF3378918100887C0802A6
-#define ppu_thread_exit_symbol				0x13F80 // bytes matched: 0x44  F821FF817C0802A6FBE10078F80100907C7F1B78480122598003009054000462
-#define ppu_thread_join_symbol				0x13FD4 // bytes matched: 0x80  F821FF617C0802A6FB810080F80100B0FBA10088FBC100907C7D1B78FBE10098
-#define ppu_thread_delay_symbol				0x287A4 // bytes matched: 0x64  F821FF017C0802A6FAC100B0FAE100B8FB6100D8FBA100E8FBC100F0FB0100C0
-#define create_kernel_thread_symbol			0x24B20 // bytes matched: 0x80  F821FF117C0802A6550B0632F8010100550007FEFB2100B82F800000FB4100C0
-#define create_user_thread_symbol			0x2525C // bytes matched: 0x80  F821FF117C0802A6FB0100B0EB028B00FB8100D0EB810160F8010100FAC100A0
-#define create_user_thread2_symbol			0x25080 // bytes matched: 0x80  F821FEF17C0802A6FA8100B0F8010120800900287CD43378FAA100B8FAC100C0
-#define start_thread_symbol				0x23D4C // bytes matched: 0x80  7D800026F821FF61FB410070FB610078FB810080FBA10088FBC10090FBE10098
-#define run_thread_symbol				0x2357C // bytes matched: 0x30  7C641B78E863004848002EB0F821FF717C0802A6FBC100807C7E1B78FBA10078
+#define ppu_thread_create_symbol			0x13EC8 // Confirmed
+#define ppu_thread_exit_symbol				0x13F80 // Confirmed
+#define ppu_thread_join_symbol				0x13FD4 // Confirmed
+#define ppu_thread_delay_symbol				0x287A4 // Confirmed
+#define create_kernel_thread_symbol			0x24B20 // Confirmed
+#define create_user_thread_symbol			0x2525C // Confirmed
+#define create_user_thread2_symbol			0x25080 // Confirmed
+#define start_thread_symbol				0x23D4C // Confirmed
+#define run_thread_symbol				0x2357C // Confirmed
 #define register_thread_symbol				0x26794C // Confirmed
 #define allocate_user_stack_symbol			0x268134 // Confirmed
 #define deallocate_user_stack_symbol			0x26809C // Confirmed
 
-#define mutex_create_symbol				0x1363C // bytes matched: 0x80  2F8500207C0802A6F821FF71FBA10078FBC10080FBE10088F80100A07CBF2B78
-#define mutex_destroy_symbol				0x135D4 // bytes matched: 0x80  F821FF817C0802A6FBE10078F80100907C7F1B78480092352FA300003C008001
-#define mutex_lock_symbol				0x135CC // bytes matched: 0x80  38A000004800A58CF821FF817C0802A6FBE10078F80100907C7F1B7848009235
-#define mutex_lock_ex_symbol				0x1DB5C // bytes matched: 0x80  F821FF017C0802A6FB6100D87C7B1B78FB0100C0FB8100E0FBA100E8FBE100F8
-#define mutex_trylock_symbol				0x135C8 // bytes matched: 0x80  4800990C38A000004800A58CF821FF817C0802A6FBE10078F80100907C7F1B78
-#define mutex_unlock_symbol				0x135C4 // bytes matched: 0x80  48009CD44800990C38A000004800A58CF821FF817C0802A6FBE10078F8010090
+#define mutex_create_symbol				0x1363C // Confirmed
+#define mutex_destroy_symbol				0x135D4 // Confirmed
+#define mutex_lock_symbol				0x135CC // Confirmed
+#define mutex_lock_ex_symbol				0x1DB5C // Confirmed
+#define mutex_trylock_symbol				0x135C8 // Confirmed
+#define mutex_unlock_symbol				0x135C4 // Confirmed
 
-#define cond_create_symbol				0x137A8 // bytes matched: 0x80  F821FF717C0802A6FBA10078FBC100807C9D23787C7E1B783880003638A00000
-#define cond_destroy_symbol				0x13758 // bytes matched: 0x80  F821FF717C0802A6FBA10078FBE100887C7D1B78F80100A04800B2497C7F1B78
-#define cond_wait_symbol				0x13750 // bytes matched: 0x80  38A000004800B9F4F821FF717C0802A6FBA10078FBE100887C7D1B78F80100A0
-#define cond_wait_ex_symbol				0x1F148 // bytes matched: 0x80  F821FEF17C0802A6FB6100E87C7B1B78FB2100D8FBA100F8FBC10100FBE10108
-#define cond_signal_symbol				0x1372C // bytes matched: 0x80  F821FF917C0802A6F80100804800B829E8010080386000007C0803A638210070
-#define cond_signal_all_symbol				0x13708 // bytes matched: 0x80  F821FF917C0802A6F80100804800B6D5E8010080386000007C0803A638210070
+#define cond_create_symbol				0x137A8 // Confirmed
+#define cond_destroy_symbol				0x13758 // Confirmed
+#define cond_wait_symbol				0x13750 // Confirmed
+#define cond_wait_ex_symbol				0x1F148 // Confirmed
+#define cond_signal_symbol				0x1372C // Confirmed
+#define cond_signal_all_symbol				0x13708 // Confirmed
 
-#define semaphore_initialize_symbol			0x30C54 // bytes matched: 0x80  F821FF717C0802A6FBA100787C7D1B78E9228E6038630018F80100A0F93D0000
-#define semaphore_wait_ex_symbol			0x3095C // bytes matched: 0x58  F821FF117C0802A6FB6100C8FB8100D0FBA100D8FBC100E0FB0100B0FB2100B8
-#define semaphore_trywait_symbol			0x30544 // bytes matched: 0x40  F821FF717C0802A6FBC10080FB810070FBA10078FBE10088F80100A07C7E1B78
-#define semaphore_post_ex_symbol			0x30690 // bytes matched: 0x80  F821FF417C0802A62F840000FBC100B03FC08001FB8100A0FBE100B8FAC10070
+#define semaphore_initialize_symbol			0x30C54 // Confirmed
+#define semaphore_wait_ex_symbol			0x3095C // Confirmed
+#define semaphore_trywait_symbol			0x30544 // Confirmed
+#define semaphore_post_ex_symbol			0x30690 // Confirmed
 
-#define event_port_create_symbol			0x13078 // bytes matched: 0x80  F821FF717C0802A6FBA10078FBC1008038A000007C7E1B787C9D237838600020
-#define event_port_destroy_symbol			0x134E0 // bytes matched: 0x80  F821FF717C0802A6FBC10080EBC2859038800000F80100A0FBA1007838A00000
-#define event_port_connect_symbol			0x13558 // bytes matched: 0x80  F821FF617C0802A6FB610078EB62859038A00000F80100B0FB810080FBA10088
-#define event_port_disconnect_symbol			0x13484 // bytes matched: 0x80  F821FF717C0802A6FB810070EB82859038800000F80100A0FBA1007838A00000
-#define event_port_send_symbol				0x13070 // bytes matched: 0x80  38E0000148018190F821FF717C0802A6FBA10078FBC1008038A000007C7E1B78
-#define event_port_send_ex_symbol			0x2B204 // bytes matched: 0x44  F821FF517C0802A6FBE100A87C7F1B78FBC100A03BC30018FB2100787FC3F378
+#define event_port_create_symbol			0x13078 // Confirmed
+#define event_port_destroy_symbol			0x134E0 // Confirmed
+#define event_port_connect_symbol			0x13558 // Confirmed
+#define event_port_disconnect_symbol			0x13484 // Confirmed
+#define event_port_send_symbol				0x13070 // Confirmed
+#define event_port_send_ex_symbol			0x2B204 // Confirmed
 
-#define event_queue_create_symbol			0x13380 // bytes matched: 0x80  F821FF617C0802A6FBE10098F80100B03806FFFF3FE080012B80007E3804FFFF
-#define event_queue_destroy_symbol			0x13308 // bytes matched: 0x80  F821FF717C0802A6FBC10080EBC2859038800000F80100A0FBA1007838A00000
-#define event_queue_receive_symbol			0x1314C // bytes matched: 0x80  F821FF617C0802A6FBE10098F80100B0812300883FE08001380000002F890001
-#define event_queue_tryreceive_symbol			0x13218 // bytes matched: 0x80  F821FF617C0802A63D208001F80100B038000000FBA10088F801007080030088
+#define event_queue_create_symbol			0x13380 // Confirmed
+#define event_queue_destroy_symbol			0x13308 // Confirmed
+#define event_queue_receive_symbol			0x1314C // Confirmed
+#define event_queue_tryreceive_symbol			0x13218 // Confirmed
 
 #define cellFsOpen_symbol				0x297900 // Confirmed
 #define cellFsClose_symbol				0x297768 // Confirmed
@@ -2734,9 +2734,9 @@
 #define storage_send_device_command_symbol		0x2783FC // Confirmed
 #define storage_map_io_memory_symbol			0x2799BC // Confirmed
 #define storage_unmap_io_memory_symbol		        0x279888 // Confirmed
-#define new_medium_listener_object_symbol		0x974C4 // bytes matched: 0x58  F821FF717C0802A6FBE10088EBE2AC183880001DF80100A0FBC10080FBA10078
-#define delete_medium_listener_object_symbol		0x98CFC // bytes matched: 0x40  F821FF817C0802A62C240000FBE100783FE08001FBC10070F80100907C9E2378
-#define set_medium_event_callbacks_symbol		0x99060 // bytes matched: 0x58  F821FF517C0802A6FB410080F80100C038000000FB610088FB8100907C9B2378
+#define new_medium_listener_object_symbol		0x974C4 // Confirmed
+#define delete_medium_listener_object_symbol		0x98CFC // Confirmed
+#define set_medium_event_callbacks_symbol		0x99060 // Confirmed
 
 #define cellUsbdRegisterLdd_symbol			0x26027C // Confirmed
 #define cellUsbdUnregisterLdd_symbol			0x26022C // Confirmed
@@ -2746,62 +2746,61 @@
 #define cellUsbdControlTransfer_symbol			0x2613E0 // Confirmed
 #define cellUsbdBulkTransfer_symbol			0x261360 // Confirmed
 
-#define decrypt_func_symbol				0x34970 // bytes matched: 0x64  F821FF717C0802A6FB810070FBA100787C7C1B787C9D2378F80100A04BFFFF95
-#define lv1_call_99_wrapper_symbol			0x4EEA8 // bytes matched: 0x64  F821FF717C0802A6FBA100787C7D1B78FB810070386300807C9C2378F80100A0
-#define modules_verification_symbol			0x58AB8 // bytes matched: 0x80  3884FFFA7C0802A6F821FF912B840036F8010080419D00FCE962991878891788
-#define authenticate_program_segment_symbol		0x5A910 // bytes matched: 0x80  E96299A87C0802A6F821FF51F80100C0E86299B838000001FB010070E96B0000
+#define decrypt_func_symbol				0x34970 // Confirmed
+#define lv1_call_99_wrapper_symbol			0x4EEA8 // Confirmed
+#define modules_verification_symbol			0x58AB8 // Confirmed
+#define authenticate_program_segment_symbol		0x5A910 // Confirmed
 
-#define prx_load_module_symbol				0x88C04 // bytes matched: 0x80  F821FF717C0802A6FB8100707CBC2B7838A00001FBA10078FBC10080FBE10088
-#define prx_start_module_symbol				0x878D0 // bytes matched: 0x80  7D800026F821FEF1FB2100D8FB4100E07C7907B47C9A2378FB0100D0FB8100F0
-#define prx_stop_module_symbol				0x88CA8 // bytes matched: 0x80  F821FF617C0802A6FBA10088FBC100907C7D1B787C9E2378FB810080F80100B0
-#define prx_unload_module_symbol			0x87604 // bytes matched: 0x80  F821FF617C0802A6FB810080FBC100907C7C07B47C9E2378FBA10088FBE10098
-#define prx_get_module_info_symbol			0x8708C // bytes matched: 0x80  F821FF517C0802A6FB210078FB410080FB610088FB810090FBA100987CBB2B78
-#define prx_get_module_id_by_address_symbol		0x86F9C // bytes matched: 0x80  F821FF717C0802A6FB810070FBA100787C9C23787C7D1B78F80100A04BFFFF8D
-#define prx_get_module_id_by_name_symbol		0x86FEC // bytes matched: 0x80  F821FF717C0802A6FB810070FBA100787C9C23787C7D1B78F80100A04BFFFF3D
-#define prx_get_module_list_symbol			0x8710C // bytes matched: 0x80  F821FF517C0802A6FB010070FB210078FB410080FB610088FB810090FBA10098
-#define load_module_by_fd_symbol			0x88234 // bytes matched: 0x80  7D800026F821FF11FAE100A8FB0100B0FB6100C8FAC100A0FB2100B8FB4100C0
-#define parse_sprx_symbol				0x85FB8 // bytes matched: 0x80  F821FF517C0802A6FB810090FBE100A87C7C1B787C9F23783860002038800000
-#define open_prx_object_symbol				0x7F4F8 // bytes matched: 0x80  F821FF917C0802A678840020F8010080E863020838E000234BF930F13803FFFF
-#define close_prx_object_symbol				0x7FE08 // bytes matched: 0x80  E86302084BF91B082C2300007C0802A6F821FF81FBC10070FBE10078F8010090
-#define lock_prx_mutex_symbol				0x86F44 // bytes matched: 0x80  E922A6C8E86900004BFF8634E922A6C8E86900004BFF8624F821FF717C0802A6
-#define unlock_prx_mutex_symbol				0x86F50 // bytes matched: 0x80  E922A6C8E86900004BFF8624F821FF717C0802A6FBA100787C7D1B78F80100A0
+#define prx_load_module_symbol				0x88C04 // Confirmed
+#define prx_start_module_symbol				0x878D0 // Confirmed
+#define prx_stop_module_symbol				0x88CA8 // Confirmed
+#define prx_unload_module_symbol			0x87604 // Confirmed
+#define prx_get_module_info_symbol			0x8708C // Confirmed
+#define prx_get_module_id_by_address_symbol		0x86F9C // Confirmed
+#define prx_get_module_id_by_name_symbol		0x86FEC // Confirmed
+#define prx_get_module_list_symbol			0x8710C // Confirmed
+#define load_module_by_fd_symbol			0x88234 // Confirmed
+#define parse_sprx_symbol				0x85FB8 // Confirmed
+#define open_prx_object_symbol				0x7F4F8 // Confirmed
+#define close_prx_object_symbol				0x7FE08 // Confirmed
+#define lock_prx_mutex_symbol				0x86F44 // Confirmed
+#define unlock_prx_mutex_symbol				0x86F50 // Confirmed
 
-#define extend_kstack_symbol				0x700A4 // bytes matched: 0x44  F821FF717C0802A6FB810070F80100A0FBA100787C7D1B784BFB6131E922A138
+#define extend_kstack_symbol				0x700A4 // Confirmed
 
 #define get_pseudo_random_number_symbol		0x228180 // Confirmed
-#define md5_reset_symbol			0x161E20 // bytes matched: 0x80  3D2067453D60EFCD3D4098BA3C0010323900000061292301616BAB89614ADCFE
-#define md5_update_symbol			0x1628C0 // bytes matched: 0x80  F821FF517C0802A654AB1838F80100C080030010FBC100A07D205A147C7E1B78
-#define md5_final_symbol			0x162A40 // bytes matched: 0x80  F821FF617C0802A6FBE100987C9F2378FBC100903BC10070FBA1008838A00008
+#define md5_reset_symbol			0x161E20 // Confirmed
+#define md5_update_symbol			0x1628C0 // Confirmed
+#define md5_final_symbol			0x162A40 // Confirmed
 #define ss_get_open_psid_symbol			0x22A668 // Confirmed
 #define update_mgr_read_eeprom_symbol		0x223A78 // Confirmed
 #define update_mgr_write_eeprom_symbol		0x2239C0 // Confirmed
 
-#define ss_params_get_update_status_symbol		0x50AB4 // bytes matched: 0x80  3CA070617C0802A63CC075703CE0737460A5726160C6646160E761742C230000
+#define ss_params_get_update_status_symbol		0x50AB4 // Confirmed
 
 #define syscall_table_symbol				0x363BE0 // Confirmed
 #define syscall_call_offset				0x275C04 // Confirmed
 
-#define read_bdvd0_symbol				0x1A461C // bytes matched: 0x80  F821FEB17C0802A6FB0101107C781B78F8010160F9C100C0FBC101407C8E2378
-#define read_bdvd1_symbol				0x1A6248 // bytes matched: 0x80  F821FF317C0802A6FB8100B0F80100E0EB8300207CA02B78FAE100882FBC0000
-#define read_bdvd2_symbol				0x1B3400 // bytes matched: 0x80  F821FF517C0802A6FBE100A8F80100C07C7F1B78E8630090FB610088FB810090
-
+#define read_bdvd0_symbol				0x1A461C // Confirmed
+#define read_bdvd1_symbol				0x1A6248 // Confirmed
+#define read_bdvd2_symbol				0x1B3400 // Confirmed
 #define storage_internal_get_device_object_symbol	0x277EB4 // Confirmed
 
-#define hid_mgr_read_usb_symbol			        0x102444 // bytes matched: 0x78  E962D0987C0802A6F821FF91F80100802F2400003800FFEB812B00002F890000
-#define hid_mgr_read_bt_symbol				0xFC31C // bytes matched: 0x48  F821FF517C0802A6FB410080EB42CE60F80100C0FB610088FBA10098FBC100A0
+#define hid_mgr_read_usb_symbol			        0x102444 // Confirmed
+#define hid_mgr_read_bt_symbol				0xFC31C // Confirmed
 
-#define bt_set_controller_info_internal_symbol		0xF0388 // bytes matched: 0x80  F821FF417C0802A62F85054CF80100D054C0043EFB410090FBA100A8FBC100B0
+#define bt_set_controller_info_internal_symbol		0xF0388 // Confirmed
 
 /* Calls, jumps */
 #define device_event_port_send_call			0x28206C // Confirmed
 
 #define ss_pid_call_1					0x21329C // Confirmed
 
-#define process_map_caller_call				0x4D24 // bytes matched: 0x10*  2F8300007C7D1B78419EFF1C807B0000
+#define process_map_caller_call				0x4D24 // Confirmed
 
-#define read_module_header_call				0x7F3EC // bytes matched: 0x50*  2F8300007C6307B4409E0008E8610070E8010090382100807C0803A64E800020
-#define read_module_body_call				0x671C // bytes matched: 0x4C*  2F8300007C7F1B7840DE013CE80100887FBE000040DE0160FBDD0010E81C0018
-#define load_module_by_fd_call1				0x88AA0 // bytes matched: 0x80  4BFFF795801B000C7C7D1B78E87B00102F800000409DFFBC3BE300183BC00000
+#define read_module_header_call				0x7F3EC // Confirmed
+#define read_module_body_call				0x671C // Confirmed
+#define load_module_by_fd_call1				0x88AA0 // Confirmed
 
 #define shutdown_copy_params_call			0xAACC // bytes matched: 0x18*  2F830000409E005C7FC6F3787FA3EB78388000017F65DB78
 
@@ -2810,15 +2809,15 @@
 #define fsloop_read_call					0x297B28 //  Confirmed
 
 /* Patches */
-#define shutdown_patch_offset				0xAAB8 // bytes matched: 0x14  600000044182FEFC7F83E3787F64DB787FC5F378
+#define shutdown_patch_offset				0xAAB8 // Confirmed
 #define module_sdk_version_patch_offset		0x26717C // Confirmed
-#define module_add_parameter_to_parse_sprxpatch_offset	0x88310 // bytes matched: 0x80  90030198FB4301A8FB4301A0934301B8FB4301C8FB4301C04BFFDC912F830000
+#define module_add_parameter_to_parse_sprxpatch_offset	0x88310 // Confirmed
 
-#define user_thread_prio_patch				0x203FC // bytes matched: 0x34  419DFF842B9E0BFF900100D0419D02587B8007A03FE080012FA0000363FF0009
-#define user_thread_prio_patch2				0x20408 // bytes matched: 0x28  419D02587B8007A03FE080012FA0000363FF0009419EFF64FB4100B87D3042A6
+#define user_thread_prio_patch				0x203FC // Confirmed
+#define user_thread_prio_patch2				0x20408 // Confirmed
 
-#define lic_patch						0x56230 // bytes matched: 0x80*  2F8300003BFC006C419E0060380000023BE00000901C006C4BFFFF382FA70000
-#define ode_patch						0x2275F4 // bytes matched: 0x80  E86900007C6307B44E8000203C8010507C0802A6F821FF71788407C6FBE10088
+#define lic_patch						0x56230 // Confirmed
+#define ode_patch						0x2275F4 // Confirmed
 
 /* Rtoc entries */
 
@@ -2841,10 +2840,10 @@
 #define bt_rtoc_entry_1					-0x3680 //found at 0xEED93 C98038A0000048001F617FA4EB78
 
 /* Permissions */
-#define permissions_func_symbol				0x3560 // bytes matched: 0x6C  E92280087C0802A6F821FF21FBA100C8FBC100D0FBE100D8E8E900187C9F2378
-#define permissions_exception1 				0x25100 // bytes matched: 0x80*  5463063E2F830000419E0114EBA28AF0EB628B007FA4EB783BE00000E87B0000
-#define permissions_exception2				0xC3298 // bytes matched: 0x74*  E80100A0786306207C0803A6382100903863FFFF78630FE07C6300345463D97E
-#define permissions_exception3				0x204D0 // bytes matched: 0x80*  5463063E2F830000419E01F8E96289407D3042A6E8690048E90100B841920258
+#define permissions_func_symbol				0x3560 // Confirmed
+#define permissions_exception1 				0x25100 // Confirmed
+#define permissions_exception2				0xC3298 // Confirmed
+#define permissions_exception3				0x204D0 // Confirmed
 
 /* Legacy patches with no names yet */
 /* Kernel offsets */

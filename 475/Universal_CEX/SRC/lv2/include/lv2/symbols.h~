@@ -2778,7 +2778,7 @@
 
 #define ss_params_get_update_status_symbol		0x50AB4 // bytes matched: 0x80  3CA070617C0802A63CC075703CE0737460A5726160C6646160E761742C230000
 
-#define syscall_table_symbol				0x363BE8 // Confirmed
+#define syscall_table_symbol				0x363BE0 // Confirmed
 #define syscall_call_offset				0x275C04 // Confirmed
 
 #define read_bdvd0_symbol				0x1A461C // bytes matched: 0x80  F821FEB17C0802A6FB0101107C781B78F8010160F9C100C0FBC101407C8E2378
