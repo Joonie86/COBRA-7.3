@@ -150,7 +150,7 @@ flash_mount_clone:
 .align 4
 
 dev_rebug_stage:
-	.asciz "/dev_flash/rebug/cobra/stage2.cex"
+	.asciz "/dev_flash/sys/stage2.bin"
 
 .align 4
 
