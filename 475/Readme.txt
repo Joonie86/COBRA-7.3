@@ -6,7 +6,7 @@ modulespatch.h/c due to its hash check preventing unknown sprx/self modules to b
 
 as a result it can cause issues with ps2/psp games when this cobra payload is applied without proper porting
 
-Currently following CFWs are supported.
+[B][U]Currently following CFWs are supported.[/U][/B]
 
 1. mine [unreleased]
 2. HABIB 4.75 Starbucks 1.00
@@ -27,25 +27,11 @@ however, I've found some bugs couple months ago but it seems like no one has rep
 
 Here's the list of bugs I've found
 
-1. PSX region bypass issue with old backward compatible consoles. [mostly CECHA/CECHB]
-CECHE01 didn't seem to have a problem from my test result. [probably the same for CECHC]
+1. PSX region bypass issue with old backward compatible consoles. 
+[B]CECHA/B/C/E[/B]
 
-// Currently being worked on, PS2 issue seems fixed.
-2. PS2 issue with backward compatible consoles when mixing various ps2 emulators 
-
-for ex)
-
-on CECHA01, if user wants to play both ps2classic rips and ps2 iso rips, sometimes those games become unswappable, meaning either method keeps launching previously mounted games ..
-
-This was very annoying, so here is a workaround for this situation.
-
-CFW Devs could include swappable original netemu for backward compatible consoles, so that way those consoles could have
-
-cobra patched ps2 hw/gx emu and original ps2netemu, by doing so, users won't have any issues on both
-
-PS2ISO/Classic. You could probably make a prx plugin to swap that netemu or webMAN to do it.
-
-NON-BC ps3s don't have this issue, which can be ignored.
+2. The issue with ps2netemu on BC/Semi-BC consoles is currently resolved with new workaround discovered by
+  [MENTION=20]habib[/MENTION] and  [MENTION=89]aldostools[/MENTION]
 
 
 Other than that, I don't seem to find much issues.
