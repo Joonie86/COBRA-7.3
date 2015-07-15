@@ -30,6 +30,7 @@ Here's the list of bugs I've found
 1. PSX region bypass issue with old backward compatible consoles. [mostly CECHA/CECHB]
 CECHE01 didn't seem to have a problem from my test result. [probably the same for CECHC]
 
+// Currently being worked on, PS2 issue seems fixed.
 2. PS2 issue with backward compatible consoles when mixing various ps2 emulators 
 
 for ex)
