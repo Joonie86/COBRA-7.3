@@ -19,7 +19,7 @@
 #define DPRINT_HEX(a, b)
 #endif
 
-#define STAGE2_FILE	"/dev_flash/rebug/cobra/stage2.cex"
+#define STAGE2_FILE	"/dev_flash/sys/stage2.bin"
 
 void flash_mount_clone(void);
 
