@@ -6,7 +6,7 @@ modulespatch.h/c due to its hash check preventing unknown sprx/self modules to b
 
 as a result it can cause issues with ps2/psp games when this cobra payload is applied without proper porting
 
-[B][U]Currently following CFWs are supported.[/U][/B]
+Currently following CFWs are supported.
 
 1. mine [unreleased]
 2. HABIB 4.75 Starbucks 1.00
@@ -28,10 +28,10 @@ however, I've found some bugs couple months ago but it seems like no one has rep
 Here's the list of bugs I've found
 
 1. PSX region bypass issue with old backward compatible consoles. 
-[B]CECHA/B/C/E[/B]
+CECHA/B/C/E
 
 2. The issue with ps2netemu on BC/Semi-BC consoles is currently resolved with new workaround discovered by
-  [MENTION=20]habib[/MENTION] and  [MENTION=89]aldostools[/MENTION]
+  habib and aldostools
 
 
 Other than that, I don't seem to find much issues.
