@@ -27,11 +27,9 @@ however, I've found some bugs couple months ago but it seems like no one has rep
 
 Here's the list of bugs I've found
 
-1. PSX region bypass issue with old backward compatible consoles. 
-CECHA/B/C/E
+1. PSX region bypass issue with old backward compatible consoles. CECHA/B/C/E
 
-2. The issue with ps2netemu on BC/Semi-BC consoles is currently resolved with new workaround discovered by
-  habib and aldostools
+2. The issue with ps2netemu on BC/Semi-BC consoles is currently resolved with new workaround discovered byhabib and aldostools
 
 
 Other than that, I don't seem to find much issues.
