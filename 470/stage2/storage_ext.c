@@ -2686,6 +2686,20 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 	}
 	else if (param == 0x8204) /* Reboot into ps2_netemu LPAR */
 	{
+		#ifdef DEBUG
+		DPRINTF("Reboot into ps2_netemu LPAR (0x8204), ps2emu_type = %i\n", ps2emu_type);
+		#endif
+		
+		// Delete ps2emu config file when ps2_netemu is loaded on BC/Semi-BC Consoles to fix the issue with ISO redirection
+                // Credits @Habib and @aldostools
+		if(ps2emu_type==PS2EMU_HW || ps2emu_type==PS2EMU_GX)
+		{
+			#ifdef DEBUG
+			DPRINTF("Deleting %s\n", PS2EMU_CONFIG_FILE);
+			#endif			
+			cellFsUnlink(PS2EMU_CONFIG_FILE);
+		}
+		
 		// We need to check first if this a NPDRM or a plain iso launched from disc icon
 		// Discard first the case of BC consoles, since the ps2tonet patch is not done there
 		if (ps2emu_type == PS2EMU_SW)
