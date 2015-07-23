@@ -505,30 +505,26 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 
 		if (magic == SPRX_EXT_MAGIC)
 		{	
-			if (N_SPRX_KEYS_1 > keyIndex)
+			if (keyIndex >= N_SPRX_KEYS_1)
+			{
+				DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
+			}
+			else
 			{
 				keySet = &sprx_keys_set1[keyIndex];
 			}
-			#ifdef  DEBUG
-			else
-			{
-				//DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
-			}
-			#endif
-
+			
 		}
 		else if (magic == SPRX_EXT_MAGIC2)
 		{
-			if (N_SPRX_KEYS_2 > keyIndex)
+			if (keyIndex >= N_SPRX_KEYS_2)
 			{
-				keySet = &sprx_keys_set1[keyIndex];
+				DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
 			}
-			#ifdef  DEBUG
 			else
 			{
-				//DPRINTF("This key is not implemented yet: %lx:%x\n", magic, keyIndex);
+				keySet = &sprx_keys_set2[keyIndex];
 			}
-			#endif
 		}
 
 		if (keySet)
