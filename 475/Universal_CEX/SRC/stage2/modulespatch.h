@@ -76,6 +76,8 @@
 #define sfo_check_offset		0x23ED0 // CEX *lis       r3, aPage_game_ma_1@ha # "page_game_main"*
 #define ps2_nonbw_offset3		0x17004 // CEX *rlwinm    r0, r0, 0,26,26*
 #define ps_region_error_offset		0x68C4 // CEX  
+#define ps_video_error_offset1          0x3171C // li %r3, 0 Disable the check for the current video setting 
+#define ps_video_error_offset2          0x31720 // blr  Disable the check for the current video setting 
 
 /* psp_emulator */ //  4.75 CEX 
 #define psp_set_psp_mode_offset		0x1C18 // the same as 4.70
