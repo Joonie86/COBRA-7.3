@@ -10,7 +10,7 @@ Currently following CFWs are supported.
 
 1. mine [unreleased]
 2. HABIB 4.75 Starbucks 1.00
-3. Ferrox 4.75 1.00 [Untested but it should work]
+3. Ferrox 4.75 1.00 
 
 this source is made based on both REBUG 4.70.1 COBRA 7.1 and HABIB 4.70 1.03 [including his latest ps2netemu fix]
 So on slim, there shouldn't be any problem with ps2games unless you don't follow tutorials.
@@ -23,17 +23,6 @@ and also, like REBUG COBRA, you can place webman inside dev_flash/vsh/module, so
 
 you can use the old way to load webMAN as well just like previous non rebug cobra cfws.
 
-however, I've found some bugs couple months ago but it seems like no one has reported as much.
-
-Here's the list of bugs I've found
-
-1. PSX region bypass issue with old backward compatible consoles. CECHA/B/C/E
-
-2. The issue with ps2netemu on BC/Semi-BC consoles is currently resolved with new workaround discovered byhabib and aldostools
-
-
-Other than that, I don't seem to find much issues.
-
 I disabled that accidental ofw update feature code from mappath.c, due to its issue with game ripping from backup managers like multiMAN.
 
 it prevents an access from multiMAN to copy PS3UPDAT.PUP file, so it caused a problem with ripping games
@@ -45,3 +34,19 @@ The only reason why I'm releasing this is because I'd like to benefit more peopl
 plus I didn't want this to be wasted while I was waiting for DEX OFW to be delivered.
 
 Hope this helped for those who want to learn.
+
+
+*A lot has been changed since the 1st private beta period.
+
+here is the list of changes that were made through the beta period.
+
+1. fixed the issue with pspiso playback due to missing hash checks for HABIB/FERROX in COBRA source
+2. fixed the issue with category xml by replacing it with old one that was used in HABIB 4.70 COBRA 1.01
+
+3. fixed the issue with ps2netemu working properly on BC consoles and Semi BC consoles, however
+do not use ps2 classic launcher with mounted ISO as it will make issues on BC Consoles/Semi BC consoles.
+Non-BC console users can ignore this as this does not affect the result.
+
+4. fixed the issue with netserv with multiMAN [mmCM] causing 800 error when mounting games
+5. fixed the issue with blocking syscall 11 causing issues with some of those habib's homebrew that using syscall 11 [ex) habib's qa toggle
+6. PSX region issue, [this needs reviewed, currently it doesn't change the refresh rate on my tv, however PAL games don't have framedrops on my CECHE01 / NTSC]
