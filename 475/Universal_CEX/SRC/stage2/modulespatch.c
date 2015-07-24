@@ -165,7 +165,7 @@ SprxPatch game_ext_plugin_patches[] =
 	{ sfo_check_offset, NOP, &condition_true },
 	{ ps2_nonbw_offset3, LI(R0, 1), &condition_ps2softemu },
 	{ ps_region_error_offset, NOP, &condition_true }, /* Needed sometimes... */
-	{ ps_video_error_offset1, LI(R3,0), &condition_true }, /* Disable the check for video setting */
+	{ ps_video_error_offset1, LI(R3, 0), &condition_true }, /* Disable the check for video setting */
 	{ ps_video_error_offset2, BLR, &condition_true },
 	{ 0 }
 };
