@@ -131,7 +131,7 @@ f_desc_t extended_syscall8;
 
 LV2_SYSCALL2(uint64_t, sys_cfw_peek, (uint64_t *addr))
 {
-	/* if (block_peek)
+	 /*if (block_peek)
 		return (uint64_t)ENOSYS; */
 		
 	#ifdef DEBUG
@@ -223,21 +223,14 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				#endif
 				return;
 			}
-			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
-			{
-				#ifdef DEBUG
-				DPRINTF("HB remove syscall %ld\n", syscall_num);
-				#endif
-			}
-			else
-			{
-				#ifdef DEBUG
-				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
-				#endif
-				return;
-			}
-		}		
-	}
+			else //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
+                        {
+                                #ifdef DEBUG
+                                DPRINTF("HB remove syscall %ld\n", syscall_num);
+                                #endif
+                        }
+                }               
+        }
 	else if (addr == MKA(permissions_func_symbol))
 	{
 		#ifdef DEBUG
