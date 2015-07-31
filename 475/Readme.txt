@@ -50,5 +50,5 @@ Non-BC console users can ignore this as this does not affect the result.
 4. fixed the issue with netserv with multiMAN [mmCM] causing 800 error when mounting games
 5. fixed the issue with blocking syscall 11 causing issues with some of those habib's homebrew that using syscall 11 [ex) habib's qa toggle
 6. Improved PSX region/video setting bypass [conditional patches done in game_ext_plugin], this should fix the issue with video setting that prevents loading PSX games with different region
-
 7. webMAN auto load on boot is disabled
+8. New PSP DRM fix is implemented to fix the issue with PSP PKG games that were converted from ISO.
