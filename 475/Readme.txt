@@ -49,4 +49,4 @@ Non-BC console users can ignore this as this does not affect the result.
 
 4. fixed the issue with netserv with multiMAN [mmCM] causing 800 error when mounting games
 5. fixed the issue with blocking syscall 11 causing issues with some of those habib's homebrew that using syscall 11 [ex) habib's qa toggle
-6. PSX region issue, [this needs reviewed, currently it doesn't change the refresh rate on my tv, however PAL games don't have framedrops on my CECHE01 / NTSC]
+6. Improved PSX region/video setting bypass [conditional patches done in game_ext_plugin], this should fix the issue with video setting that prevents loading PSX games with different region
