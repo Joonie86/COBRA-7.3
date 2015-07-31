@@ -203,8 +203,7 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 		
 		if ((syscall_num >= 6 && syscall_num <= 11) || syscall_num == 35)
 		{
-			uint64_t sc_null = *(uint64_t *)MKA(syscall_table_symbol);
-			uint64_t syscall_not_impl = *(uint64_t *)sc_null;
+			
 			if (syscall_num == 8 && (value & 0xFFFFFFFF00000000ULL) == MKA(0))
 			{
 				// Probably iris manager or similar
@@ -230,7 +229,7 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 			else //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
 			{
 				#ifdef DEBUG
-				DPRINTF("HB remove syscall %ld\n", syscall_num);
+				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
 				#endif
 			}
 		}		
@@ -333,7 +332,7 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 
 LV2_SYSCALL2(void, sys_cfw_lv1_poke, (uint64_t lv1_addr, uint64_t lv1_value))
 {
-	lv1_poked(lv1_addr, lv1_value);	
+	lv1_poked(lv1_addr, lv1_value); 
 }
 
 LV2_SYSCALL2(void, sys_cfw_lv1_call, (uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t num))
@@ -445,7 +444,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	if ((function != SYSCALL8_OPCODE_PS3MAPI) && (2 <= ps3mapi_partial_disable_syscall8))	return ENOSYS;	
 	
 	switch (function)
-	{       	
+	{		
 		case SYSCALL8_OPCODE_PS3MAPI:	
 			switch ((int)param1)
 			{
@@ -819,13 +818,13 @@ int main(void)
 	modules_patch_init();	
 	drm_init();
 	
-	apply_kernel_patches();	
+	apply_kernel_patches(); 
 	map_path_patches(1);
 	storage_ext_patches();
 	region_patches();
 	permissions_patches();
 #ifdef DEBUG
-	// "Laboratory"	
+	// "Laboratory" 
 	//do_hook_all_syscalls();
 	//do_dump_threads_info_test();
 	//do_dump_processes_test();

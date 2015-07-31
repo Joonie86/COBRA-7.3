@@ -22,10 +22,10 @@
 #include "syscall8.h"
 #include "self.h"
 
-#define MAX_VSH_PLUGINS				7
+#define MAX_VSH_PLUGINS 			7
 #define BOOT_PLUGINS_FILE			"/dev_hdd0/boot_plugins.txt"
-#define BOOT_PLUGINS_FIRST_SLOT		1
-#define MAX_BOOT_PLUGINS 			(MAX_VSH_PLUGINS-BOOT_PLUGINS_FIRST_SLOT)
+#define BOOT_PLUGINS_FIRST_SLOT 	1
+#define MAX_BOOT_PLUGINS			(MAX_VSH_PLUGINS-BOOT_PLUGINS_FIRST_SLOT)
 #define PRX_PATH					"/dev_flash/vsh/module/webftp_server.sprx"
 
 LV2_EXPORT int decrypt_func(uint64_t *, uint32_t *);
@@ -101,9 +101,8 @@ uint8_t condition_psp_dec = 0;
 uint8_t condition_psp_keys = 0;
 uint8_t condition_psp_change_emu = 0;
 uint8_t condition_psp_prometheus = 0;
-//uint8_t psx_type=0;
-//uint8_t psx_type_orig=0;
 uint64_t vsh_check;
+uint8_t condition_game_ext_psx=0;
 
 //uint8_t block_peek = 0;
 
@@ -116,6 +115,7 @@ SprxPatch cex_vsh_patches[] =
 	//{ cex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate }, [DISABLED by DEFAULT since 4.46]
 	{ cex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ cex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
+	{ cex_psp_newdrm_patch, LI(R3, 0), &condition_true }, // Fixes the issue (80029537) with PSP Pkg games
 	{ 0 }
 };
 
@@ -128,7 +128,7 @@ SprxPatch basic_plugins_patches[] =
 
 SprxPatch explore_plugin_patches[] =
 {
-        /*{ app_home_offset, 0x2f646576, &condition_apphome }, //RE-ADDED
+	/*{ app_home_offset, 0x2f646576, &condition_apphome }, //RE-ADDED
 	{ app_home_offset+4, 0x5f626476, &condition_apphome }, //RE-ADDED
 	{ app_home_offset+8, 0x642f5053, &condition_apphome }, //RE-ADDED*/  //Disabled by default, no need to port
 	{ ps2_nonbw_offset, LI(0, 1), &condition_ps2softemu },
@@ -165,8 +165,8 @@ SprxPatch game_ext_plugin_patches[] =
 	{ sfo_check_offset, NOP, &condition_true },
 	{ ps2_nonbw_offset3, LI(R0, 1), &condition_ps2softemu },
 	{ ps_region_error_offset, NOP, &condition_true }, /* Needed sometimes... */
-	{ ps_video_error_offset1, LI(R3, 0), &condition_true }, /* Disable the check for video setting */
-	{ ps_video_error_offset2, BLR, &condition_true },
+	{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
+	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },
 	{ 0 }
 };
 
@@ -361,13 +361,22 @@ static char *hash_to_name(uint64_t hash)
     switch(hash)
 	{
 		case VSH_CEX_HASH:
-		case VSH_HAB_HASH:
-		case VSH_FER_HASH:
 			return "vsh.self";
 		break;
 		
-		case EXPLORE_PLUGIN_HASH:
+                case VSH_HAB_HASH:
+			return "vsh.self";
+		break;
+		
+                case VSH_FER_HASH:
+			return "vsh.self";
+		break;
+			
 		case EXPLORE_PLUGIN_HAB_HASH:
+			return "explore_plugin.sprx";
+		break;
+		
+		case EXPLORE_PLUGIN_HASH:
 			return "explore_plugin.sprx";
 		break;
 		
@@ -387,11 +396,14 @@ static char *hash_to_name(uint64_t hash)
 			return "ps1_netemu.self";
 		break;
 		
-		case GAME_EXT_PLUGIN_HASH:
 		case GAME_EXT_PLUGIN_HAB_HASH:
 			return "game_ext_plugin.sprx";
 		break;
-		
+
+		case GAME_EXT_PLUGIN_HASH:
+			return "game_ext_plugin.sprx";
+		break;
+				
 		case PSP_EMULATOR_HASH:
 			return "psp_emulator.self";
 		break;
@@ -435,7 +447,7 @@ LV2_HOOKED_FUNCTION_PRECALL_2(int, post_lv1_call_99_wrapper, (uint64_t *spu_obj,
 	if (process)
 	{
 		caller_process = process->pid;
-			#ifdef  DEBUG
+			#ifdef	DEBUG
 			//DPRINTF("caller_process = %08X\n", caller_process);
 			#endif
 	}
@@ -464,8 +476,8 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 
 	uint32_t *p = (uint32_t *)arg1[0x18/8];
 	
-	#ifdef  DEBUG
-	//DPRINTF("Flags = %x      %x\n", self->flags, (p[0x30/4] >> 16));
+	#ifdef	DEBUG
+	//DPRINTF("Flags = %x	   %x\n", self->flags, (p[0x30/4] >> 16));
 	#endif
 
 
@@ -478,7 +490,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 	if ((p[0x30/4] >> 16) == 0x13)
 #endif
 	{	
-		#ifdef  DEBUG
+		#ifdef	DEBUG
 		//DPRINTF("We are in decrypted module or in cobra encrypted\n");
 		#endif
 		
@@ -572,7 +584,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 			buf = (uint32_t *)saved_buf;
 		}
 		
-		#ifdef  DEBUG
+		#ifdef	DEBUG
 		if (last_chunk)
 		{
 			//DPRINTF("Total section size: %x\n", total+ptr32[4/4]);
@@ -601,7 +613,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		hash = (hash << 32) | total;
 		total = 0;
 		
-		#ifdef  DEBUG
+		#ifdef	DEBUG
 		//DPRINTF("hash = %lx\n", hash);
 		#endif
 		
@@ -609,7 +621,13 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		{
 		
 			case VSH_CEX_HASH:
+				vsh_check = hash;
+			break;
+		
 			case VSH_HAB_HASH:
+				vsh_check = hash;
+			break;
+		
 			case VSH_FER_HASH:
 				vsh_check = hash;
 			break;
@@ -644,7 +662,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		{
 			if (patch_table[i].hash == hash)
 			{		
-				#ifdef  DEBUG
+				#ifdef	DEBUG
 				DPRINTF("Now patching  %s %lx\n", hash_to_name(hash), hash);
 				#endif
 
@@ -656,7 +674,7 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 					if (*patch->condition)
 					{
 						buf[patch->offset/4] = patch->data;
-						#ifdef  DEBUG
+						#ifdef	DEBUG
 						DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)patch->offset, (uint32_t)patch->data);
 						//DPRINTF("Offset: %lx\n", &buf[patch->offset/4]);
 						#endif
@@ -680,7 +698,7 @@ LV2_HOOKED_FUNCTION_COND_POSTCALL_2(int, pre_modules_verification, (uint32_t *re
 {
 /*
 	// Patch original from psjailbreak. Needs some tweaks to fix some games
-	#ifdef  DEBUG
+	#ifdef	DEBUG
 	DPRINTF("err = %x\n", error);
 	#endif
 	if (error == 0x13)
@@ -701,16 +719,16 @@ uint8_t cleared_stage1 = 0;
 
 LV2_HOOKED_FUNCTION_POSTCALL_7(void, pre_map_process_memory, (void *object, uint64_t process_addr, uint64_t size, uint64_t flags, void *unk, void *elf, uint64_t *out))
 {
-	#ifdef  DEBUG
+	#ifdef	DEBUG
 	//DPRINTF("Map %lx %lx %s\n", process_addr, size, get_current_process() ? get_process_name(get_current_process())+8 : "KERNEL");
 	#endif
 	
 	// Not the call address, but the call to the caller (process load code for .self)
 	if (get_call_address(1) == (void *)MKA(process_map_caller_call))
-	{       
+	{	
 		if ((process_addr == 0x10000) && (size == cex_vsh_text_size) && (flags == 0x2008004) && (cleared_stage1 == 0))
 		{
-			#ifdef  DEBUG
+			#ifdef	DEBUG
 			DPRINTF("Making Retail VSH text writable, Size: 0x%lx\n", size);   
 			#endif
 			// Change flags, RX -> RWX, make vsh text writable
@@ -724,7 +742,7 @@ LV2_HOOKED_FUNCTION_POSTCALL_7(void, pre_map_process_memory, (void *object, uint
 
 LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t process, int fd, char *path, int r6, uint64_t r7, uint64_t r8, uint64_t r9, uint64_t r10, uint64_t sp_70))
 {
-	#ifdef  DEBUG
+	#ifdef	DEBUG
 	DPRINTF("PROCESS %s (%08X) loaded\n", path, process->pid);
 	#endif
 
@@ -736,7 +754,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t proce
 		}
 		else if (strcmp(path, "emer_init.self") == 0)
 		{
-			#ifdef  DEBUG
+			#ifdef	DEBUG
 			DPRINTF("COBRA: Safe mode detected\n");
 			#endif
 			safe_mode = 1;
@@ -970,7 +988,7 @@ static int read_text_line(int fd, char *line, unsigned int size, int *eof)
 
 	return i;
 }
-/* // Original code from COBRA 7 4.46
+// Original code from COBRA 7 4.46
 void load_boot_plugins(void)
 {
 	int fd;
@@ -1011,68 +1029,7 @@ void load_boot_plugins(void)
 	}
 	
 	cellFsClose(fd);
-}
-*/
-// webMAN integration support
-void load_boot_plugins(void)
-{
-	int fd;
-	int current_slot = BOOT_PLUGINS_FIRST_SLOT;
-	int num_loaded = 0;
-	int webman_loaded = 0; // KW
-	
-	if (safe_mode)
-	{
-		cellFsUnlink(BOOT_PLUGINS_FILE);
-		return;
-	}
 
-	if (!vsh_process)
-		return;
-
-	// KW BEGIN / Special thanks to KW for providing an awesome source
-	//Loading webman from flash - must first detect if the toogle is activated
-	if ( prx_load_vsh_plugin(current_slot, PRX_PATH, NULL, 0) >=0)
-	{
-		#ifndef  DEBUG
-		DPRINTF("Loading integrated webMAN plugin into slot %x\n", current_slot);
-		#endif
-       current_slot++;
-		num_loaded++;
-		webman_loaded=1;
-	}
-	// KW END
-
-	if (cellFsOpen(BOOT_PLUGINS_FILE, CELL_FS_O_RDONLY, &fd, 0, NULL, 0) != 0)
-		return;
-
-	while (num_loaded < MAX_BOOT_PLUGINS)
-	{
-		char path[128];
-		int eof;
-
-		if (read_text_line(fd, path, sizeof(path), &eof) > 0)
-		{
-			//KW BEGIN
-			if ((!webman_loaded) || (!strstr(path, "webftp_server")) ) 		
-			{
-				int ret = prx_load_vsh_plugin(current_slot, path, NULL, 0);	
-				#ifndef  DEBUG
-				DPRINTF("Load boot plugin %s -> %x\n", path, current_slot);
-				#endif
-				if (ret >= 0)
-				{
-					current_slot++;
-					num_loaded++;
-				}
-			}
-			//KW END
-		}
-
-		if (eof)
-			break;
-	}
-	cellFsClose(fd);
 }
 
 
@@ -1119,7 +1076,7 @@ void unhook_all_modules(void)
 	unhook_function_with_cond_postcall(modules_verification_symbol, pre_modules_verification, 2);
 	unhook_function_with_postcall(map_process_memory_symbol, pre_map_process_memory, 7);		
 #ifdef DEBUG
-	unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9); //Auto unload if not def DEBUG	
+	unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9); //Auto unload if not def DEBUG 
 	unhook_function_on_precall_success(create_process_common_symbol, create_process_common_hooked, 16);
 	//unhook_function_with_postcall(create_process_common_symbol, create_process_common_hooked_pre, 8);
 #endif

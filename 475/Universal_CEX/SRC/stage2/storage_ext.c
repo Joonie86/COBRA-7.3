@@ -200,7 +200,7 @@ static INLINE int process_read_iso_cmd(ReadIsoCmd *cmd)
 	#ifdef DEBUG
 	//DPRINTF("Read %lx %lx\n", cmd->offset, cmd->size);
 	#endif
-
+	
 	if (disc_emulation == EMU_PS3 && remaining == 2048)
 	{
 		cache = 1;
@@ -313,7 +313,7 @@ static INLINE int process_read_iso_cmd(ReadIsoCmd *cmd)
 
 		if (iskernel)
 			readbuf = ptr;
-	}
+	}	
 
 	if (ret == 0)
 	{
@@ -339,7 +339,7 @@ static INLINE int process_read_iso_cmd(ReadIsoCmd *cmd)
 		DPRINTF("WARNING: Error %x\n", ret);
 	}
 	#endif
-
+	
 	discfile->activefile = activefile;
 
 	if (!iskernel)
@@ -679,7 +679,7 @@ int process_proxy_cmd(uint64_t command, process_t process, uint8_t *buf, uint64_
 		#ifdef DEBUG
 		DPRINTF("Native VSH read\n");
 		#endif
-
+		
 		ret = event_port_send(proxy_command_port, command, offset, (((uint64_t)buf)<<32ULL) | remaining);
 		if (ret != 0)
 		{
@@ -815,7 +815,7 @@ int process_proxy_cmd(uint64_t command, process_t process, uint8_t *buf, uint64_
 		DPRINTF("proxy read failed: %x\n", ret);
 	}
 	#endif
-
+	
 	return ret;
 }
 
@@ -892,7 +892,7 @@ int read_psx_sector(void *dma, void *buf, uint64_t sector)
 				//DPRINTF("retm %x\n", ret);
 			}
 			#endif
-
+			
 			storage_close(handle);
 
 		}
@@ -933,7 +933,7 @@ uint32_t find_file_sector(uint8_t *buf, char *file)
 	#ifdef DEBUG
 	DPRINTF("%s not found\n", file);
 	#endif
-
+	
 	return 0;
 }
 
@@ -986,28 +986,27 @@ int process_get_psx_video_mode(void)
 						DPRINTF("PSX EXE: %s\n", exe_path);
 						#endif
 
-						p = strstr(exe_path, "SLES_"); if(p) {ret = 1; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCES_"); if(p) {ret = 1; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCED_"); if(p) {ret = 1; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SLED_"); if(p) {ret = 1; goto exit_get_psx_video_mode;}
+						p = strstr(exe_path, "SLES_"); if(p) {ret = 1;}
+						p = strstr(exe_path, "SCES_"); if(p) {ret = 1;}
+						p = strstr(exe_path, "SCED_"); if(p) {ret = 1;}
+						p = strstr(exe_path, "SLED_"); if(p) {ret = 1;}
 
-						ret = 0;
-/*
-						p = strstr(exe_path, "SLUS_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCUS_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCUD_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SLUD_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
+						p = strstr(exe_path, "SLUS_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SCUS_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SCUD_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SLUD_"); if(p) {ret = 0;}
 
-						p = strstr(exe_path, "SLPM_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SLPS_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCPM_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SCPS_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "SIPS_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
+						p = strstr(exe_path, "SLPM_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SLPS_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SCPM_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SCPS_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "SIPS_"); if(p) {ret = 0;}
 
-						p = strstr(exe_path, "PAPX_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "PBPX_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-						p = strstr(exe_path, "PCPX_"); if(p) {ret = 0; goto exit_get_psx_video_mode;}
-*/
+						p = strstr(exe_path, "PAPX_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "PBPX_"); if(p) {ret = 0;}
+						p = strstr(exe_path, "PCPX_"); if(p) {ret = 0;}
+						if(ret == -1) {
+
 						sector = find_file_sector((uint8_t *)bbuf+2048, exe_path);
 
 						if (sector != 0 && read_psx_sector(dma, buf, sector) == 0)
@@ -1016,19 +1015,19 @@ int process_get_psx_video_mode(void)
 							{
 								ret = 0;
 							}
-							else if (strncmp(buf+0x71, "Europe", 6) == 0)
+							else if (strncmp(bbuf+0x71, "Europe", 6) == 0)
 							{
 								ret = 1;
 							}
 						}
+					    }
 
 					}
 				}
 			}
-
-			dealloc(buf, 0x27);
+		   dealloc(buf, 0x27);
 		}
-exit_get_psx_video_mode:
+		
 		#ifdef DEBUG
 		if(ret == 0) DPRINTF("NTSC\n");
 		if(ret == 1) DPRINTF("PAL\n");
@@ -1363,7 +1362,7 @@ int do_read_iso(void *buf, uint64_t offset, uint64_t size)
 		DPRINTF("Read failed: %x\n", ret);
 	}
 	#endif
-
+	
 	return ret;
 }
 
@@ -1720,7 +1719,7 @@ static INLINE uint16_t calculate_subq_crc(uint8_t *data) {
     int i;
 
     for (i = 0; i < 10; i++) {
-        crc = q_crc_lut[(crc >> 8) ^ data[i]] ^ (crc << 8);
+	crc = q_crc_lut[(crc >> 8) ^ data[i]] ^ (crc << 8);
     }
 
     return ~crc;
@@ -1786,7 +1785,7 @@ int process_cd_iso_scsi_cmd(uint8_t *indata, uint64_t inlen, uint8_t *outdata, u
 					DPRINTF("Track out of range %d\n", cmd->track_session_num);
 				}
 				#endif
-
+				
 				if (cmd->track_session_num > 1)
 				{
 					resp->toc_length = resp->toc_length - ((cmd->track_session_num-1) * sizeof(ScsiTrackDescriptor));
@@ -2179,8 +2178,10 @@ static INLINE void do_video_mode_patch(void)
 			if (video_mode != 2)
 			{
 				int ret = get_psx_video_mode();
-				if (ret >= 0)
-					video_mode = ret;
+				if (ret >= 0) {
+                                        video_mode = ret;condition_game_ext_psx=0;}
+				 if(ret == -1 || ps2emu_type!=PS2EMU_SW) {condition_game_ext_psx=1;}
+
 			}
 		}
 		else
@@ -2203,15 +2204,33 @@ static INLINE void do_video_mode_patch(void)
 			video_mode = -2;
 		}
 
-		if (patch != 0)
+                if (patch != 0 && !condition_game_ext_psx)
 		{
 			switch(vsh_check)
 			{
 				case VSH_CEX_HASH:
+					#ifdef DEBUG
+					DPRINTF("Patching Video mode in Retail VSH..\n");	
+					#endif
+					if(cex_vmode_patch_offset) copy_to_user(&patch, (void *)(cex_vmode_patch_offset+0x10000), 4);
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)cex_vmode_patch_offset, (uint32_t)patch);
+					#endif
+				break;
+
 				case VSH_HAB_HASH:
+					#ifdef DEBUG
+					DPRINTF("Patching Video mode in Retail VSH..\n");	
+					#endif
+					if(cex_vmode_patch_offset) copy_to_user(&patch, (void *)(cex_vmode_patch_offset+0x10000), 4);
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)cex_vmode_patch_offset, (uint32_t)patch);
+					#endif
+				break;
+				
 				case VSH_FER_HASH:
 					#ifdef DEBUG
-					DPRINTF("Patching Video mode in Retail VSH..\n");
+					DPRINTF("Patching Video mode in Retail VSH..\n");	
 					#endif
 					if(cex_vmode_patch_offset) copy_to_user(&patch, (void *)(cex_vmode_patch_offset+0x10000), 4);
 					#ifdef DEBUG
@@ -2225,7 +2244,7 @@ static INLINE void do_video_mode_patch(void)
 					#endif
 				break;
 			}
-        }
+	}
 	}
 }
 
@@ -2508,7 +2527,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, post_cellFsUtilMount, (const char *bl
 	#ifdef DEBUG
 	DPRINTF("cellFsUtilMount: %s\n", mount_point);
 	#endif
-
+	
 	if (!hdd0_mounted && strcmp(mount_point, "/dev_hdd0") == 0 && strcmp(filesystem, "CELL_FS_UFS") == 0)
 	{
 		hdd0_mounted = 1;
@@ -2531,7 +2550,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, post_cellFsUtilMount, (const char *bl
 			}
 		}
 		mutex_unlock(mutex);
-
+		
 		#ifndef DEBUG
 		unhook_function_on_precall_success(cellFsUtilMount_symbol, post_cellFsUtilMount, 8); //Hook no more needed
 		#endif
@@ -2601,7 +2620,7 @@ static INLINE void load_ps2emu_stage2(int emu_type)
 		DPRINTF("Failed to open debug ps2 stage2.\n");
 	}
 	#endif
-
+	
 	page_free(NULL, buf, 0x2F);
 }
 
@@ -2645,7 +2664,7 @@ static INLINE void load_ps2emu_stage2(int emu_type)
 		DPRINTF("Failed to open ps2 stage2: %s\n", name);
 	}
 	#endif
-
+	
 	page_free(NULL, buf, 0x2F);
 }
 
@@ -2700,17 +2719,17 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 		#ifdef DEBUG
 		DPRINTF("Reboot into ps2_netemu LPAR (0x8204), ps2emu_type = %i\n", ps2emu_type);
 		#endif
-
+		
 		// Delete ps2emu config file when ps2_netemu is loaded on BC/Semi-BC Consoles to fix the issue with ISO redirection
-                // Credits @Habib and @aldostools
+		// Credits @Habib and @aldostools
 		if(ps2emu_type==PS2EMU_HW || ps2emu_type==PS2EMU_GX)
 		{
 			#ifdef DEBUG
 			DPRINTF("Deleting %s\n", PS2EMU_CONFIG_FILE);
-			#endif
+			#endif			
 			cellFsUnlink(PS2EMU_CONFIG_FILE);
 		}
-
+		
 		// We need to check first if this a NPDRM or a plain iso launched from disc icon
 		// Discard first the case of BC consoles, since the ps2tonet patch is not done there
 		if (ps2emu_type == PS2EMU_SW)
@@ -2745,8 +2764,8 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 				cellFsUnlink(PS2EMU_CONFIG_FILE);
 				if (disc_emulation == EMU_PS2_CD || disc_emulation == EMU_PS2_DVD)
 				{
-
-					prepare_ps2emu = 1;
+				
+					prepare_ps2emu = 1; 
 				}
 				else
 				{
@@ -2906,7 +2925,7 @@ static INLINE int check_files_and_allocate(unsigned int filescount, char *files[
 		#ifdef DEBUG
 		DPRINTF("%s, filesize: %lx\n", files[i], stat.st_size);
 		#endif
-
+		
 		if (stat.st_size < 4096)
 		{
 			dealloc(discfile, 0x27);
@@ -3028,7 +3047,7 @@ int mount_ps_cd(char *file, unsigned int trackscount, ScsiTrackDescriptor *track
 					cellFsLseek(discfd, 0x9920, SEEK_SET, &v); cellFsRead(discfd, buffer, 0xC, &v); if(memcmp(buffer, "PLAYSTATION ", 0xC)==0) cd_sector_size = 2448; else {
 					cellFsLseek(discfd, 0x9220, SEEK_SET, &v); cellFsRead(discfd, buffer, 0xC, &v); if(memcmp(buffer, "PLAYSTATION ", 0xC)==0) cd_sector_size = 2336; }}}
 
-			        cellFsClose(discfd);
+				cellFsClose(discfd);
 				}
 				discfd = -1;
 			}
@@ -3443,8 +3462,8 @@ int sys_storage_ext_mount_discfile_proxy(sys_event_port_t result_port, sys_event
 	cd_sector_size = (trackscount & 0xffff00)>>4; //  <- Use: trackscount = num_of_tracks | (cd_sector_size<<8);
 	if(cd_sector_size != 2352 && cd_sector_size != 2048 && cd_sector_size != 2336 && cd_sector_size != 2448) cd_sector_size = 2352;
 	trackscount &= 0xff;
-        //DPRINTF("CD Sector size: %i\n", cd_sector_size);
-        //DPRINTF("Track count: %i\n", trackscount);
+	//DPRINTF("CD Sector size: %i\n", cd_sector_size);
+	//DPRINTF("Track count: %i\n", trackscount);
 	// --
 
 	if (emu_type == EMU_PSX)
@@ -3490,7 +3509,7 @@ int sys_storage_ext_mount_discfile_proxy(sys_event_port_t result_port, sys_event
 				DPRINTF("Failed in connecting proxy command port/queue: %x\n", ret);
 			}
 			#endif
-
+			
 			if (ret != 0)
 			{
 				event_port_destroy(proxy_command_port);
@@ -3508,7 +3527,7 @@ int sys_storage_ext_mount_discfile_proxy(sys_event_port_t result_port, sys_event
 		DPRINTF("Cannot open even port %x (ret=%x)\n", result_port, ret);
 	}
 	#endif
-
+	
 	if (ret == 0)
 	{
 		if (emu_type == EMU_PSX)
@@ -3665,7 +3684,7 @@ void storage_ext_patches(void)
 	// Hooking it would be enough for the other two to work, but anyways for reading efficiency let's hook those as well.
 	hook_function_with_cond_postcall(read_bdvd0_symbol, emu_read_bdvd0, 8);
 	hook_function_with_cond_postcall(read_bdvd1_symbol, emu_read_bdvd1, 4); // iso9660 driver func
-	hook_function_with_cond_postcall(read_bdvd2_symbol, emu_read_bdvd2, 3);	 // udf driver func
+	hook_function_with_cond_postcall(read_bdvd2_symbol, emu_read_bdvd2, 3);  // udf driver func
 	// High level functions
 	hook_function_with_cond_postcall(storage_read_symbol, emu_storage_read, 7);
 	hook_function_with_cond_postcall(get_syscall_address(SYS_STORAGE_ASYNC_READ), emu_sys_storage_async_read, 7);
@@ -3701,3 +3720,4 @@ void unhook_all_storage_ext(void)
 	#endif
 	resume_intr();
 }
+

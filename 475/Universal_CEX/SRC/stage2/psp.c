@@ -313,9 +313,7 @@ int sys_psp_set_umdfile(char *file, char *id, int prometheus)
 	{
 		switch(vsh_check)
 		{
-			case VSH_CEX_HASH:
-			case VSH_HAB_HASH:
-			case VSH_FER_HASH:			
+			case VSH_CEX_HASH:			
 				#ifdef DEBUG
 				DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
 				#endif
@@ -338,6 +336,51 @@ int sys_psp_set_umdfile(char *file, char *id, int prometheus)
 				}
 			break;
 
+			case VSH_HAB_HASH:			
+				#ifdef DEBUG
+				DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
+				#endif
+				patches_backup = alloc(sizeof(psp_drm_patches), 0x27);
+			
+				memcpy(patches_backup, &psp_drm_patches, sizeof(psp_drm_patches));
+					
+				for (int i = 0; psp_drm_patches[i].offset != 0; i++)
+				{
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_patches[i].offset, (uint32_t)psp_drm_patches[i].data);
+					#endif
+			
+					copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+				
+					if (copy_to_process(vsh_process, &psp_drm_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_patches[i].offset), 4) != 0)
+					{
+						fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
+					}
+				}
+			break;
+
+			case VSH_FER_HASH:			
+				#ifdef DEBUG
+				DPRINTF("Now patching PSP DRM In Retail VSH..\n");	
+				#endif
+				patches_backup = alloc(sizeof(psp_drm_patches), 0x27);
+			
+				memcpy(patches_backup, &psp_drm_patches, sizeof(psp_drm_patches));
+					
+				for (int i = 0; psp_drm_patches[i].offset != 0; i++)
+				{
+					#ifdef DEBUG
+					DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", (uint32_t)psp_drm_patches[i].offset, (uint32_t)psp_drm_patches[i].data);
+					#endif
+			
+					copy_from_process(vsh_process, (void *)(uint64_t)(0x10000+patches_backup[i].offset), &patches_backup[i].data, 4);
+				
+					if (copy_to_process(vsh_process, &psp_drm_patches[i].data, (void *)(uint64_t)(0x10000+psp_drm_patches[i].offset), 4) != 0)
+					{
+						fatal("copy_to_process failed, you forgot to make vsh text writable, retard!\n");
+					}
+				}
+			break;
 			
 			default:
 				#ifdef DEBUG

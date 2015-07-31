@@ -14,7 +14,7 @@
 #define EXPLORE_PLUGIN_HASH		0xacf4af2b000ec553 // Jooni3's
 #define EXPLORE_CATEGORY_GAME_HASH	0x9cb378e600056ae1 //  
 #define PS1_EMU_HASH			0x7a6cbdbf0009aa43 //
-#define PS1_NETEMU_HASH			0x7a300d52000be288 //
+#define PS1_NETEMU_HASH 		0x7a300d52000be288 //
 #define GAME_EXT_PLUGIN_HASH		0xe274af7b0001e6c0 // Jooni3's
 #define PSP_EMULATOR_HASH		0x7be641f500023794 // same as 4.66
 #define PEMUCORELIB_HASH		0xf349a563000c0d66 // 
@@ -26,7 +26,7 @@
 
 // Habib 4.75 Starbucks 1.00
 #define VSH_HAB_HASH			0xa002a1ae002e3a8c // Habib 4.75 Starbucks 1.00
-#define EXPLORE_PLUGIN_HAB_HASH		0xacf4af2b000ec55c // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00
+#define EXPLORE_PLUGIN_HAB_HASH 	0xacf4af2b000ec55c // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00
 #define GAME_EXT_PLUGIN_HAB_HASH	0xe274af7b0001e6c1 // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00
 
 // Ferrox 4.75 1.00
@@ -36,21 +36,24 @@
 /* vsh */ // REBUG REX 4.75.1 as of 6/17/2015
 
 // 4.75 CEX's Offsets
-#define cex_vsh_text_size	        0x6B0000 // /* memsz of first program header aligned to 0x10000 */
-#define cex_ps2tonet_patch          	0xC4B14 // 4.66CEX =0xC4C24 // "60638202 480000444BFF"
-#define cex_ps2tonet_size_patch         0xC4B08 // 4.66CEX = 0xC4C18 // "38A004F0786400203860000060638202"
-#define cex_psp_drm_patch1           	0x24277C // 
-#define cex_psp_drm_patch2          	0x24321C // 
-#define cex_psp_drm_patch3          	0x242E58 // 
-#define cex_psp_drm_patch4          	0x243664 // 
-#define cex_psp_drm_patchA          	0x242898 // 
-#define cex_psp_drm_patchB          	0x243138 // 
-#define cex_psp_drm_patchC          	0x2422D0 // 
-#define cex_psp_drm_patchD          	0x242880 //
-#define cex_psp_drm_patchE          	0x242884 //
-#define cex_psp_drm_patchF          	0x243250 // 
-#define cex_vmode_patch_offset          0x445BEC // 
+#define cex_vsh_text_size		0x6B0000 // /* memsz of first program header aligned to 0x10000 */
+#define cex_ps2tonet_patch		0xC4B14 // 4.66CEX =0xC4C24 // "60638202 480000444BFF"
+#define cex_ps2tonet_size_patch 	0xC4B08 // 4.66CEX = 0xC4C18 // "38A004F0786400203860000060638202"
+#define cex_psp_drm_patch1		0x24277C // 
+#define cex_psp_drm_patch2		0x24321C // 
+#define cex_psp_drm_patch3		0x242E58 // 
+#define cex_psp_drm_patch4		0x243664 // 
+#define cex_psp_drm_patchA		0x242898 // 
+#define cex_psp_drm_patchB		0x243138 // 
+#define cex_psp_drm_patchC		0x2422D0 // 
+#define cex_psp_drm_patchD		0x242880 //
+#define cex_psp_drm_patchE		0x242884 //
+#define cex_psp_drm_patchF		0x243250 // 
+#define cex_vmode_patch_offset		0x445BEC // 
 
+/* PSP PKG 80029537 error fix */
+#define cex_psp_newdrm_patch            0x2452AC // li %r3, 0
+ 
 /* basic_plugins */// 4.75 CEX
 #define ps1emu_type_check_offset	0x1F78C // CEX Disabled by default
 #define pspemu_path_offset		0x4A9F8 // CEX "Search /dev_bdvd/PS3_GM01"
@@ -58,10 +61,10 @@
 
 /* explore_plugin */// 4.75 CEX
 //#define app_home_offset			0x250B90 // CEX  *aApp_homePs3_ga:.string "/app_home/PS3_GAME"* // Disabled by default
-#define ps2_nonbw_offset       0xDD97C  // CEX *aStoragemedi_25@h # "StorageMedia:StorageMedia.hybrid"*
+#define ps2_nonbw_offset       0xDD97C	// CEX *aStoragemedi_25@h # "StorageMedia:StorageMedia.hybrid"*
 
 /* explore_category_game */// 4.75 CEX
-#define ps2_nonbw_offset2		0x68324 // CEX lis       *r4, aStoragemedia_4@ha # "StorageMedia:StorageMedia.hybrid"*
+#define ps2_nonbw_offset2		0x68324 // CEX lis	 *r4, aStoragemedia_4@ha # "StorageMedia:StorageMedia.hybrid"*
 
 /* bdp_disccheck_plugin */ //  the same as 4.46 - 4.75
 #define dvd_video_region_check_offset	0x152C // 
@@ -73,26 +76,26 @@
 #define ps1_netemu_get_region_offset	0xA440C // 
 
 /* game_ext_plugin */// 4.75 CEX
-#define sfo_check_offset		0x23ED0 // CEX *lis       r3, aPage_game_ma_1@ha # "page_game_main"*
-#define ps2_nonbw_offset3		0x17004 // CEX *rlwinm    r0, r0, 0,26,26*
+#define sfo_check_offset		0x23ED0 // CEX *lis	  r3, aPage_game_ma_1@ha # "page_game_main"*
+#define ps2_nonbw_offset3		0x17004 // CEX *rlwinm	  r0, r0, 0,26,26*
 #define ps_region_error_offset		0x68C4 // CEX  
 /* Disable the check for the current video setting */
-#define ps_video_error_offset1          0x3171C // li %r3, 0  
-#define ps_video_error_offset2          0x31720 // blr  
+#define ps_video_error_offset		0x3171C // li %r3, 0  
+
 
 /* psp_emulator */ //  4.75 CEX 
-#define psp_set_psp_mode_offset		0x1C18 // the same as 4.70
+#define psp_set_psp_mode_offset 	0x1C18 // the same as 4.70
 
 /* emulator_api */ // the same as 4.66 - 4.75
 #define psp_read			0x102D8 //
-#define psp_read_header			0x1125C //
+#define psp_read_header 		0x1125C //
 #define psp_drm_patch5			0x11080 //
 #define psp_drm_patch6			0x110B0 //
 #define psp_drm_patch7			0x110C8 //
 #define psp_drm_patch8			0x110CC //
 #define psp_drm_patch9			0x1120C //
-#define psp_drm_patch11			0x11210 //
-#define psp_drm_patch12			0x11220 //
+#define psp_drm_patch11 		0x11210 //
+#define psp_drm_patch12 		0x11220 //
 #define psp_product_id_patch1		0x11320 //
 #define psp_product_id_patch3		0x115F8 //
 #define umd_mutex_offset		(0x64480+0x38C) //
@@ -139,9 +142,8 @@ extern uint8_t condition_psp_dec;
 extern uint8_t condition_psp_keys;
 extern uint8_t condition_psp_change_emu;
 extern uint8_t condition_psp_prometheus;
-//extern uint8_t psx_type;
-//extern uint8_t psx_type_orig;
 extern uint64_t vsh_check;
+extern uint8_t condition_game_ext_psx;
 
 //extern uint8_t block_peek;
 
