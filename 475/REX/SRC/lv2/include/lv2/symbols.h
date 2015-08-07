@@ -2364,7 +2364,6 @@
 #define TOC						0x375850 //done
 
 #define create_kernel_object_symbol			0x125F4 //IDA
-#define open_shared_kernel_object_symbol		0x12A54 // IDA
 #define destroy_kernel_object_symbol			0x11F58 // IDA
 #define destroy_shared_kernel_object_symbol		0x118CC //IDA
 #define open_kernel_object_symbol			0x12C44 //IDA
@@ -2866,7 +2865,6 @@
 #define TOC						0x3758E0 //Verified with IDA by Joonie
 
 #define create_kernel_object_symbol			0x125F8 // Verified with IDA by Joonie
-#define open_shared_kernel_object_symbol		0x12A58 // Verified with IDA by Joonie
 #define destroy_kernel_object_symbol			0x11F5C // Verified with IDA by Joonie
 #define destroy_shared_kernel_object_symbol		0x118D0 // Verified with IDA by Joonie
 #define open_kernel_object_symbol			0x12C48 // Verified with IDA by Joonie
