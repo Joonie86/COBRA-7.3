@@ -2570,7 +2570,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					0x2EB8 // -0xD148 <- wrong
+#define io_rtoc_entry_1					0x2EB8 // Fixed
 #define io_sub_rtoc_entry_1				-0x7EA0 //found at 0x16AF0B 8160E97E8168EB9E8140EBBE8170
 
 #define decrypt_rtoc_entry_2 				-0x65C0 //found at 0x5D27F 9A404BFFBC25392000004BFFFFCC2C2400007C0802A6
@@ -2821,7 +2821,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					0x25B8 // -0xDA48 <- Wrong
+#define io_rtoc_entry_1					0x25B8 // Fixed!
 #define io_sub_rtoc_entry_1				-0x7EA0 //found at 0x164B87 8160E97E8168EB9E8140EBBE8170
 #define decrypt_rtoc_entry_2 				-0x66A0 //found at 0x598B3 99604BFFBC25392000004BFFFFCC2C2400007C0802A6
 #define decrypter_data_entry				-0x7F10  //UNTOUCHED
@@ -3115,4 +3115,3 @@
 #endif /* FIRMWARE */
 
 #endif /* __FIRMWARE_SYMBOLS_H_S__ */
-
