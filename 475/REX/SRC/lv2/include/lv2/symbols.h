@@ -3104,7 +3104,7 @@
 #define patch_func8_offset1 				0xA4 // bytes matched: 0x68  0000000000000000000000000000000000000000000000000000000000000000
 #define patch_func8_offset2 				0x208 // bytes matched: 0x80  4800000000000000000000000000000000000000000000000000000000000000
 #define patch_func9 					0x5DC10 //Verified with IDA by Joonie
-#define patch_func9_offset 				0x470 // Done
+#define patch_func9_offset 				0x4B8 // Done
 #define mem_base2					0x3D90 // bytes matched: 0x24  F821FEB17C0802A6FB8101307C9C2378388100D8FBE10148FBA10138FBC10140
 
 /* vars */
