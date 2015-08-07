@@ -2821,7 +2821,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					-0xDA48 //found at 0x299A8F 25B8E97E8038EBC1FFF0F9630000
+#define io_rtoc_entry_1					0x25B8 // -0xDA48 <- Wrong
 #define io_sub_rtoc_entry_1				-0x7EA0 //found at 0x164B87 8160E97E8168EB9E8140EBBE8170
 #define decrypt_rtoc_entry_2 				-0x66A0 //found at 0x598B3 99604BFFBC25392000004BFFFFCC2C2400007C0802A6
 #define decrypter_data_entry				-0x7F10  //UNTOUCHED
