@@ -26,7 +26,6 @@
 #define BOOT_PLUGINS_FILE			"/dev_hdd0/boot_plugins.txt"
 #define BOOT_PLUGINS_FIRST_SLOT 	1
 #define MAX_BOOT_PLUGINS			(MAX_VSH_PLUGINS-BOOT_PLUGINS_FIRST_SLOT)
-#define PRX_PATH					"/dev_flash/vsh/module/webftp_server.sprx"
 
 LV2_EXPORT int decrypt_func(uint64_t *, uint32_t *);
 
@@ -102,7 +101,7 @@ uint8_t condition_psp_keys = 0;
 uint8_t condition_psp_change_emu = 0;
 uint8_t condition_psp_prometheus = 0;
 uint64_t vsh_check;
-uint8_t condition_game_ext_psx=0;
+//uint8_t condition_game_ext_psx=0;
 
 //uint8_t block_peek = 0;
 
@@ -165,8 +164,8 @@ SprxPatch game_ext_plugin_patches[] =
 	{ sfo_check_offset, NOP, &condition_true },
 	{ ps2_nonbw_offset3, LI(R0, 1), &condition_ps2softemu },
 	{ ps_region_error_offset, NOP, &condition_true }, /* Needed sometimes... */
-	{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
-	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },
+	/*{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
+	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },*/ // experimental, disabled due to its issue with remote play
 	{ 0 }
 };
 

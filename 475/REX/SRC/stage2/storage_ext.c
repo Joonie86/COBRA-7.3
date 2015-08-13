@@ -2185,9 +2185,9 @@ static INLINE void do_video_mode_patch(void)
 			if (video_mode != 2)
 			{
 				int ret = get_psx_video_mode();
-				if (ret >= 0) {
-                                        video_mode = ret;condition_game_ext_psx=0;}
-				 if(ret == -1 || ps2emu_type!=PS2EMU_SW) {condition_game_ext_psx=1;}
+				if (ret >= 0) //{
+                                        video_mode = ret;/*condition_game_ext_psx=0;}
+				 if(ret == -1 || ps2emu_type!=PS2EMU_SW) {condition_game_ext_psx=1;}*/
 
 			}
 		}
@@ -2211,7 +2211,7 @@ static INLINE void do_video_mode_patch(void)
 			video_mode = -2;
 		}
 
-                if (patch != 0 && !condition_game_ext_psx)
+                if (patch != 0) //&& !condition_game_ext_psx)
 		{
 			switch(vsh_check)
 			{

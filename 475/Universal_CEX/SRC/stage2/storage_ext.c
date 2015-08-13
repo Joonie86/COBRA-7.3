@@ -986,42 +986,49 @@ int process_get_psx_video_mode(void)
 						DPRINTF("PSX EXE: %s\n", exe_path);
 						#endif
 
-						p = strstr(exe_path, "SLES_"); if(p) {ret = 1;}
-						p = strstr(exe_path, "SCES_"); if(p) {ret = 1;}
-						p = strstr(exe_path, "SCED_"); if(p) {ret = 1;}
-						p = strstr(exe_path, "SLED_"); if(p) {ret = 1;}
-
-						p = strstr(exe_path, "SLUS_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SCUS_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SCUD_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SLUD_"); if(p) {ret = 0;}
-
-						p = strstr(exe_path, "SLPM_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SLPS_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SCPM_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SCPS_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "SIPS_"); if(p) {ret = 0;}
-
-						p = strstr(exe_path, "PAPX_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "PBPX_"); if(p) {ret = 0;}
-						p = strstr(exe_path, "PCPX_"); if(p) {ret = 0;}
-						if(ret == -1) {
-
-						sector = find_file_sector((uint8_t *)bbuf+2048, exe_path);
-
-						if (sector != 0 && read_psx_sector(dma, buf, sector) == 0)
+						while(1)
 						{
-							if (strncmp(buf+0x71, "North America", 13) == 0 || strncmp(buf+0x71, "Japan", 5) == 0)
-							{
-								ret = 0;
-							}
-							else if (strncmp(bbuf+0x71, "Europe", 6) == 0)
-							{
-								ret = 1;
-							}
-						}
-					    }
+							p = strstr(exe_path, "SLES_"); if(p) {ret = 1; break;}
+							p = strstr(exe_path, "SCES_"); if(p) {ret = 1; break;}
 
+							p = strstr(exe_path, "SLUS_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SCUS_"); if(p) {ret = 0; break;}
+
+							p = strstr(exe_path, "SLPM_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SLPS_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SCPM_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SCPS_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SIPS_"); if(p) {ret = 0; break;}
+
+							p = strstr(exe_path, "SCED_"); if(p) {ret = 1; break;}
+							p = strstr(exe_path, "SLED_"); if(p) {ret = 1; break;}
+
+							p = strstr(exe_path, "SCUD_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "SLUD_"); if(p) {ret = 0; break;}
+
+							p = strstr(exe_path, "PAPX_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "PBPX_"); if(p) {ret = 0; break;}
+							p = strstr(exe_path, "PCPX_"); if(p) {ret = 0; break;}
+
+							if(ret == -1)
+							{
+								sector = find_file_sector((uint8_t *)bbuf+2048, exe_path);
+
+								if (sector != 0 && read_psx_sector(dma, buf, sector) == 0)
+								{
+									if (strncmp(buf+0x71, "North America", 13) == 0 || strncmp(buf+0x71, "Japan", 5) == 0)
+									{
+										ret = 0;
+									}
+									else if (strncmp(buf+0x71, "Europe", 6) == 0)
+									{
+										ret = 1;
+									}
+								}
+							}
+
+							break;
+						}
 					}
 				}
 			}
@@ -2178,9 +2185,9 @@ static INLINE void do_video_mode_patch(void)
 			if (video_mode != 2)
 			{
 				int ret = get_psx_video_mode();
-				if (ret >= 0) {
-                                        video_mode = ret;condition_game_ext_psx=0;}
-				 if(ret == -1 || ps2emu_type!=PS2EMU_SW) {condition_game_ext_psx=1;}
+				if (ret >= 0) //{
+                                        video_mode = ret;/*condition_game_ext_psx=0;}
+				 if(ret == -1 || ps2emu_type!=PS2EMU_SW) {condition_game_ext_psx=1;}*/
 
 			}
 		}
@@ -2204,7 +2211,7 @@ static INLINE void do_video_mode_patch(void)
 			video_mode = -2;
 		}
 
-                if (patch != 0 && !condition_game_ext_psx)
+                if (patch != 0) //&& !condition_game_ext_psx)
 		{
 			switch(vsh_check)
 			{

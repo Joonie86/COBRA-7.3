@@ -102,7 +102,7 @@ uint8_t condition_psp_keys = 0;
 uint8_t condition_psp_change_emu = 0;
 uint8_t condition_psp_prometheus = 0;
 uint64_t vsh_check;
-uint8_t condition_game_ext_psx=0;
+//uint8_t condition_game_ext_psx=0;
 
 //uint8_t block_peek = 0;
 
@@ -182,8 +182,8 @@ SprxPatch game_ext_plugin_patches[] =
 	{ sfo_check_offset, NOP, &condition_true },
 	{ ps2_nonbw_offset3, LI(R0, 1), &condition_ps2softemu },
 	{ ps_region_error_offset, NOP, &condition_true }, /* Needed sometimes... */
-	{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
-	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },
+	/*{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
+	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },*/ // experimental, disabled due to its issue with remote play
 	{ 0 }
 };
 

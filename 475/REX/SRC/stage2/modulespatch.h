@@ -98,7 +98,7 @@
 #define ps2_nonbw_offset3		0x172F4 // DEX Same as 4.66 *rlwinm    r0, r0, 0,26,26*
 #define ps_region_error_offset		0x6880 // DEX  Same as 4.66
 /* Disable the check for the current video setting */
-#define ps_video_error_offset		0x31A50 // li %r3, 0  
+//#define ps_video_error_offset		0x31A50 // li %r3, 0 // experimental, disabled due to its issue with remote play 
 
 
 /* psp_emulator */ //  4.75 CEX 
@@ -161,7 +161,7 @@ extern uint8_t condition_psp_keys;
 extern uint8_t condition_psp_change_emu;
 extern uint8_t condition_psp_prometheus;
 extern uint64_t vsh_check;
-extern uint8_t condition_game_ext_psx;
+//extern uint8_t condition_game_ext_psx;
 
 //extern uint8_t block_peek;
 

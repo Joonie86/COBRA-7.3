@@ -8,7 +8,7 @@
 
 #if defined(FIRMWARE_4_75)  // Ported by Joonie as of 6/17/2015 
 
-#define VSH_CEX_HASH			0xa002a1ae002e1bb2 // Jooni3's
+#define VSH_CEX_HASH			0xa002a1ae002e1bb2 // Jooni3's , Habib 4.75 COBRA v3,v4
 #define BDP_DISC_CHECK_PLUGIN_HASH	0xb8b7a5f9000031a0 // same as 4.66
 #define BASIC_PLUGINS_HASH		0xb598277a0001f870 //
 #define EXPLORE_PLUGIN_HASH		0xacf4af2b000ec553 // Jooni3's
@@ -26,11 +26,13 @@
 
 // Habib 4.75 Starbucks 1.00
 #define VSH_HAB_HASH			0xa002a1ae002e3a8c // Habib 4.75 Starbucks 1.00
-#define EXPLORE_PLUGIN_HAB_HASH 	0xacf4af2b000ec55c // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00
-#define GAME_EXT_PLUGIN_HAB_HASH	0xe274af7b0001e6c1 // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00
+#define EXPLORE_PLUGIN_HAB_HASH 	0xacf4af2b000ec55c // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00 || Playerkp 420 4.75 1.01
+#define GAME_EXT_PLUGIN_HAB_HASH	0xe274af7b0001e6c1 // Habib 4.75 Starbucks 1.00 || Ferrox 4.75 1.00 || Playerkp 420 4.75 1.01
 
-// Ferrox 4.75 1.00
-#define VSH_FER_HASH			0xa002a1ae002e3a8b // Ferrox 4.75 1.00
+// Ferrox 4.75 1.00 || Playerkp 420 4.75 1.00
+#define VSH_FER_HASH			0xa002a1ae002e3a8b 
+
+
 
 
 /* vsh */ // REBUG REX 4.75.1 as of 6/17/2015
@@ -80,7 +82,7 @@
 #define ps2_nonbw_offset3		0x17004 // CEX *rlwinm	  r0, r0, 0,26,26*
 #define ps_region_error_offset		0x68C4 // CEX  
 /* Disable the check for the current video setting */
-#define ps_video_error_offset		0x3171C // li %r3, 0  
+//#define ps_video_error_offset		0x3171C // li %r3, 0  disabled due to its issue with remote play on vita
 
 
 /* psp_emulator */ //  4.75 CEX 
