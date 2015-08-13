@@ -2,7 +2,7 @@ This is a universal project, meaning this supports all current public cfw releas
 
 In order for those cfws to work with this source, those 64bit hashes are required to be ported in
 
-modulespatch.h/c due to its hash check preventing unknown sprx/self modules to be patched on boot.
+modulespatch.h/c , and psp.c due to its hash check preventing unknown sprx/self modules to be patched on boot.
 
 as a result it can cause issues with ps2/psp games when this cobra payload is applied without proper porting
 
@@ -18,12 +18,6 @@ So on slim, there shouldn't be any problem with ps2games unless you don't follow
 
 All ps2 payloads are properly ported just like 4.70 cobra releases
 
-the only thing that's not "FULLY" tested is those lv2 functions which I doubt it would make any issues. You could however try to verify those lv2 symbols.
-
-and also, like REBUG COBRA, you can place webman inside dev_flash/vsh/module, so it could be auto loaded on boot, but not required to do that
-
-you can use the old way to load webMAN as well just like previous non rebug cobra cfws.
-
 I disabled that accidental ofw update feature code from mappath.c, due to its issue with game ripping from backup managers like multiMAN.
 
 it prevents an access from multiMAN to copy PS3UPDAT.PUP file, so it caused a problem with ripping games
@@ -38,6 +32,8 @@ Hope this helped for those who want to learn.
 
 
 *A lot has been changed since the 1st private beta period.
+
+as of 08/12/2015
 
 here is the list of changes that were made through the beta period.
 
