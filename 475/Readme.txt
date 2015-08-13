@@ -1,4 +1,5 @@
 This is a universal project, meaning this supports all current public cfw releases except those cfws built with mfwbuilders.
+(Unless 64bit hashes are the same.)
 
 In order for those cfws to work with this source, those 64bit hashes are required to be ported in
 
