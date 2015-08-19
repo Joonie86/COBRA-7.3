@@ -95,7 +95,7 @@ static uint32_t caller_process = 0;
 static uint8_t condition_true = 1;
 uint8_t condition_ps2softemu = 0;
 uint8_t condition_apphome = 0;
-uint8_t condition_disable_gameupdate = 0; // Disabled
+uint8_t condition_disable_gameupdate = 0; //  0 = Disabled 1 = Enabled to ignore game updates
 uint8_t condition_psp_iso = 0;
 uint8_t condition_psp_dec = 0;
 uint8_t condition_psp_keys = 0;
