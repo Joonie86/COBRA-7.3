@@ -2319,7 +2319,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					-0xDA50 
+#define io_rtoc_entry_1					0x2E50 FIXED!! //-0xDA50 
 #define io_sub_rtoc_entry_1				-0x7EA0 
 #define decrypt_rtoc_entry_2 				-0x66A0  
 #define decrypter_data_entry				-0x7F10 
@@ -2571,7 +2571,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					-0xD148 //found at 0x2B4BB7 2EB8E97E8038EBC1FFF0F9630000
+#define io_rtoc_entry_1					0x2EB8 // FIXED!!-0xD148 //found at 0x2B4BB7 2EB8E97E8038EBC1FFF0F9630000
 #define io_sub_rtoc_entry_1				-0x7EA0 //found at 0x16AF0B 8160E97E8168EB9E8140EBBE8170
 
 #define decrypt_rtoc_entry_2 				-0x65C0 //found at 0x5D27F 9A404BFFBC25392000004BFFFFCC2C2400007C0802A6
