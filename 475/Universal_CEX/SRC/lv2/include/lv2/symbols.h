@@ -2319,7 +2319,7 @@
 
 /* Rtoc entries */
 
-#define io_rtoc_entry_1					0x2E50 FIXED!! //-0xDA50 
+#define io_rtoc_entry_1					0x2E50 //FIXED!! //-0xDA50 
 #define io_sub_rtoc_entry_1				-0x7EA0 
 #define decrypt_rtoc_entry_2 				-0x66A0  
 #define decrypter_data_entry				-0x7F10 
