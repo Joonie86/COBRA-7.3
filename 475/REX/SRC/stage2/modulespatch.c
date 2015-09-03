@@ -124,7 +124,7 @@ SprxPatch dex_vsh_patches[] =
 // NPDRM FSELF fix for REBUG's DEBUG VSH. DEX ONLY to fully support npdrm fself files.
 	{ elf1_func1 + elf1_func1_offset, 0xF821FF81, &condition_true },
 	{ elf1_func1 + elf1_func1_offset + 4, 0x7C0802A6, &condition_true },
-	{ elf1_func2 + elf1_func2_offset, LI(R11, 0), &condition_true },
+	//{ elf1_func2 + elf1_func2_offset, LI(R11, 0), &condition_true }, Not needed
 	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ dex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
 #elif defined(FIRMWARE_4_30) || defined (FIRMWARE_4_75)
@@ -1087,7 +1087,7 @@ void load_boot_plugins(void)
 		if (read_text_line(fd, path, sizeof(path), &eof) > 0)
 		{
 			//KW BEGIN
-			if ((!webman_loaded) || (!strstr(path, "webftp_server")) ) 		
+			if ((webman_loaded != 1) || (!strcmp(path, "webftp_server.sprx")))		
 			{
 				int ret = prx_load_vsh_plugin(current_slot, path, NULL, 0);	
 				#ifndef  DEBUG

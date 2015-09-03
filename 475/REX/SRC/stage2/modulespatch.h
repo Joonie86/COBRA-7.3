@@ -6,10 +6,10 @@
 
 // BIG WARNING: self offsets need to add 0x10000 for address shown in IDA, but not sprxs!
 
-#if defined(FIRMWARE_4_75) || defined(FIRMWARE_4_75DEX) // Ported by Joonie as of 8/17/2015 
+#if defined(FIRMWARE_4_75) || defined(FIRMWARE_4_75DEX) // Ported by Joonie as of 9/3/2015 
 
-#define VSH_DEX_HASH			0xa001d571002e50dc //
-#define VSH_CEX_HASH			0xa002a1ae002e1bb4 // 
+#define VSH_DEX_HASH			0xa001d571002e50da //
+#define VSH_CEX_HASH			0xa002a1ae002e0dce // 
 #define BDP_DISC_CHECK_PLUGIN_HASH	0xb8b7a5f9000031a0 // same as 4.66
 #define BASIC_PLUGINS_HASH		0xb5988dba00020162 //
 #define EXPLORE_PLUGIN_HASH		0xacf4af2b000eccf7 //
@@ -31,8 +31,8 @@
 #define dex_vsh_text_size		0x6C0000 // /* memsz of first program header aligned to 0x10000 */
 #define elf1_func1 			0x5F5A34 // NPDRM fself fix
 #define elf1_func1_offset 		0x00 //
-#define elf1_func2 			0x24CF38 // NPDRM fself fix
-#define elf1_func2_offset 		0x14 //
+/*#define elf1_func2 			0x24CF38 // NPDRM fself fix
+#define elf1_func2_offset 		0x14 //*/
 #define dex_ps2tonet_patch		0xCA060 // Same as 4.70
 #define dex_ps2tonet_size_patch	        0xCA054 // Same as 4.70
 #define dex_psp_drm_patch1		0x249FA4 // 0x249E84 // 
