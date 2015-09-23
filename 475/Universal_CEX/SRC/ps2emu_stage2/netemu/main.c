@@ -106,6 +106,23 @@ __asm__("blr"); //gives a warning due to return statement not given.actually blr
 
 PS2EMU_PATCHED_FUNCTION(int, open_iso, (int unk, char *path))
 {
+	// Mysis's dump request
+    char strBuf[0x3000];    //temp buf to store 0x3000 bytes
+    char *p = NULL;
+    p = (uint64_t)0x2A733E8;
+    for(int i = 0; i < 0x3000; i++)
+    {
+    printf("test\n");
+    strBuf[i] = *p++;
+    }
+     int fd = ufs_open(0, "/tmp/dump.bin");
+    if(fd)
+    {
+    ufs_write(fd, 1, (void *)0x2a733e8, 0x3000);  //ufs_write(fd, 1, strBuf, 0x3000);
+    ufs_close(fd);
+    }
+    
+	
 /*uint64_t val;
 for(uint64_t i=0;i<0x50;i+=8)
 {

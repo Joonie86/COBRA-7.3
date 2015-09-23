@@ -17,12 +17,13 @@
 #define open_iso_call2		0x136F74 //
 #define savedata_patch		0x11AFB4 //
 
-#define ADDITIONAL_CODE_SIZE		0xAB0 //
+#define ADDITIONAL_CODE_SIZE		0x1000 //
 #define ADDITIONAL_DATA_SIZE		0x1000
 
 #define CODE_SECTION_ADDR		0x28F800 //
 #define DATA_SECTION_ADDR		0xB20A00 //
-#define PAYLOAD_ADDR		(CODE_SECTION_ADDR+0x78+8) /* CODE_SECTION_ADDR + CODE_SECTION_SIZE + 8 to align to 0x10 */
+#define PAYLOAD_ADDR		    0x3958 // Thanks @haxxxen for his awesome research!! now we have a lot more space in netemu
+//#define PAYLOAD_ADDR		(CODE_SECTION_ADDR+0x78+8) /* CODE_SECTION_ADDR + CODE_SECTION_SIZE + 8 to align to 0x10 */
 #define SH_ADDR			0x2921c8 /* look in self, not in elf *///
 
 #define MAKE_JUMP(addr, to) *(uint32_t *)(addr) = (0x12 << 26) | ((((to-(uint64_t)(addr))>>2)&0xFFFFFF) << 2)
