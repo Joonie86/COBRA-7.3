@@ -6,6 +6,7 @@
 #include <ps2emu/vuart.h>
 #include <ps2emu/patch.h>
 #include <ps2emu/symbols.h>
+//#include "printf.c"
 
 #ifdef FIRMWARE_4_75
 #define EXTENDED_DATA	(0x821000+0x2953478) //working
@@ -103,26 +104,26 @@ PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_read_patched, (int fd, uint64_t 
 __asm__("ld %r3, 0(%r3)");
 __asm__("blr"); //gives a warning due to return statement not given.actually blr means return :)
 }*/
+PS2EMU_PATCHED_FUNCTION(int, ufs_mysis, (int unk, char *path))
 
-PS2EMU_PATCHED_FUNCTION(int, open_iso, (int unk, char *path))
 {
-	// Mysis's dump request
     char strBuf[0x3000];    //temp buf to store 0x3000 bytes
     char *p = NULL;
     p = (uint64_t)0x2A733E8;
     for(int i = 0; i < 0x3000; i++)
     {
-    printf("test\n");
     strBuf[i] = *p++;
     }
-     int fd = ufs_open(0, "/tmp/dump.bin");
-    if(fd)
+    int fd = ufs_open(0, "/tmp/dump.bin");
+    if (fd >= 0)
     {
-    ufs_write(fd, 1, (void *)0x2a733e8, 0x3000);  //ufs_write(fd, 1, strBuf, 0x3000);
+    ufs_write(fd, 1, strBuf, 0x3000); //ufs_write(fd, 1, (void *)0x2a733e8, 0x3000);  //
     ufs_close(fd);
     }
-    
-	
+}
+
+PS2EMU_PATCHED_FUNCTION(int, open_iso, (int unk, char *path))
+{
 /*uint64_t val;
 for(uint64_t i=0;i<0x50;i+=8)
 {
@@ -130,8 +131,11 @@ val = dump_ram(0x3174478ULL+i);
 int dump = ufs_open(0, "/tmp/dump");
 ufs_write(dump, 1, (void *)val, 8);
 }*/
+
+
 	if (!vars->setup_done)
 	{
+      
 //		if (strstr(path, "--COBRA--"))
 	//	{
 
