@@ -404,6 +404,20 @@ static int patch_emu(char *payload_map_file)
 				patch_call(open_iso_call1, ps2_netemu+addr);
 				patch_call(open_iso_call2, ps2_netemu+addr);
 			}
+			else if (strcmp(name, "ufs_mysis") == 0)
+			{
+				addr = get_func_address(line);
+				
+				if (addr == 0)
+				{
+					printf("Cannot find address of open_iso\n");
+					ret = -1;
+					break;
+				}
+				
+				printf("ufs_mysis found at %lx\n", (unsigned long)addr);
+				hook_function_with_cond_postcall(0x19EDD0, ps2_netemu+addr, 4);
+			}
 		}
 		else
 		{
