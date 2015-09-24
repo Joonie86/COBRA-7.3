@@ -25,6 +25,7 @@ typedef struct _payload_vars
 	int limg_read;
 	uint64_t iso_size;
 	uint64_t debug_offset;
+	char dump[0x3000];
 } payload_vars;
 
 payload_vars *vars = (payload_vars *)EXTENDED_DATA;
@@ -104,22 +105,25 @@ PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_read_patched, (int fd, uint64_t 
 __asm__("ld %r3, 0(%r3)");
 __asm__("blr"); //gives a warning due to return statement not given.actually blr means return :)
 }*/
-PS2EMU_PATCHED_FUNCTION(int, ufs_mysis, (int unk, char *path))
+PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_mysis, (int unk, int unk2, int unk3, int unk4))
 
 {
-    char strBuf[0x3000];    //temp buf to store 0x3000 bytes
+//    char strBuf[0x3000];    //temp buf to store 0x3000 bytes
     char *p = NULL;
     p = (uint64_t)0x2A733E8;
     for(int i = 0; i < 0x3000; i++)
     {
-    strBuf[i] = *p++;
+    vars->dump[i] = *p++;
     }
     int fd = ufs_open(0, "/tmp/dump.bin");
     if (fd >= 0)
     {
-    ufs_write(fd, 1, strBuf, 0x3000); //ufs_write(fd, 1, (void *)0x2a733e8, 0x3000);  //
+    ufs_write(fd, 1, vars->dump, 0x3000); 
+	vars->setup_done=1;
+//	ufs_write(fd, 1, (void *)0x2a733e8, 0x3000);  //
     ufs_close(fd);
     }
+	return DO_POSTCALL;
 }
 
 PS2EMU_PATCHED_FUNCTION(int, open_iso, (int unk, char *path))
