@@ -416,7 +416,7 @@ static int patch_emu(char *payload_map_file)
 				}
 				
 				printf("ufs_mysis found at %lx\n", (unsigned long)addr);
-				hook_function_with_cond_postcall(0x19EDD0, ps2_netemu+addr, 0);
+				hook_function_with_cond_postcall(0x19EEE4, ps2_netemu+addr, 0);
 			}*/
 		}
 		else
