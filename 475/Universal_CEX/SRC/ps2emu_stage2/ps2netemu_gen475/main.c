@@ -410,7 +410,7 @@ static int patch_emu(char *payload_map_file)
 				
 				if (addr == 0)
 				{
-					printf("Cannot find address of open_iso\n");
+					printf("Cannot find address of ufs_mysis\n");
 					ret = -1;
 					break;
 				}
