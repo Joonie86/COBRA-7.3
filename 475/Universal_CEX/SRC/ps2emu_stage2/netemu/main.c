@@ -6,7 +6,6 @@
 #include <ps2emu/vuart.h>
 #include <ps2emu/patch.h>
 #include <ps2emu/symbols.h>
-//#include "printf.c"
 
 #ifdef FIRMWARE_4_75
 #define EXTENDED_DATA	(0x821000+0x2953478) //working
@@ -25,7 +24,7 @@ typedef struct _payload_vars
 	int limg_read;
 	uint64_t iso_size;
 	uint64_t debug_offset;
-	char dump[0x3000];
+	//char dump[0x3000];
 } payload_vars;
 
 payload_vars *vars = (payload_vars *)EXTENDED_DATA;
@@ -105,6 +104,7 @@ PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_read_patched, (int fd, uint64_t 
 __asm__("ld %r3, 0(%r3)");
 __asm__("blr"); //gives a warning due to return statement not given.actually blr means return :)
 }*/
+/*
 PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_mysis, (int unk, int unk2, int unk3, int unk4))
 
 {
@@ -125,6 +125,8 @@ PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_4(int, ufs_mysis, (int unk, int unk2, int u
     }
 	return DO_POSTCALL;
 }
+*/
+
 
 PS2EMU_PATCHED_FUNCTION(int, open_iso, (int unk, char *path))
 {
@@ -135,11 +137,8 @@ val = dump_ram(0x3174478ULL+i);
 int dump = ufs_open(0, "/tmp/dump");
 ufs_write(dump, 1, (void *)val, 8);
 }*/
-
-
 	if (!vars->setup_done)
-	{
-      
+	{ 
 //		if (strstr(path, "--COBRA--"))
 	//	{
 
