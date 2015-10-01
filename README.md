@@ -7,7 +7,7 @@ Following has been changed and updated since 4.46 COBRA 7
 [ Joonie's Changes ]
 
 * Cobra spoofer has been removed again [the same as COBRA 4.30], since this is no longer supporting PSN accesibility since 4.60 OFW update.
-* Kakaroto's sig check patch is removed from modulespatch.c since this is one of those pre-applied patches on 4.xx CFW
+* PLS3 patches are removed from modulespatch.c since this is one of those pre-applied patches on 4.xx CFW
 * unknown E3 patches are removed to fix an issue with XMB, [Originally found by rancid-0, from his PS3ITA 4.50 COBRA]
 * Dual VSH supports for REBUG REX / D-REX CFW, proper hash check code was developed by habib and Nzv recently. 
 * NPDRM Fself fix for REBUG REX/D-REX, this removed Kakaroto's sig check patch pre-applied in REBUG's debug VSH.
