@@ -29,9 +29,9 @@
 /* vsh */ // REBUG REX 4.75.1 as of 6/17/2015
 
 #define dex_vsh_text_size		0x6C0000 // /* memsz of first program header aligned to 0x10000 */
-#define elf1_func1 			0x5F5A34 // NPDRM fself fix
+#define elf1_func1 			0x5F5A34 // NPDRM fself fix / Disabling PL3 patches in vsh
 #define elf1_func1_offset 		0x00 //
-/*#define elf1_func2 			0x24CF38 // NPDRM fself fix
+#define elf1_func2 			0x24CF38 // NPDRM fself fix / Disabling PL3 patches in vsh
 #define elf1_func2_offset 		0x14 //*/
 #define dex_ps2tonet_patch		0xCA060 // Same as 4.70
 #define dex_ps2tonet_size_patch	        0xCA054 // Same as 4.70
