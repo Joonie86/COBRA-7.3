@@ -78,7 +78,7 @@
 
 
 /* explore_plugin *///
-//#define app_home_offset			0x251740 // DEX // *aApp_homePs3_ga:.string "/app_home/PS3_GAME"* // Disabled by default
+#define app_home_offset		0x251740 //*aApp_homePs3_ga:.string "/app_home/PS3_GAME"* 
 #define ps2_nonbw_offset       0xDDD8C // Same as 4.70// DEX *aStoragemedi_25@h # "StorageMedia:StorageMedia.hybrid"*
 
 /* explore_category_game */// 4.75 DEX
