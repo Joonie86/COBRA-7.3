@@ -94,7 +94,7 @@ static uint32_t caller_process = 0;
 
 static uint8_t condition_true = 1;
 uint8_t condition_ps2softemu = 0;
-uint8_t condition_apphome = 0; // Disabled
+uint8_t condition_apphome = 0; 
 uint8_t condition_disable_gameupdate = 0; // Disabled
 uint8_t condition_psp_iso = 0;
 uint8_t condition_psp_dec = 0;
@@ -145,9 +145,9 @@ SprxPatch basic_plugins_patches[] =
 
 SprxPatch explore_plugin_patches[] =
 {
-        /*{ app_home_offset, 0x2f646576, &condition_apphome }, //RE-ADDED
-	{ app_home_offset+4, 0x5f626476, &condition_apphome }, //RE-ADDED
-	{ app_home_offset+8, 0x642f5053, &condition_apphome }, //RE-ADDED*/  //Disabled by default, no need to port
+        { app_home_offset, 0x2f646576, &condition_apphome }, 
+	{ app_home_offset+4, 0x5f626476, &condition_apphome }, 
+	{ app_home_offset+8, 0x642f5053, &condition_apphome }, 
 	{ ps2_nonbw_offset, LI(0, 1), &condition_ps2softemu },
 	{ 0 }
 };
@@ -355,9 +355,7 @@ PatchTableEntry patch_table[] =
 	{ BASIC_PLUGINS_HASH, basic_plugins_patches },
 	{ EXPLORE_PLUGIN_HASH, explore_plugin_patches },
 	{ EXPLORE_CATEGORY_GAME_HASH, explore_category_game_patches },
-#if defined (FIRMWARE_4_75)
 	{ BDP_DISC_CHECK_PLUGIN_HASH, bdp_disc_check_plugin_patches },
-#endif
 	{ PS1_EMU_HASH, ps1_emu_patches },
 	{ PS1_NETEMU_HASH, ps1_netemu_patches },
 	{ GAME_EXT_PLUGIN_HASH, game_ext_plugin_patches },
