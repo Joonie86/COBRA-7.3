@@ -5,7 +5,7 @@
  * It may be used for any purpose as long as this notice remains intact on all
  * source code distributions.
  */
- 
+
 #ifndef __PS3MAPI_H__
 #define __PS3MAPI_H__
 
@@ -373,6 +373,23 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id);
 #define PS3MAPI_OPCODE_DISABLE_SYSCALL			0x0092
 #define PS3MAPI_OPCODE_PDISABLE_SYSCALL8 		0x0093 //Look in main.c for code.
 #define PS3MAPI_OPCODE_PCHECK_SYSCALL8 			0x0094 //Look in main.c for code.
+
+//-----------------------------------------------
+//PEEK POKE
+//-----------------------------------------------
+
+#define PS3MAPI_OPCODE_SUPPORT_SC8_PEEK_POKE	0x1000
+#define PS3MAPI_OPCODE_LV2_PEEK					0x1006
+#define PS3MAPI_OPCODE_LV2_POKE					0x1007
+#define PS3MAPI_OPCODE_LV1_PEEK					0x1008
+#define PS3MAPI_OPCODE_LV1_POKE					0x1009
+
+//-----------------------------------------------
+//SECURITY
+//-----------------------------------------------
+
+#define PS3MAPI_OPCODE_SET_ACCESS_KEY			0x2000
+#define PS3MAPI_OPCODE_REQUEST_ACCESS			0x2001
 
 int ps3mapi_check_syscall(int num);
 int ps3mapi_disable_syscall(int num);
