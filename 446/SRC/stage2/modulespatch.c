@@ -342,6 +342,7 @@ PatchTableEntry patch_table[] =
 	{ VSH_ROG_HASH, vsh_patches },
 	{ VSH_HAB_HASH, vsh_patches },
 	{ VSH_FER_HASH, vsh_patches },
+	{ VSH_ALDO_HASH, vsh_patches },
 	{ BASIC_PLUGINS_HASH, basic_plugins_patches },
 	{ BASIC_PLUGINS_ROG_HASH, basic_plugins_patches },
 	{ NAS_PLUGIN_HASH, nas_plugin_patches },
@@ -366,7 +367,7 @@ PatchTableEntry patch_table[] =
 
 static char *hash_to_name(uint64_t hash)
 {
-	if (hash == VSH_HASH || hash == VSH_ROG_HASH || hash == VSH_HAB_HASH || hash == VSH_FER_HASH)
+	if (hash == VSH_HASH || hash == VSH_ROG_HASH || hash == VSH_HAB_HASH || hash == VSH_FER_HASH || hash == VSH_ALDO_HASH)
 	{
 		return "vsh.self";
 	}
