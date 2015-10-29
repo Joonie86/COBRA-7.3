@@ -282,6 +282,7 @@
 #define VSH_ROG_HASH			0xa00238b2002e0ce2 /* 1.00, 1.01. Same for rebug vsh.self.cexsp */
 #define VSH_HAB_HASH			0xa00238b2002e0ce1 /* 1.13. Same for arc A01 */
 #define VSH_FER_HASH			0xa00238b2002e0ce8 /* v3 */
+#define VSH_ALDO_HASH                   0xa00238b2002e0ce3 
 #define BASIC_PLUGINS_HASH		0xd72209580001f7a2
 #define BASIC_PLUGINS_ROG_HASH		0xd72209580001f7a1 /* Same for hab, fer, arc */
 #define NAS_PLUGIN_HASH			0xacf4af2b00026801
