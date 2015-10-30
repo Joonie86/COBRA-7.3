@@ -406,7 +406,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	// -- AV: temporary disable cobra syscall (allow dumpers peek 0x1000 to 0x9800)
 	static uint8_t tmp_lv1peek = 0;
 
-	if(ps3mapi_partial_disable_syscall8 == 0 && extended_syscall8.addr == 0)
+	if(ps3mapi_partial_disable_syscall8 == 0 && extended_syscall8.addr == 0 && ps3mapi_access_granted)
 	{
 		if((function >= 0x9800) || (function & 3)) tmp_lv1peek=0; else
 		if(function <= 0x1000) tmp_lv1peek=1;

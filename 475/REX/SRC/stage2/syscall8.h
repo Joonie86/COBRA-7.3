@@ -7,6 +7,9 @@
 // a number below 0x8000 is suggested, so that the patch can assign the opcode 
 // with a single instruction
 
+#define SYSCALL8_OPCODE_DISABLE_COBRA    0x0000
+#define SYSCALL8_OPCODE_ENABLE_COBRA    0x0001
+
 #define SYSCALL8_OPCODE_GET_VERSION					0x7000
 #define SYSCALL8_OPCODE_GET_VERSION2				0x7001
 
