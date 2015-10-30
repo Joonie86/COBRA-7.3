@@ -307,6 +307,17 @@
 	#define PS3MAPI_IDPS_2			 			0x8000000000474AF4ULL
 	#define PS3MAPI_PSID						0x8000000000474B0CULL
 #endif
+#if defined(FIRMWARE_4_75DEX)
+	#define PS3MAPI_FW_VERSION			 		0x0475
+	#if defined(IS_MAMBA)
+		#define PS3MAPI_FW_TYPE			 		"DEX MAMBA"
+	#else
+		#define PS3MAPI_FW_TYPE			 		"DEX COBRA"
+	#endif
+	#define PS3MAPI_IDPS_1			 			0x8000000000409930ULL
+	#define PS3MAPI_IDPS_2			 			0x800000000049CAF4ULL
+	#define PS3MAPI_PSID						0x800000000049CB0CULL
+#endif
 
 #define PS3MAPI_OPCODE_GET_CORE_VERSION			0x0011
 #define PS3MAPI_OPCODE_GET_CORE_MINVERSION		0x0012
@@ -415,4 +426,3 @@ int ps3mapi_get_psid(uint64_t *psid);
 int ps3mapi_set_psid(uint64_t part1, uint64_t part2);
 
 #endif /* __PS3MAPI_H__ */
-
