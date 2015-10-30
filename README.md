@@ -18,7 +18,8 @@ Following has been changed and updated since 4.46 COBRA 7
 * Syscall 11 is added to support full lv1 peek
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
 * New savedata patch workaround for ps2_netemu has been added, PS2 DISC ICON will use decrypted VM card, but it still has sync issue and PS2 Launcher will use encrypted VM card for both ISO/Classics, no sync issue at all
-
+* Allow Syscall 11 to gain full access to syscall 6/7/9/10 to prevent modification from homebrews like multiMAN.
+ 
 [ KW's changes ]
 
 * webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
@@ -47,7 +48,7 @@ Following has been changed and updated since 4.46 COBRA 7
  (Improved PS3MAPI functions)
 * Added PEEK/POKE (LV1/LV2) as PS3MAPI opcodes (syscall8)
 * Added option to block access and request access to syscall8 using a key
-(also as PS3MAPI opcodes)"
-* Added temporary disable of Cobra syscall8"
+(also as PS3MAPI opcodes)
+* Added temporary disablement of Cobra syscall8 to allow dumpers peek 0x1000 to 0x9800
 
 *STILL IN W.I,P, please let me know if anyone is interested in making changes in this note :)
