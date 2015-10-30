@@ -374,6 +374,9 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id);
 #define PS3MAPI_OPCODE_PDISABLE_SYSCALL8 		0x0093 //Look in main.c for code.
 #define PS3MAPI_OPCODE_PCHECK_SYSCALL8 			0x0094 //Look in main.c for code.
 
+int ps3mapi_check_syscall(int num);
+int ps3mapi_disable_syscall(int num);
+
 //-----------------------------------------------
 //PEEK POKE
 //-----------------------------------------------
@@ -390,9 +393,6 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id);
 
 #define PS3MAPI_OPCODE_SET_ACCESS_KEY			0x2000
 #define PS3MAPI_OPCODE_REQUEST_ACCESS			0x2001
-
-int ps3mapi_check_syscall(int num);
-int ps3mapi_disable_syscall(int num);
 
 //-----------------------------------------------
 //REMOVE COBRA/MAMBA HOOK

@@ -280,6 +280,7 @@
 
 #define VSH_HASH			0xa00238b2002e0ce9
 #define VSH_ROG_HASH			0xa00238b2002e0ce2 /* 1.00, 1.01. Same for rebug vsh.self.cexsp */
+#define VSH_ALDO_HASH			0xa00238b2002e0ce3 /* 1.00, 1.01. Same for rebug vsh.self.cexsp */
 #define VSH_HAB_HASH			0xa00238b2002e0ce1 /* 1.13. Same for arc A01 */
 #define VSH_FER_HASH			0xa00238b2002e0ce8 /* v3 */
 #define VSH_ALDO_HASH                   0xa00238b2002e0ce3 
@@ -326,6 +327,7 @@
 #define spoof_version_patch		0xB8F28
 #define psn_spoof_version_patch		0x1A1568
 #define vmode_patch_offset		0x442D68
+
 
 /* basic_plugins */
 #define ps1emu_type_check_offset	0x1F678
