@@ -45,9 +45,9 @@ Following has been changed and updated since 4.46 COBRA 7
 * Improved Video mode patch with proper region detection
  Original COBRA payload was relying on ps1emu's detection method, now COBRA has extra pre-processing that can detect region properly and force apply correct refresh rate depending on the game's region.
  (Improved PS3MAPI functions)
-"Added PEEK/POKE (LV1/LV2) as PS3MAPI opcodes (syscall8)"
-"Added option to block access and request access to syscall8 using a key
+* Added PEEK/POKE (LV1/LV2) as PS3MAPI opcodes (syscall8)
+* Added option to block access and request access to syscall8 using a key
 (also as PS3MAPI opcodes)"
-"Added temporary disable of Cobra syscall8"
+* Added temporary disable of Cobra syscall8"
 
 *STILL IN W.I,P, please let me know if anyone is interested in making changes in this note :)
