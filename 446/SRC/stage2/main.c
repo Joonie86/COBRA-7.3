@@ -82,6 +82,8 @@
 #define FIRMWARE_VERSION	0x0470
 #elif defined(FIRMWARE_4_75)
 #define FIRMWARE_VERSION	0x0475
+#elif defined(FIRMWARE_4_76)
+#define FIRMWARE_VERSION	0x0476
 #elif defined(FIRMWARE_4_75DEX)
 #define FIRMWARE_VERSION	0x0475
 #endif
@@ -196,8 +198,10 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 	{
 		uint64_t syscall_num = (addr-MKA(syscall_table_symbol)) / 8;
 
-		if ((syscall_num >= 6 && syscall_num <= 11) || syscall_num == 35)
+		if ((syscall_num >= 6 && syscall_num <= 10) || syscall_num == 35)
 		{
+			uint64_t sc_null = *(uint64_t *)MKA(syscall_table_symbol);
+			uint64_t syscall_not_impl = *(uint64_t *)sc_null;
 
 			if (syscall_num == 8 && (value & 0xFFFFFFFF00000000ULL) == MKA(0))
 			{
@@ -221,11 +225,17 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				#endif
 				return;
 			}
-			else //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
+			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
 			{
 				#ifdef DEBUG
-				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
+				DPRINTF("HB remove syscall %ld\n", syscall_num);
 				#endif
+			}
+			else //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
+			{
+				
+				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
+				return;
 			}
 		}
 	}
@@ -893,4 +903,3 @@ int main(void)
 
 	return 0;
 }
-
