@@ -1,6 +1,6 @@
 # COBRA 7.2 Source
 
-As of April the 8th.
+As of October the 29th.
 
 Following has been changed and updated since 4.46 COBRA 7
 
