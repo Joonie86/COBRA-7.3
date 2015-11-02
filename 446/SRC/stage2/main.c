@@ -225,13 +225,13 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				#endif
 				return;
 			}
-			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
+			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow removing protected syscall 6 7 9 10 35 NOT 8
 			{
 				#ifdef DEBUG
 				DPRINTF("HB remove syscall %ld\n", syscall_num);
 				#endif
 			}
-			else //Allow remove protected syscall 6 7 9 10 11 35 NOT 8
+			else //Prevent syscall 6 7 9 10 and 35 from being re-written
 			{
 				
 				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
