@@ -17,12 +17,13 @@
 #define open_iso_call2		0x136F74 //
 #define savedata_patch		0x11AFB4 //
 
-#define ADDITIONAL_CODE_SIZE		0xAB0 //
+#define ADDITIONAL_CODE_SIZE		0x46B0 //
 #define ADDITIONAL_DATA_SIZE		0x1000
 
 #define CODE_SECTION_ADDR		0x28F800 //
 #define DATA_SECTION_ADDR		0xB20A00 //
-#define PAYLOAD_ADDR		(CODE_SECTION_ADDR+0x78+8) /* CODE_SECTION_ADDR + CODE_SECTION_SIZE + 8 to align to 0x10 */
+#define PAYLOAD_ADDR		    0x3940 // Thanks @habib and @haxxxen for his awesome research!! now we have a lot more space in netemu
+//#define PAYLOAD_ADDR		(CODE_SECTION_ADDR+0x78+8) /* CODE_SECTION_ADDR + CODE_SECTION_SIZE + 8 to align to 0x10 */
 #define SH_ADDR			0x2921c8 /* look in self, not in elf *///
 
 #define MAKE_JUMP(addr, to) *(uint32_t *)(addr) = (0x12 << 26) | ((((to-(uint64_t)(addr))>>2)&0xFFFFFF) << 2)
@@ -460,8 +461,8 @@ static void patch_self(char *src, char *dst, uint32_t sh_offset, uint32_t code_a
 	
 	Elf64_Phdr *phdr = (Elf64_Phdr *)(buf+0xD0);
 	
-	phdr->p_memsz = swap64(swap64(phdr->p_memsz) + ADDITIONAL_CODE_SIZE);
-	phdr->p_filesz = swap64(swap64(phdr->p_filesz) + ADDITIONAL_CODE_SIZE);
+	phdr->p_memsz = swap64(swap64(phdr->p_memsz));// + ADDITIONAL_CODE_SIZE);
+	phdr->p_filesz = swap64(swap64(phdr->p_filesz));// + ADDITIONAL_CODE_SIZE);
 	*first_section_size = swap64(phdr->p_filesz);
 	
 	phdr += 2;
@@ -481,7 +482,7 @@ static void patch_self(char *src, char *dst, uint32_t sh_offset, uint32_t code_a
 		}
 		else if (swap64(shdr->sh_addr) == code_address)
 		{
-			shdr->sh_size = swap64(swap64(shdr->sh_size)+ADDITIONAL_CODE_SIZE);
+			shdr->sh_size = swap64(swap64(shdr->sh_size));//+ADDITIONAL_CODE_SIZE);
 			patches++;
 		}
 		
@@ -597,3 +598,4 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
+
