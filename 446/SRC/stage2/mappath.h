@@ -9,7 +9,6 @@
 #define FLAG_COPY		1
 #define FLAG_TABLE		2
 #define FLAG_PROTECT	4
-#define FLAG_APP_HOME	8
 
 void	map_path_patches(int syscall);
 int  	map_path(char *oldpath, char *newpath, uint32_t flags);

@@ -127,16 +127,17 @@ static Patch kernel_patches[] =
 
 #define N_KERNEL_PATCHES	(sizeof(kernel_patches) / sizeof(Patch))
 
-f_desc_t extended_syscall8;
-
 int64_t syscall8(uint64_t function, uint64_t param1, uint64_t param2, uint64_t param3, uint64_t param4, uint64_t param5, uint64_t param6, uint64_t param7);
+f_desc_t extended_syscall8;
 
 LV2_SYSCALL2(uint64_t, sys_cfw_peek, (uint64_t *addr))
 {
 	/* if (block_peek)
 		return (uint64_t)ENOSYS; */
 
+	#ifdef DEBUG
 	//DPRINTF("peek %p\n", addr);
+	#endif
 
 	uint64_t ret = *addr;
 
@@ -162,7 +163,9 @@ void _sys_cfw_poke(uint64_t *addr, uint64_t value);
 
 LV2_HOOKED_FUNCTION(void, sys_cfw_new_poke, (uint64_t *addr, uint64_t value))
 {
+	#ifdef DEBUG
 	//DPRINTF("New poke called\n");
+	#endif
 
 	_sys_cfw_poke(addr, value);
 	asm volatile("icbi 0,%0; isync" :: "r"(addr));
@@ -170,7 +173,9 @@ LV2_HOOKED_FUNCTION(void, sys_cfw_new_poke, (uint64_t *addr, uint64_t value))
 
 LV2_HOOKED_FUNCTION(void *, sys_cfw_memcpy, (void *dst, void *src, uint64_t len))
 {
+	#ifdef DEBUG
 	//DPRINTF("sys_cfw_memcpy: %p %p 0x%lx\n", dst, src, len);
+	#endif
 
 	if (len == 8)
 	{
@@ -185,7 +190,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 {
 	uint64_t addr = (uint64_t)ptr;
 
+	#ifdef DEBUG
 	//DPRINTF("poke %p %016lx\n", addr, value);
+	#endif
 
 	if (addr >= MKA(syscall_table_symbol))
 	{
@@ -203,7 +210,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				// First check if it is trying to restore our syscall8
 				if (*(uint64_t *)syscall8 == value)
 				{
+					#ifdef DEBUG
 					DPRINTF("Removing syscall 8 extension\n");
+					#endif
 
 					extended_syscall8.addr = 0;
 					return;
@@ -211,16 +220,20 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 
 				extended_syscall8.addr = (void *) *(uint64_t *)value;
 				extended_syscall8.toc = (void *) *(uint64_t *)(value+8);
-
+				#ifdef DEBUG
 				DPRINTF("Adding syscall 8 extension %p %p\n", extended_syscall8.addr, extended_syscall8.toc);
+				#endif
 				return;
 			}
 			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow removing protected syscall 6 7 9 10 35 NOT 8
 			{
+				#ifdef DEBUG
 				DPRINTF("HB remove syscall %ld\n", syscall_num);
+				#endif
 			}
 			else //Prevent syscall 6 7 9 10 and 35 from being re-written
 			{
+				
 				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
 				return;
 			}
@@ -237,12 +250,15 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 	}
 	else if (addr == MKA(open_path_symbol))
 	{
+		#ifdef DEBUG
 		//DPRINTF("open_path poke: %016lx\n", value);
+		#endif
 
 		if (value == 0xf821ff617c0802a6ULL)
 		{
+			#ifdef DEBUG
 			DPRINTF("Restoring map_path patches\n");
-
+			#endif
 			*ptr = value;
 			clear_icache(ptr, 8);
 			map_path_patches(0);
@@ -260,8 +276,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				f_desc_t f;
 
 				// Assume app is trying to write the so called "new poke"
+				#ifdef DEBUG
 				DPRINTF("Making sys_cfw_new_poke\n");
-
+				#endif
 				if (current_813)
 				{
 					unhook_function(sc813, current_813);
@@ -276,8 +293,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				f_desc_t f;
 
 				// Assume app is trying to write a memcpy
+				#ifdef DEBUG
 				DPRINTF("Making sys_cfw_memcpy\n");
-
+				#endif
 				if (current_813)
 				{
 					unhook_function(sc813, current_813);
@@ -292,8 +310,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				// Assume app is trying to restore sc 813
 				if (current_813)
 				{
+					#ifdef DEBUG
 					DPRINTF("Restoring syscall 813\n");
-
+					#endif
 					unhook_function(sc813, current_813);
 					current_813 = NULL;
 					return;
@@ -301,7 +320,9 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 			}
 			else
 			{
+				#ifdef DEBUG
 				DPRINTF("Warning: syscall 813 being overwritten with unknown value (%016lx). *blocking it*\n", value);
+				#endif
 				return;
 			}
 		}
@@ -373,7 +394,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 
 	extend_kstack(0);
 
+	#ifdef DEBUG
 	//DPRINTF("Syscall 8 -> %lx\n", function);
+	#endif
 
 	// -- AV: temporary disable cobra syscall (allow dumpers peek 0x1000 to 0x9800)
 	static uint8_t tmp_lv1peek = 0;
@@ -395,12 +418,16 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	{
 		if (function <= 0x1000 || function >= 0x9800 || (function & 3)) /* Keep all cobra opcodes below 0x9800 */
 		{
+			#ifdef DEBUG
 			DPRINTF("App was unblocked from using syscall8\n");
+			#endif
 			pid_blocked = 0;
 		}
 		else
 		{
+			#ifdef DEBUG
 			DPRINTF("App was blocked from using syscall8\n");
+			#endif
 			return ENOSYS;
 		}
 	}
@@ -418,18 +445,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		return ENOSYS;
 	}
 
-	if ((function == SYSCALL8_OPCODE_PS3MAPI) && ((int)param1 == PS3MAPI_OPCODE_REQUEST_ACCESS) && (param2 == ps3mapi_key) && (ps3mapi_access_tries < 3)) {ps3mapi_access_tries = 0; ps3mapi_access_granted = 1;}
-
-	if((!ps3mapi_access_granted) && (ps3mapi_key != 0))
-	{
-		ps3mapi_access_tries += 1;
-		if(ps3mapi_access_tries > 3) ps3mapi_access_tries = 99;
-		return ENOSYS;
-	}
-
 	if (3 <= ps3mapi_partial_disable_syscall8)
 	{
-		if (function == SYSCALL8_OPCODE_PS3MAPI && ps3mapi_access_granted)
+		if (function == SYSCALL8_OPCODE_PS3MAPI)
 		{
 			if ((int)param1 == PS3MAPI_OPCODE_PDISABLE_SYSCALL8)
 			{
@@ -447,13 +465,24 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 
 	if ((function != SYSCALL8_OPCODE_PS3MAPI) && (2 <= ps3mapi_partial_disable_syscall8)) return ENOSYS;
 
+	if ((function == SYSCALL8_OPCODE_PS3MAPI) && ((int)param1 == PS3MAPI_OPCODE_REQUEST_ACCESS) && (param2 == ps3mapi_key) && (ps3mapi_access_tries < 3)) {ps3mapi_access_tries = 0; ps3mapi_access_granted = 1;}
+
+	if((!ps3mapi_access_granted) && (ps3mapi_key != 0))
+	{
+		ps3mapi_access_tries += 1;
+		if(ps3mapi_access_tries > 3) ps3mapi_access_tries = 99;
+		return ENOSYS;
+	}
+
+
 	switch (function)
 	{
 		case SYSCALL8_OPCODE_PS3MAPI:
 			switch ((int)param1)
 			{
+				#ifdef DEBUG
 				//DPRINTF("syscall8: PS3M_API function 0x%x\n", (int)param1);
-
+				#endif
 				//----------
 				//CORE
 				//----------
@@ -596,7 +625,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				//DEFAULT
 				//----------
 				default:
+					#ifdef DEBUG
 					DPRINTF("syscall8: Unsupported PS3M_API opcode: 0x%lx\n", function);
+					#endif
 					return ENOSYS;
 				break;
 			}
@@ -786,19 +817,24 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				}
 				else if (function == 0xC)
 				{
+					#ifdef DEBUG
 					//DPRINTF("Hermes copy inst: %lx %lx %lx\n", param1, param2, param3);
+					#endif
 				}
 				else if (function == 0xD)
 				{
+					#ifdef DEBUG
 					//DPRINTF("Hermes poke inst: %lx %lx\n", param1, param2);
-
+					#endif
 					_sys_cfw_new_poke((void *)param1, param2);
 					return param1;
 				}
 
 				int64_t (* syscall8_hb)() = (void *)&extended_syscall8;
 
+				#ifdef DEBUG
 				//DPRINTF("Handling control to HB syscall 8 (opcode=0x%lx)\n", function);
+				#endif
 				return syscall8_hb(function, param1, param2, param3, param4, param5, param6, param7);
 			}
 			else // if (function >= 0x9800) // AV: allow peek all other addresses
@@ -808,7 +844,10 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 			}
 	}
 
+	#ifdef DEBUG
 	DPRINTF("Unsupported syscall8 opcode: 0x%lx\n", function);
+	#endif
+
 	return ENOSYS;
 }
 
