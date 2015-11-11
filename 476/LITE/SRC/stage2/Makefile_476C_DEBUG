@@ -6,6 +6,7 @@ OBJDUMP		:= ppu-objdump
 AR 		:= ppu-ar
 STRIP		:= ppu-strip
 INCLUDE		= ../lv2/include ../lv1/include ../cryptcode/include ../debug/include
+INCLUDE		+= $(PS3DEV)/ppu/ppu/include
 LIBSDIR         =
 LIBS           	=
 BUILD_TYPE     	= debug

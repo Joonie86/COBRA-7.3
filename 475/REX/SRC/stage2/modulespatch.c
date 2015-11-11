@@ -833,7 +833,7 @@ int prx_load_vsh_plugin(unsigned int slot, char *path, void *arg, uint32_t arg_s
 	}
 
 	CellFsStat stat;
-	if (cellFsStat(path, &stat) != 0) return EINVAL;
+	if (cellFsStat(path, &stat) != 0 || stat.st_size < 0x230) return EINVAL; // prevent a semi-brick (black screen on start up) if the sprx is 0 bytes (due a bad ftp transfer).
 
 	loading_vsh_plugin = 1;
 	prx = prx_load_module(vsh_process, 0, 0, path);
