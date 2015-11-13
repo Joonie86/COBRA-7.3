@@ -4,7 +4,7 @@
 
 As of  November 13th 2015
 
-Supported CFW
+Supported CFWs
 
 REBUG REX/D-REX 4.65
 
