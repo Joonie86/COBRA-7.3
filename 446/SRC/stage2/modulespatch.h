@@ -350,6 +350,7 @@
 
 /* bdp_disc_check_plugin */
 #define dvd_video_region_check_offset	0x152C
+//#define dvd_video_region_check1_offset  0x1500
 
 /* ps1_emu */
 #define ps1_emu_get_region_offset	0x3E74	

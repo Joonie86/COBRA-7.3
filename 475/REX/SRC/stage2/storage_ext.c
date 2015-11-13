@@ -3028,7 +3028,7 @@ int mount_ps_cd(char *file, unsigned int trackscount, ScsiTrackDescriptor *track
 	{
 		CellFsStat stat;
 
-		ret = cellFsStat(file, &stat);
+		ret = cellFsStat(file, &stat); if(stat.st_size < 0x9930) ret = EINVAL;
 		if (ret == 0)
 		{
 			// -- AV: cd sector size

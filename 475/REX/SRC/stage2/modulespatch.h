@@ -86,6 +86,8 @@
 
 /* bdp_disccheck_plugin */ //  the same as 4.46
 #define dvd_video_region_check_offset	0x152C // 
+//#define dvd_video_region_check1_offset  0x1500 //
+//#define dvd_F44_panic_offset 0xF44 //
 
 /* ps1_emu */ // same as 4.66
 #define ps1_emu_get_region_offset	0x3E74 // 

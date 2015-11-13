@@ -161,6 +161,10 @@ SprxPatch explore_category_game_patches[] =
 SprxPatch bdp_disc_check_plugin_patches[] =
 {
 	{ dvd_video_region_check_offset, LI(R3, 1), &condition_true }, /* Kills standard dvd-video region protection (not RCE one) */
+	//{ dvd_video_region_check1_offset, NOP, &condition_true }, // 0x1500 PAL unsupported
+    //{ dvd_video_region_check1_offset+24, NOP, &condition_true }, //0x1518 NTSC unsupported
+	//{ dvd_video_region_check1_offset+32, NOP, &condition_true }, //0x1520
+	//{ dvd_F44_panic_offset, 0x0FE00016, &condition_true }, //0x1520
 	{ 0 }
 };
 

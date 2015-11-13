@@ -152,6 +152,9 @@ SprxPatch explore_category_game_patches[] =
 SprxPatch bdp_disc_check_plugin_patches[] =
 {
 	{ dvd_video_region_check_offset, LI(R3, 1), &condition_true }, /* Kills standard dvd-video region protection (not RCE one) */
+	//{ dvd_video_region_check1_offset, NOP, &condition_true }, // 0x1500 PAL unsupported
+    //{ dvd_video_region_check1_offset+24, NOP, &condition_true }, //0x1518 NTSC unsupported
+	//{ dvd_video_region_check1_offset+30, NOP, &condition_true }, //0x1520
 	{ 0 }
 };
 
@@ -716,7 +719,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t proce
 		}		
 	}
 	
-	#ifndef  DEBUG
+	#ifdef  DEBUG
 	if (vsh_process) unhook_function_on_precall_success(load_process_symbol, load_process_hooked, 9); //Hook no more needed
 	#endif
 
@@ -991,7 +994,7 @@ void load_boot_plugins(void)
 	//Loading webman from flash - must first detect if the toogle is activated
 	if ( prx_load_vsh_plugin(current_slot, PRX_PATH, NULL, 0) >=0)
 	{
-		#ifndef  DEBUG
+		#ifdef  DEBUG
 		DPRINTF("Loading integrated webMAN plugin into slot %x\n", current_slot);
 		#endif
        current_slot++;
@@ -1014,7 +1017,7 @@ void load_boot_plugins(void)
 			if ((!webman_loaded) || (!strstr(path, "webftp_server")) ) 		
 			{
 				int ret = prx_load_vsh_plugin(current_slot, path, NULL, 0);	
-				#ifndef  DEBUG
+				#ifdef  DEBUG
 				DPRINTF("Load boot plugin %s -> %x\n", path, current_slot);
 				#endif
 				if (ret >= 0)
