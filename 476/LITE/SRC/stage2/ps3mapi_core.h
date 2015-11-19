@@ -409,6 +409,8 @@ int ps3mapi_disable_syscall(int num);
 #define PS3MAPI_OPCODE_LV1_PEEK					0x1008
 #define PS3MAPI_OPCODE_LV1_POKE					0x1009
 
+#define PS3MAPI_OPCODE_SUPPORT_SC8_PEEK_POKE_OK	0x6789
+
 //-----------------------------------------------
 //SECURITY
 //-----------------------------------------------

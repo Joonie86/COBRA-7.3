@@ -4,11 +4,15 @@
 // Since version 7.0, any opcode added should be an odd number.
 // Also, it should be kept under 0xA000
 // If function is to be used to make a patched module call cobra payload,
-// a number below 0x8000 is suggested, so that the patch can assign the opcode 
+// a number below 0x8000 is suggested, so that the patch can assign the opcode
 // with a single instruction
 
-#define SYSCALL8_OPCODE_DISABLE_COBRA    0x0000
-#define SYSCALL8_OPCODE_ENABLE_COBRA    0x0001
+#define SYSCALL8_OPCODE_DISABLE_COBRA				0x0000
+#define SYSCALL8_OPCODE_ENABLE_COBRA				0x0001
+
+#define SYSCALL8_DISABLE_COBRA_CAPABILITY			0x0002
+#define SYSCALL8_DISABLE_COBRA_STATUS				0x0003
+#define SYSCALL8_DISABLE_COBRA_OK			0x5555
 
 #define SYSCALL8_OPCODE_GET_VERSION					0x7000
 #define SYSCALL8_OPCODE_GET_VERSION2				0x7001
@@ -36,7 +40,7 @@
 #define SYSCALL8_OPCODE_SET_PSP_DECRYPT_OPTIONS		0x9002
 #define SYSCALL8_OPCODE_READ_PSP_HEADER				0x1028
 #define SYSCALL8_OPCODE_READ_PSP_UMD				0x1029
-#define SYSCALL8_OPCODE_PSP_PRX_PATCH				0x204C 
+#define SYSCALL8_OPCODE_PSP_PRX_PATCH				0x204C
 #define SYSCALL8_OPCODE_PSP_POST_SAVEDATA_INITSTART		0x3008
 #define SYSCALL8_OPCODE_PSP_POST_SAVEDATA_SHUTDOWNSTART	0x3009
 #define SYSCALL8_OPCODE_PSP_CHANGE_EMU					0x9752

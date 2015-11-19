@@ -360,17 +360,15 @@ static inline void ps3mapi_unhook_all(void)
 	//unhook_all_permissions();
 }
 
-uint64_t ps3mapi_key = 0;
-uint8_t ps3mapi_access_tries = 0;
-uint8_t ps3mapi_access_granted = 1;
+static uint64_t ps3mapi_key = 0;
+static uint8_t ps3mapi_access_tries = 0;
+static uint8_t ps3mapi_access_granted = 1;
 
-int ps3mapi_partial_disable_syscall8 = 0;
+static int ps3mapi_partial_disable_syscall8 = 0;
+static uint8_t disable_cobra = 0;
 
 LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t param2, uint64_t param3, uint64_t param4, uint64_t param5, uint64_t param6, uint64_t param7))
 {
-	static uint32_t pid_blocked = 0;
-	uint32_t pid;
-
 	extend_kstack(0);
 
 	//DPRINTF("Syscall 8 -> %lx\n", function);
@@ -381,19 +379,23 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	if(ps3mapi_partial_disable_syscall8 == 0 && extended_syscall8.addr == 0 && ps3mapi_access_granted)
 	{
 		if((function >= 0x9800) || (function & 3)) tmp_lv1peek=0; else
-		if(function <= 0x1000) tmp_lv1peek=1;
+		if(function <= 0x1000) {tmp_lv1peek=1; if(function <= SYSCALL8_OPCODE_ENABLE_COBRA) {if(param1>=SYSCALL8_DISABLE_COBRA_CAPABILITY) return (param1==SYSCALL8_DISABLE_COBRA_CAPABILITY) ? SYSCALL8_DISABLE_COBRA_OK : disable_cobra; else disable_cobra = (function==SYSCALL8_OPCODE_DISABLE_COBRA && param1==1);}}
 
 		if(tmp_lv1peek) {return lv1_peekd(function);}
 	}
 	else tmp_lv1peek=0;
 	// --
 
+/*
+	static uint32_t pid_blocked = 0;
+	uint32_t pid;
+
 	// Some processsing to avoid crashes with lv1 dumpers
 	pid = get_current_process_critical()->pid;
 
 	if (pid == pid_blocked)
 	{
-		if (function <= 0x1000 || function >= 0x9800 || (function & 3)) /* Keep all cobra opcodes below 0x9800 */
+		if (function <= 0x1000 || function >= 0x9800 || (function & 3)) // * Keep all cobra opcodes below 0x9800 * /
 		{
 			DPRINTF("App was unblocked from using syscall8\n");
 			pid_blocked = 0;
@@ -417,6 +419,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		pid_blocked = pid;
 		return ENOSYS;
 	}
+*/
 
 	if ((function == SYSCALL8_OPCODE_PS3MAPI) && ((int)param1 == PS3MAPI_OPCODE_REQUEST_ACCESS) && (param2 == ps3mapi_key) && (ps3mapi_access_tries < 3)) {ps3mapi_access_tries = 0; ps3mapi_access_granted = 1;}
 
@@ -447,6 +450,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 
 	if ((function != SYSCALL8_OPCODE_PS3MAPI) && (2 <= ps3mapi_partial_disable_syscall8)) return ENOSYS;
 
+	// -- AV: disable cobra without reboot (use lv1 peek)
+	if(disable_cobra) return lv1_peekd(function);
+
 	switch (function)
 	{
 		case SYSCALL8_OPCODE_PS3MAPI:
@@ -474,7 +480,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				//PEEK & POKE (av)
 				//----------------
 				case PS3MAPI_OPCODE_SUPPORT_SC8_PEEK_POKE:
-					return 0x6789;
+					return PS3MAPI_OPCODE_SUPPORT_SC8_PEEK_POKE_OK;
 				break;
 				case PS3MAPI_OPCODE_LV1_PEEK:
 					return lv1_peekd(param2);

@@ -1,3 +1,4 @@
+CC=gcc
 OUTPUT=lv2gen
 OBJS=main.o 
 CFLAGS=-Wall -I. --std=gnu99
