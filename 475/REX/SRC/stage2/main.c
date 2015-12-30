@@ -175,7 +175,7 @@ LV2_HOOKED_FUNCTION(void, sys_cfw_new_poke, (uint64_t *addr, uint64_t value))
 
 LV2_HOOKED_FUNCTION(void *, sys_cfw_memcpy, (void *dst, void *src, uint64_t len))
 {
-	//DPRINTF("sys_cfw_memcpy: %p %p 0x%lx\n", dst, src, len);
+	DPRINTF("sys_cfw_memcpy: %p %p 0x%lx\n", dst, src, len);
 
 	if (len == 8)
 	{
@@ -190,7 +190,7 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 {
 	uint64_t addr = (uint64_t)ptr;
 
-	//DPRINTF("poke %p %016lx\n", addr, value);
+	DPRINTF("LV2 poke %p %016lx\n", (void*)addr, value);
 
 	if (addr >= MKA(syscall_table_symbol))
 	{
@@ -321,6 +321,8 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 
 LV2_SYSCALL2(void, sys_cfw_lv1_poke, (uint64_t lv1_addr, uint64_t lv1_value))
 {
+	DPRINTF("LV1 poke %p %016lx\n", (void*)lv1_addr, lv1_value);
+	
 	lv1_poked(lv1_addr, lv1_value);
 }
 
@@ -350,11 +352,26 @@ static INLINE int sys_get_version2(uint16_t *version)
 
 LV2_SYSCALL2(uint64_t, sys_cfw_lv1_peek, (uint64_t lv1_addr))
 {
+	DPRINTF("lv1_peek %p\n", (void*)lv1_addr);
+	
     uint64_t ret;
     ret = lv1_peekd(lv1_addr);
     return ret;
 
 }
+
+/*
+LV2_HOOKED_FUNCTION(uint64_t, sys_cfw_storage_send_device_command, (uint32_t device_handle, unsigned int command, void indata, uint64_t inlen, void outdata, uint64_t outlen))
+{
+ DPRINTF("sys_storage_send_device_command\n");
+
+ sys_storage_send_device_command(device_handle, command, indata, inlen, outdata, outlen);
+ int64_t debug_print(const char* buffer, size_t size);
+ void debug_print_hex(void *buf, uint64_t size);
+ void debug_print_hex_c(void *buf, uint64_t size);
+
+}
+*/
 
 static inline void ps3mapi_unhook_all(void)
 {
@@ -377,7 +394,10 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	extend_kstack(0);
 
 	//DPRINTF("Syscall 8 -> %lx\n", function);
-
+	if(function>=0x8000000000000000ULL)
+	{
+	  DPRINTF("LV1 peek %lx %llux\n", function, (long long unsigned int)(lv1_peekd(function)));
+	}
 	// -- AV: temporary disable cobra syscall (allow dumpers peek 0x1000 to 0x9800)
 	static uint8_t tmp_lv1peek = 0;
 
@@ -871,7 +891,7 @@ int main(void)
 	//do_pad_test();
 #endif
 
-	//map_path("/app_home", "/dev_usb000", 0); Not needed
+	map_path("/app_home", "/dev_usb000", 0); //Not needed
 
 	return 0;
 }

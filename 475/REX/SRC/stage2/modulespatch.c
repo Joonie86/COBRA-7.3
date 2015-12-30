@@ -125,13 +125,12 @@ SprxPatch dex_vsh_patches[] =
 	{ elf1_func1 + elf1_func1_offset, 0xF821FF81, &condition_true },
 	{ elf1_func1 + elf1_func1_offset + 4, 0x7C0802A6, &condition_true },
 	{ elf1_func2 + elf1_func2_offset, LI(R11, 0), &condition_true },
-	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
-	{ dex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
-#elif defined(FIRMWARE_4_30) || defined (FIRMWARE_4_75)
+#endif
 	//{ dex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate },
 	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ dex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
-#endif
+	{ dex_enable_dlna_patch, LI(R4, 1), &condition_true },
+
 	{ 0 }
 };
 
@@ -1090,9 +1089,9 @@ void load_boot_plugins(void)
 			if ((!webman_loaded) || (!strstr(path, "webftp_server")) ) 		//load only if webman was not loaded from flash OR webftp_server is in the name
 			{
 				int ret = prx_load_vsh_plugin(current_slot, path, NULL, 0);	
-				DPRINTF("Load boot plugin %s -> %x\n", path, current_slot);
 				if (ret >= 0)
 				{
+					DPRINTF("Load boot plugin %s -> %x\n", path, current_slot);
 					current_slot++;
 					num_loaded++;
 				}

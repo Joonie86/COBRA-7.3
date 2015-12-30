@@ -2351,6 +2351,12 @@ LV2_HOOKED_FUNCTION_COND_POSTCALL_7(int, emu_storage_send_device_command, (devic
 			mutex_unlock(mutex);
 		}
 	}
+    /*int64_t debug_print(const char* buffer, size_t size);
+    void debug_print_hex(void *buf, uint64_t size);
+    void debug_print_hex_c(void *buf, uint64_t size);
+	
+    DPRINTF("sys_storage_send_device_command\n");*/
+
 
 	return ret;
 }

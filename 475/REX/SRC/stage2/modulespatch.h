@@ -46,6 +46,7 @@
 #define dex_psp_drm_patchE		0x24A0AC // 0x249F8C // 
 #define dex_psp_drm_patchF		0x24AA78 // 0x24A958 // 
 #define dex_vmode_patch_offset	        0x44D7E0 // 0x44D224 // PSX Region patch
+#define dex_enable_dlna_patch   0xC0368 // Enable DLNA on DEBUG VSH
 //#define dex_game_update_offset		0x278BE8 // Disabled by default since COBRA 7 4.46
 
 // 4.75 CEX's Offsets
