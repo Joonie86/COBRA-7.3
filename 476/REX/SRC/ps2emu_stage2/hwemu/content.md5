@@ -1,0 +1,13 @@
+MD5 12/28/2015 3:10:34 PM
+
+Path: C:\Users\Jooni3\Documents\GitHub\COBRA7.1\476\REX\SRC\ps2emu_stage2\hwemu\
+ff40ffc0d2b6e48c536595e30d9a990c  crt0.c	0.6 KB (604)
+5c42fac0347354e02ee1c0957d9b7549  ldscript.ld	0.7 KB (707)
+d2b6a43cb51b63463d052aee36a037e1  main.c	5.2 KB (5,282)
+7fc48dc650291726f5bf4e4a26255e97  Makefile	1.5 KB (1,490)
+dd0410ddb07d2c0f3fac0f50e2b86c32  read!!.txt	0.2 KB (236)
+685a92a469c1a878d2a5896b715bdc32  restore.h	6.0 KB (6,154)
+816ab1f7d6f229e9549d3718b8f67e75  start.S	1.0 KB (1,009)
+
+TOTAL: 7 files - 15.1 KB (15,482 bytes)
+
