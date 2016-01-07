@@ -2860,7 +2860,7 @@
 /* vars */
 #define thread_info_symbol				0x37DE30 // Confirmed
 
-#elif defined(FIRMWARE_4_75DEX) || (FIRMWARE_4_76DEX) // Ported by Joonie, special thanks to @aldostools for his awesome Getsymbol tool!!!!
+#elif defined(FIRMWARE_4_75DEX) || defined(FIRMWARE_4_76DEX) // Ported by Joonie, special thanks to @aldostools for his awesome Getsymbol tool!!!!
 
 #define TOC						0x3758E0 //Verified with IDA by Joonie
 
