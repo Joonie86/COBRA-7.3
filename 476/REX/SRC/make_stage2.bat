@@ -11,7 +11,7 @@ if exist binaries del binaries\*.release>nul
 if exist binaries del binaries\*.debug>nul
 if exist binaries rmdir binaries
 
-make -f Makefile all
+make -f Makefile dbg
 
 if not exist binaries mkdir binaries
 if not exist binaries\release mkdir binaries\release
