@@ -40,7 +40,11 @@
 #define dex_psp_drm_patch3		0x24AB78 // 0x24A680 (4.76)
 #define dex_psp_drm_patch4		0x24B384 // 0x24AE8C (4.76) 
 #define dex_psp_drm_patchA		0x24A5B8 // 0x24A0C0 (4.76) 
+<<<<<<< HEAD
 #define dex_psp_drm_patchB		0x24AE58 // Fixed, thanks to Rancid-o :) 
+=======
+#define dex_psp_drm_patchB		0x24AE58 // Fixed, thanks to Rancid-o :)
+>>>>>>> origin/master
 #define dex_psp_drm_patchC		0x249FF0 // 0x249AF8 (4.76) 
 #define dex_psp_drm_patchD		0x24A5A0 // 0x24A0A8 (4.76)   
 #define dex_psp_drm_patchE		0x24A5A4 // 0x24A0AC (4.76)  
