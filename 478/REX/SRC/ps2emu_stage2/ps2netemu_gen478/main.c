@@ -15,7 +15,7 @@
 #define fstat_iso_call		0x135FAC //
 #define open_iso_call1		0x135F70 //
 #define open_iso_call2		0x136FF4 //
-#define savedata_patch		0x11B034 //
+//#define savedata_patch		0x11B034 //
 
 #define ADDITIONAL_CODE_SIZE		0x46B0 //
 #define ADDITIONAL_DATA_SIZE		0x1000
@@ -305,7 +305,7 @@ static int patch_emu(char *payload_map_file)
 			
 			get_func_name(line, name);
 			//printf("name = %s\n", name);
-			/*if (strcmp(name, "ufs_read_patched") == 0)
+/*			if (strcmp(name, "ufs_read_patched") == 0)
 			{
 				addr = get_func_address(line);
 				
@@ -332,8 +332,8 @@ static int patch_emu(char *payload_map_file)
 				
 				printf("ufs_fstat_patched found at %lx\n", addr);
 				hook_function_with_cond_postcall(ufs_fstat_symbol, ps2_netemu+addr, 2);
-			}
-			else if (strcmp(name, "ufs_open_patched") == 0)
+			}*/
+			/*else if (strcmp(name, "ufs_open_patched") == 0)
 			{
 				addr = get_func_address(line);
 				
@@ -346,8 +346,9 @@ static int patch_emu(char *payload_map_file)
 				
 				printf("ufs_open_patched found at %lx\n", addr);
 				hook_function_with_cond_postcall(ufs_open_symbol, ps2_netemu+addr, 2);
-			}
-			else */if (strcmp(name, "cdvd_read_patched") == 0)
+			}*/
+			//else 
+				if (strcmp(name, "cdvd_read_patched") == 0)
 			{
 				addr = get_func_address(line);
 				
@@ -414,7 +415,7 @@ static int patch_emu(char *payload_map_file)
 	
 	if (ret == 0)
 	{
-		*(uint32_t *)&ps2_netemu[savedata_patch] = swap32(LI(0, 0x26f4));
+//		*(uint32_t *)&ps2_netemu[savedata_patch] = swap32(LI(0, 0x26f4));
 	}
 	
 	fclose(map);

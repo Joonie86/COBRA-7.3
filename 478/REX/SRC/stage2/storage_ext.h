@@ -58,6 +58,7 @@ int sys_storage_ext_mount_discfile_proxy(sys_event_port_t result_port, sys_event
 int sys_storage_ext_mount_encrypted_image(char *image, char *mount_point, char *filesystem, uint64_t nonce); 
 
 void unhook_all_storage_ext(void);
+void copy_emus(int emu_type);
 
 #endif /* __STORAGE_EXT_H__ */
 

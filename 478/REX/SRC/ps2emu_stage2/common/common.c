@@ -378,6 +378,14 @@ static INLINE int setup_iso(void)
 		ufs_close(cfg_fd);
 		return -1;
 	}
+	if(memcmp(buf+0x702, "mount", 5)!=0)
+	{
+		ufs_close(cfg_fd);
+		release_temp_buf();
+		return -1;
+	}
+	uint8_t disable=0x00;
+	ufs_write(cfg_fd, 0x702, &disable, 1);
 	
 	file = buf+10;
 	

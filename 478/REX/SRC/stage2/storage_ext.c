@@ -2534,6 +2534,7 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, post_cellFsUtilMount, (const char *bl
 	if (!hdd0_mounted && strcmp(mount_point, "/dev_hdd0") == 0 && strcmp(filesystem, "CELL_FS_UFS") == 0)
 	{
 		hdd0_mounted = 1;
+		copy_emus(ps2emu_type);
 		read_cobra_config();
 		//do_spoof_patches();
 		load_boot_plugins();
@@ -2580,55 +2581,6 @@ static INLINE int get_ps2emu_type(void)
 	return PS2EMU_SW;
 }
 
-#ifdef PS2EMU_DEBUG
-
-static INLINE void load_ps2emu_stage2(int emu_type)
-{
-	char name[64];
-	int src, dst;
-	uint8_t *buf;
-	int i;
-
-	if (emu_type < 0 || emu_type > PS2EMU_GX)
-		return;
-
-	// Transfer ps2emu stage2 from usb to hdd for debug purposes
-
-	page_allocate_auto(NULL, 0x10000, 0x2F, (void **)&buf);
-
-	for (i = 0; i < 10; i++)
-	{
-		sprintf(name, "/dev_usb00%d/s2.bin", i);
-
-		if (cellFsOpen(name, CELL_FS_O_RDONLY, &src, 0, NULL, 0) == 0)
-		{
-			uint64_t size;
-
-			cellFsRead(src, buf, 0x10000, &size);
-			cellFsClose(src);
-
-			if (cellFsOpen(PS2EMU_STAGE2_FILE, CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &dst, 0666, NULL, 0) == 0)
-			{
-				cellFsWrite(dst, buf, size, &size);
-				cellFsClose(dst);
-			}
-
-			break;
-		}
-	}
-
-	#ifdef DEBUG
-	if (i == 10)
-	{
-		DPRINTF("Failed to open debug ps2 stage2.\n");
-	}
-	#endif
-	
-	page_free(NULL, buf, 0x2F);
-}
-
-#else
-
 char *ps2emu_stage2[] =
 {
 	"ps2hwemu_stage2.bin",
@@ -2671,7 +2623,41 @@ static INLINE void load_ps2emu_stage2(int emu_type)
 	page_free(NULL, buf, 0x2F);
 }
 
-#endif /*  PS2EMU_DEBUG */
+void copy_emus(int emu_type)
+{
+	char name[64];
+	int src, dst;
+	uint8_t *buf;
+
+	if (emu_type < 0 || emu_type > PS2EMU_GX)
+		return;
+
+	page_allocate_auto(NULL, 0x10000, 0x2F, (void **)&buf);
+
+	sprintf(name, "/dev_flash/ps2emu/%s", ps2emu_stage2[emu_type]);
+
+	if (cellFsOpen(name, CELL_FS_O_RDONLY, &src, 0, NULL, 0) == 0)
+	{
+		uint64_t size;
+
+		cellFsRead(src, buf, 0x10000, &size);
+		cellFsClose(src);
+
+		if (cellFsOpen(PS2EMU_STAGE2_FILE, CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &dst, 0666, NULL, 0) == 0)
+		{
+			cellFsWrite(dst, buf, size, &size);
+			cellFsClose(dst);
+		}
+	}
+	#ifdef DEBUG
+	else
+	{
+		DPRINTF("Failed to open ps2 stage2: %s\n", name);
+	}
+	#endif
+	
+	page_free(NULL, buf, 0x2F);
+}
 
 static void build_netemu_params(uint8_t *ps2_soft, uint8_t *ps2_net)
 {
@@ -2693,17 +2679,188 @@ static void build_netemu_params(uint8_t *ps2_soft, uint8_t *ps2_net)
 		#endif
 		return;
 	}
+	
+	uint64_t static_one={0x054c026840000000};
+	uint64_t static_two={0x3600043504082225};
 
 	// netemu ps2bootparam.dat has a format very similar to softemu sm arguments
 	ps2_soft[11] = 3;
+//	ps2_soft[6] = 0xba;
+//	ps2_soft[7] = 0x2e;
+	ps2_soft[0x4d0] = 8;
+	ps2_soft[0x4d7] = 6;
 	strcpy((char *)ps2_soft+12, "--COBRA--");
-
-	cellFsWrite(fd, ps2_soft, 0x4F0, &written);
+	memset(ps2_soft+0x4f0, 0, 0x2204);
+	int controller_count=0;
+	uint64_t controller1;memcpy(&controller1, ps2_soft+0x98, 8);
+	uint64_t controller2;memcpy(&controller2, ps2_soft+0xa0, 8);
+	uint64_t controller3;memcpy(&controller3, ps2_soft+0xa8, 8);
+	uint64_t controller4;memcpy(&controller4, ps2_soft+0xb0, 8);
+	uint64_t controller5;memcpy(&controller5, ps2_soft+0xb8, 8);
+	uint64_t controller6;memcpy(&controller6, ps2_soft+0xc0, 8);
+	uint64_t controller7;memcpy(&controller7, ps2_soft+0xc8, 8);
+	uint64_t controller8;memcpy(&controller8, ps2_soft+0xd0, 8);
+	uint64_t controller9;memcpy(&controller9, ps2_soft+0xd8, 8);
+	uint64_t controllera;memcpy(&controllera, ps2_soft+0xe0, 8);
+	uint64_t controllerb;memcpy(&controllerb, ps2_soft+0xe8, 8);
+	
+	if(!controller_count)
+	{
+		if(controller1)
+		{
+			memcpy(ps2_soft+0x4f4, &controller1, 8);
+			memcpy(ps2_soft+0x4f4+0x8, &static_one, 8);
+			ps2_soft[0x515]=9;
+			memcpy(ps2_soft+0x516, &static_two, 8);
+			controller_count++;
+		}
+		if(controller2)
+		{
+			memcpy(ps2_soft+0x70c, &controller2, 8);
+			memcpy(ps2_soft+0x70c+0x8, &static_one, 8);
+			ps2_soft[0x72d]=9;
+			memcpy(ps2_soft+0x72e, &static_two, 8);
+			controller_count++;
+		}
+		if(controller3)
+		{
+			memcpy(ps2_soft+0x924, &controller3, 8);
+			memcpy(ps2_soft+0x924+0x8, &static_one, 8);
+			ps2_soft[0x945]=9;
+			memcpy(ps2_soft+0x946, &static_two, 8);
+			controller_count++;
+		}
+		if(controller4)
+		{
+			memcpy(ps2_soft+0xb3c, &controller4, 8);
+			memcpy(ps2_soft+0xb3c+0x8, &static_one, 8);
+			ps2_soft[0xb5d]=9;
+			memcpy(ps2_soft+0xb5e, &static_two, 8);
+			controller_count++;
+		}
+		if(controller5)
+		{
+			memcpy(ps2_soft+0xd54, &controller5, 8);
+			memcpy(ps2_soft+0xd54+0x8, &static_one, 8);
+			ps2_soft[0xd75]=9;
+			memcpy(ps2_soft+0xd76, &static_two, 8);
+			controller_count++;
+		}
+		if(controller6)
+		{
+			memcpy(ps2_soft+0xf6c, &controller6, 8);
+			memcpy(ps2_soft+0xf6c+0x8, &static_one, 8);
+			ps2_soft[0xf8d]=9;
+			memcpy(ps2_soft+0xf8e, &static_two, 8);
+			controller_count++;
+		}
+		if(controller7)
+		{
+			memcpy(ps2_soft+0x1184, &controller7, 8);
+			memcpy(ps2_soft+0x1184+0x8, &static_one, 8);
+			ps2_soft[0x11a5]=9;
+			memcpy(ps2_soft+0x11a6, &static_two, 8);
+			controller_count++;
+		}
+		if(controller8)
+		{
+			memcpy(ps2_soft+0x139c, &controller8, 8);
+			memcpy(ps2_soft+0x139c+0x8, &static_one, 8);
+			ps2_soft[0x138d]=9;
+			memcpy(ps2_soft+0x138e, &static_two, 8);
+			controller_count++;
+		}
+		if(controller9)
+		{
+			memcpy(ps2_soft+0x15b4, &controller9, 8);
+			memcpy(ps2_soft+0x15b4+0x8, &static_one, 8);
+			ps2_soft[0x15d5]=9;
+			memcpy(ps2_soft+0x15d6, &static_two, 8);
+			controller_count++;
+		}
+		if(controllera)
+		{
+			memcpy(ps2_soft+0x17cc, &controllera, 8);
+			memcpy(ps2_soft+0x17cc+0x8, &static_one, 8);
+			ps2_soft[0x17ed]=9;
+			memcpy(ps2_soft+0x17ef, &static_two, 8);
+			controller_count++;
+		}
+		if(controllerb)
+		{
+			memcpy(ps2_soft+0x19e4, &controllerb, 8);
+			memcpy(ps2_soft+0x19e4+0x8, &static_one, 8);
+			ps2_soft[0x1a05]=9;
+			memcpy(ps2_soft+0x1a06, &static_two, 8);
+			controller_count++;
+		}
+	}
+	ps2_soft[0x4f3] = controller_count;
+/*	ps2_soft[0x4f5] = 0x73;
+	ps2_soft[0x4f6] = 0x8a;
+	ps2_soft[0x4f7] = 0x99;
+	ps2_soft[0x4f8] = 0x5e;
+	ps2_soft[0x4fa] = 0xe0;
+	ps2_soft[0x4fb] = 0xae;
+	ps2_soft[0x4fc] = 0x05;
+	ps2_soft[0x4fd] = 0x4c;
+	ps2_soft[0x4fe] = 0x02;
+	ps2_soft[0x4ff] = 0x68;
+	ps2_soft[0x515] = 0x09;
+	ps2_soft[0x516] = 0x36;
+	ps2_soft[0x518] = 0x04;
+	ps2_soft[0x519] = 0x35;
+	ps2_soft[0x51a] = 0x04;
+	ps2_soft[0x51b] = 0x08;
+	ps2_soft[0x51c] = 0x22;
+	ps2_soft[0x51d] = 0x25;*/
+/*	ps2_soft[0x500] = 0x40;
+	memcpy(ps2_soft+0x4f4, ps2_soft+0x98, 0x8);
+	uint64_t search_reg=0;
+	memcpy(&search_reg, ps2_soft+0x98, 0x8);
+	int regfd;
+	if (cellFsOpen("/dev_flash2/etc/xRegistry.sys", CELL_FS_O_RDONLY, &regfd, 0, NULL, 0) != 0)
+	{
+		return;
+	}
+	uint8_t *buf;
+	page_allocate_auto(NULL, 0x40000, 0x2F, (void **)&buf);
+	uint64_t v;
+	cellFsRead(regfd, buf, 0x40000, &v);
+        cellFsClose(regfd);
+        int n=0;
+	for(n=0xfff0;n<0x40000;n++)
+	{
+		int ret=memcmp(buf+n, &search_reg, 8);
+		if(!ret)
+                {
+		
+			DPRINTF("FOUND BT INFO IN XREG!")
+			memcpy(ps2_soft+0x4fc, buf+n+0x6c, 4);
+			memcpy(ps2_soft+0x515, buf+n-0x207, 9);
+                        break;
+		}
+		
+	}
+	page_free(NULL, buf, 0x2F);*/
+	
+	cellFsWrite(fd, ps2_soft, 0x26f4, &written);
 
 	// netemu has a 0x4F0-0x773 section where custom memory card is, but we dont need it,
 	// Not writing it + a patch in netemu forces the emu to use the internal ones like BC consoles
 	// NPDRM games will still use their memcards as the section is written
 	cellFsClose(fd);
+/*
+		if (cellFsOpen("/dev_hdd0/tmp/ps2bootparambkp.dat", CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &fd, 0666, NULL, 0) != 0)
+	{
+		#ifdef DEBUG
+		DPRINTF("Cannot open ps2bootparam.dat\n");
+		#endif
+		return;
+	}
+	cellFsWrite(fd, ps2_soft, 0x26f4, &written);
+	cellFsClose(fd);
+*/
 }
 
 LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint8_t *argp, uint64_t args, uint64_t param))
@@ -2735,8 +2892,6 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 
 		// We need to check first if this a NPDRM or a plain iso launched from disc icon
 		// Discard first the case of BC consoles, since the ps2tonet patch is not done there
-		if (ps2emu_type == PS2EMU_SW)
-		{
 			if (argp[12] == 0) /* if vsh prepared the arguments for ps2_softemu */
 			{
 				if (disc_emulation == EMU_OFF)
@@ -2776,7 +2931,6 @@ LV2_HOOKED_FUNCTION(int, shutdown_copy_params_patched, (uint8_t *argp_user, uint
 				}
 
 			}
-		}
 	}
 
 	if (prepare_ps2emu)
@@ -3636,7 +3790,7 @@ static INLINE void patch_ps2emu_entry(int ps2emu_type)
 	// Patch needed to support PS2 CD-R(W) and DVD+-R(W). Not necessary for isos.
 	// Needed but not enough: patches at ps2 emus are necessary too!
 	// Patch address may be different in different models
-	for (u64 search_addr = 0x100000; search_addr < 0x300000; search_addr += 4)
+	for (u64 search_addr = 0x160000; search_addr < 0x300000; search_addr += 4)
 	{
 		if (lv1_peekd(search_addr) == 0x409E00702FBE0001)
 		{
@@ -3723,4 +3877,3 @@ void unhook_all_storage_ext(void)
 	#endif
 	resume_intr();
 }
-

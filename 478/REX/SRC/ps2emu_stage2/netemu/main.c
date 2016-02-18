@@ -62,15 +62,19 @@ static INLINE void dump_stack_trace2(unsigned int n)
 {
 	uint64_t *structure = (uint64_t *) ((0x1270*fd) + *(uint64_t *)(TOC-0x4448) + 8);
 	return structure[0x178/8];
-}
+}*/
 
-PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_2(int, ufs_open_patched, (int unk, char *path))
+/*PS2EMU_HOOKED_FUNCTION_COND_POSTCALL_2(int, ufs_open_patched, (int unk, char *path))
 {
 	void *addr = get_patched_func_call_address();
+	if(strstr(path, "log_file.bin"))
+		goto done;
 	
 	if ((uint64_t)addr < 0x200000)	
 		DPRINTF("ufs_open %s called from %p\n", path, addr);
 	
+	
+	done:
 	return DO_POSTCALL;
 }
 
@@ -130,7 +134,8 @@ ufs_write(dump, 1, (void *)val, 8);
 			ufs_read(fd, 0x702, vars->mnt, 0xf0);
 			if((strstr(vars->mnt, "mount")) || (strstr(path, "--COBRA--")))
 			{
-				
+				uint8_t disable=0x00;
+				ufs_write(fd, 0x702, &disable, 1);
 				if (vars->is_cd)
 				{
 					// Read number of tracks
