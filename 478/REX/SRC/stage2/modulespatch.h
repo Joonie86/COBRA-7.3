@@ -6,10 +6,11 @@
 
 // BIG WARNING: self offsets need to add 0x10000 for address shown in IDA, but not sprxs!
 
-#if defined(FIRMWARE_4_78) || defined(FIRMWARE_4_78DEX) // Ported by Joonie as of 1/24/2016 
+#if defined(FIRMWARE_4_78) || defined(FIRMWARE_4_78DEX) // Ported by Joonie as of 2/22/2016 
 
-#define VSH_DEX_HASH			0xa03fb615002e3eb1 //
-#define VSH_CEX_HASH			0xa002dc02002e26db // Jooni3's ,
+//#define VSH_DEX_HASH			0xa03fb615002e3eb1 // 4.78.1
+#define VSH_DEX_HASH			0xa03fb615002e599e // 4.78.2
+#define VSH_CEX_HASH			0xa002dc02002e26db // 4.78.1 / 4.78.2
 #define BDP_DISC_CHECK_PLUGIN_HASH	0xb8b7a5f9000031a0 // same as 4.66
 #define BASIC_PLUGINS_HASH		0xb5988dba00020162 //
 #define EXPLORE_PLUGIN_HASH		0xacf4af2b000eccfd //
