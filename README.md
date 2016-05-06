@@ -1,6 +1,11 @@
-# COBRA 7.2 Source
+# COBRA 7.3 Source
 
-As of October the 29th.
+[Supported CFW]
+
+REBUG 4.78.2 REX/D-REX
+REBUG 4.80.1 REX/D-REX
+
+As of May the 5th.
 
 Following has been changed and updated since 4.46 COBRA 7
 
@@ -19,6 +24,7 @@ Following has been changed and updated since 4.46 COBRA 7
 * Ps2netemu work around is discovered, now PS2 ISO can be redirected as ps2classic, this was developed to fix ps2 wireless pad sync issue for non backward compatible PS3 models.
 * New savedata patch workaround for ps2_netemu has been added, PS2 DISC ICON will use decrypted VM card, but it still has sync issue and PS2 Launcher will use encrypted VM card for both ISO/Classics, no sync issue at all
 * Allow Syscall 11 to gain full access to syscall 6/7/9/10 to prevent modification from homebrews like multiMAN.
+* PS2 Launcher is no longer needed due to new codes in storage_ext, now COBRA can behave the same way that VSH does to apply configuration of DS3 controllers. 
  
 [ KW's changes ]
 
