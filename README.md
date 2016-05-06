@@ -3,6 +3,7 @@
 [Supported CFW]
 
 REBUG 4.78.2 REX/D-REX
+
 REBUG 4.80.1 REX/D-REX
 
 As of May the 5th.
