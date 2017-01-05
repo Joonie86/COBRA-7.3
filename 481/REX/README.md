@@ -24,8 +24,12 @@ As of January 5th 2017, following has been changed and updated since 4.46 COBRA 
 	* PS2 Launcher is no longer needed due to new codes in storage_ext, now COBRA can behave the same way that VSH does to apply configuration of DS3 controllers. 
 	* PS2 Launcher can still be used, which allows PS2ISO with netemu on backward compatible consoles.
 	* PS2 Netemu toggle is added for Backward compatible consoles, it is very useful for those units with broken EE/GS chips as well.
+	* PS2 Netemu can now use decrypted CONFIG, place the game config file in the same game path for ex) 
+			dev_hdd0/PS2ISO/GOW.ISO
+			dev_hdd0/PS2ISO/GOW.ISO.CONFIG 
 	* HASH calculation algorithm is changed, now it uses static hashes, so the hashes will not be changed unless modules have major changes.
- 
+	* Stealth extension support to disable Syscall 15
+	
 	[ KW's changes ]
 
 	* webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0

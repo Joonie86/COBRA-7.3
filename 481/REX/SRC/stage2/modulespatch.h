@@ -176,13 +176,13 @@
 #define dex_psp_drm_patchE		0x24A8F0 //    
 #define dex_psp_drm_patchF		0x24B2BC //   
 #define dex_vmode_patch_offset	        0x44ADCC //  PSX Video Mode patch
-#define dex_fake_owner_popup_patch      0x128BC0 // Remove "Fake save data owner pop-up"
+//#define dex_fake_owner_popup_patch      0x128BC0 // Remove "Fake save data owner pop-up"
 /* MLT Rif/edat bypass patches, thanks to @MiralaTijera and Haxxxen for their research*/
-#define dex_mlt_rif_patch_func1         0xCA376 
+/*#define dex_mlt_rif_patch_func1         0xCA376 
 #define dex_mlt_rif_patch_func2         0x248814
 #define dex_mlt_rif_patch_func3         0x24B610
 #define dex_mlt_rif_patch_func4         0x24BC3C
-#define dex_mlt_rif_patch_func5         0x56A238
+#define dex_mlt_rif_patch_func5         0x56A238*/
 
 /*
 #define elf1_func1 			0x5F37DC // NPDRM fself fix / Disabling PL3 patches in vsh
@@ -210,11 +210,11 @@
 #define cex_vmode_patch_offset		0x4431D8 // 
 
 /* MLT Rif/edat bypass patches, thanks to MiralaTijera and Haxxxen for their research*/
-#define cex_mlt_rif_patch_func1         0xC4E2A 
+/*#define cex_mlt_rif_patch_func1         0xC4E2A 
 #define cex_mlt_rif_patch_func2         0x240FEC
 #define cex_mlt_rif_patch_func3         0x243DE8
 #define cex_mlt_rif_patch_func4         0x244414
-#define cex_mlt_rif_patch_func5         0x562644
+#define cex_mlt_rif_patch_func5         0x562644 */
 
 
 
@@ -247,7 +247,7 @@
 #define sfo_check_offset		0x23DAC // DEX *lis       r3, aPage_game_ma_1@ha # "page_game_main"*
 #define ps2_nonbw_offset3		0x172F0 // DEX *rlwinm    r0, r0, 0,26,26*
 #define ps_region_error_offset		0x687C // DEX 
-#define game_exit_popup_patch       0xe418 // remove "Quit Game: No request event"
+//#define game_exit_popup_patch       0xe418 // remove "Quit Game: No request event"
 /* Disable the check for the current video setting */
 //#define ps_video_error_offset		0x31A50 // li %r3, 0 // experimental, disabled due to its issue with remote play 
 
