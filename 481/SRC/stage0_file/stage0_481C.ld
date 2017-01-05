@@ -1,7 +1,7 @@
 OUTPUT_FORMAT("elf64-powerpc")
 OUTPUT_ARCH(powerpc:common64)
 
-__base = 0x800000000026C8D0;
+__base = 0x800000000026C8DC;
 
 ENTRY(_start)
 

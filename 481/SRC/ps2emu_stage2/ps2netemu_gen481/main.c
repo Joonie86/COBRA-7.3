@@ -15,6 +15,9 @@
 #define fstat_iso_call		0x135FAC //
 #define open_iso_call1		0x135F70 //
 #define open_iso_call2		0x136FF4 //
+#define read_config_size_call	0x12e544
+#define open_config_call			0x12e520
+#define decrypt_config_call		0x12e578
 //#define savedata_patch		0x11B034 //
 
 #define ADDITIONAL_CODE_SIZE		0x46B0 //
@@ -389,6 +392,48 @@ static int patch_emu(char *payload_map_file)
 				
 				printf("fstat_iso_patched found at %lx\n", (unsigned long)addr);
 				patch_call(fstat_iso_call, ps2_netemu+addr);
+			}
+			else if (strcmp(name, "open_config") == 0)
+			{
+				addr = get_func_address(line);
+				
+				if (addr == 0)
+				{
+					printf("Cannot find address of open_config\n");
+					ret = -1;
+					break;
+				}
+				
+				printf("open_config found at %lx\n", (unsigned long)addr);
+				patch_call(open_config_call, ps2_netemu+addr);
+			}
+			else if (strcmp(name, "read_config_size") == 0)
+			{
+				addr = get_func_address(line);
+				
+				if (addr == 0)
+				{
+					printf("Cannot find address of read_config_size\n");
+					ret = -1;
+					break;
+				}
+				
+				printf("read_config_size found at %lx\n", (unsigned long)addr);
+				patch_call(read_config_size_call, ps2_netemu+addr);
+			}
+			else if (strcmp(name, "decrypt_config") == 0)
+			{
+				addr = get_func_address(line);
+				
+				if (addr == 0)
+				{
+					printf("Cannot find address of decrypt_config\n");
+					ret = -1;
+					break;
+				}
+				
+				printf("decrypt_config found at %lx\n", (unsigned long)addr);
+				patch_call(decrypt_config_call, ps2_netemu+addr);
 			}
 			else if (strcmp(name, "open_iso") == 0)
 			{

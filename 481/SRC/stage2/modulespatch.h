@@ -139,24 +139,25 @@
 /* libfs (external */ // The same as 4.55 - 4.80
 #define aio_copy_root_offset		0xD658 //
 
-#elif defined(FIRMWARE_4_81) || defined(FIRMWARE_4_81DEX) // REBUG REX 4.81.1 as of 12/05/2016
+//REBUG REX 4.81.2 as of 01/04/2017 , COBRA 7.5
+#elif defined(FIRMWARE_4_81) || defined(FIRMWARE_4_81DEX) // 
 
-#define VSH_DEX_HASH			0xa0000101002e47d3 //
-#define VSH_CEX_HASH			0xa00271be002e32dd // 
-#define BDP_DISC_CHECK_PLUGIN_HASH	0xb8b7a5f9000031a0 // 
-//#define BASIC_PLUGINS_HASH		0xb5988dba00020157 //
-#define EXPLORE_PLUGIN_HASH		0xacf4af2b000ecc8f //
-#define EXPLORE_CATEGORY_GAME_HASH	0x9cb3396e00056ce9 //  
-#define PS1_EMU_HASH			0x7a6cb5c70009afe8 //
-#define PS1_NETEMU_HASH 		0x7a304962000be867 // 
-#define GAME_EXT_PLUGIN_HASH		0xe274af7b0001e5d3 //
-#define PSP_EMULATOR_HASH		0x7be641f500023794 // 
-#define PEMUCORELIB_HASH		0xf349a563000c0d67 // 
-#define EMULATOR_API_HASH		0xa9f5b37a0001bb45 // 
-#define EMULATOR_DRM_HASH		0xa324dc4a00005399 // 
-#define EMULATOR_DRM_DATA_HASH		0x75c390860001b75f // 
-#define LIBSYSUTIL_SAVEDATA_PSP_HASH	0x57bbc3b800003212 // 
-#define LIBFS_EXTERNAL_HASH		0x5bc7bce800006477 // 
+#define VSH_DEX_HASH					0xb6b6d000002e4000 // STATIC HASH, COBRA 7.5
+#define VSH_CEX_HASH					0xb6b6d000002e3000 // STATIC HASH, COBRA 7.5
+#define BDP_DISC_CHECK_PLUGIN_HASH  	0x9940000000003000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+//#define BASIC_PLUGINS_HASH			0xb5988dba00020157 // STATIC HASH, COBRA 7.5
+#define EXPLORE_PLUGIN_HASH				0xc50d0000000ec000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define EXPLORE_CATEGORY_GAME_HASH		0xde52c00000056000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define PS1_EMU_HASH     				0xcc2850000009a000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define PS1_NETEMU_HASH     			0xcc28b000000be000 // STATIC HASH, COBRA 7.5
+#define GAME_EXT_PLUGIN_HASH			0xcc2680000001e000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define PSP_EMULATOR_HASH    			0xcc29b00000023000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define PEMUCORELIB_HASH    			0x40425000000c0000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define EMULATOR_API_HASH    			0x8409f0000001b000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define EMULATOR_DRM_HASH    			0xbbb8800000005000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define EMULATOR_DRM_DATA_HASH   		0x2f3ab0000001b000 // STATIC HASH, COBRA 7.5
+#define LIBSYSUTIL_SAVEDATA_PSP_HASH	0x0dfdc00000003000 // STATIC HASH, COBRA 7.5, 4.53-4.81
+#define LIBFS_EXTERNAL_HASH    			0x05fd000000006000 // STATIC HASH, COBRA 7.5, 4.53-4.81
 
 
 /* vsh */ // 
@@ -175,6 +176,13 @@
 #define dex_psp_drm_patchE		0x24A8F0 //    
 #define dex_psp_drm_patchF		0x24B2BC //   
 #define dex_vmode_patch_offset	        0x44ADCC //  PSX Video Mode patch
+#define dex_fake_owner_popup_patch      0x128BC0 // Remove "Fake save data owner pop-up"
+/* MLT Rif/edat bypass patches, thanks to @MiralaTijera and Haxxxen for their research*/
+#define dex_mlt_rif_patch_func1         0xCA376 
+#define dex_mlt_rif_patch_func2         0x248814
+#define dex_mlt_rif_patch_func3         0x24B610
+#define dex_mlt_rif_patch_func4         0x24BC3C
+#define dex_mlt_rif_patch_func5         0x56A238
 
 /*
 #define elf1_func1 			0x5F37DC // NPDRM fself fix / Disabling PL3 patches in vsh
@@ -200,6 +208,14 @@
 #define cex_psp_drm_patchE		0x2430C8 // 
 #define cex_psp_drm_patchF		0x243A94 // 
 #define cex_vmode_patch_offset		0x4431D8 // 
+
+/* MLT Rif/edat bypass patches, thanks to MiralaTijera and Haxxxen for their research*/
+#define cex_mlt_rif_patch_func1         0xC4E2A 
+#define cex_mlt_rif_patch_func2         0x240FEC
+#define cex_mlt_rif_patch_func3         0x243DE8
+#define cex_mlt_rif_patch_func4         0x244414
+#define cex_mlt_rif_patch_func5         0x562644
+
 
 
 /* basic_plugins *///  4.78 - 4.81 DEX
@@ -231,6 +247,7 @@
 #define sfo_check_offset		0x23DAC // DEX *lis       r3, aPage_game_ma_1@ha # "page_game_main"*
 #define ps2_nonbw_offset3		0x172F0 // DEX *rlwinm    r0, r0, 0,26,26*
 #define ps_region_error_offset		0x687C // DEX 
+#define game_exit_popup_patch       0xe418 // remove "Quit Game: No request event"
 /* Disable the check for the current video setting */
 //#define ps_video_error_offset		0x31A50 // li %r3, 0 // experimental, disabled due to its issue with remote play 
 
@@ -309,6 +326,8 @@ void load_boot_plugins(void);
 //void update_hashes(void); // COBRA 7.4
 int prx_load_vsh_plugin(unsigned int slot, char *path, void *arg, uint32_t arg_size);
 int prx_unload_vsh_plugin(unsigned int slot);
+
+int bc_to_net();
 
 /* Syscalls */
 //int sys_vsh_spoof_version(char *version_str);  //Spoof is not needed due to REX's static spoof 

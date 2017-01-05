@@ -93,6 +93,7 @@ uint8_t safe_mode;
 static uint32_t caller_process = 0;
 
 static uint8_t condition_true = 1;
+//static uint8_t condition_false = 0;
 uint8_t condition_ps2softemu = 0;
 uint8_t condition_apphome = 0; 
 uint8_t condition_disable_gameupdate = 0; // Disabled
@@ -103,6 +104,7 @@ uint8_t condition_psp_change_emu = 0;
 uint8_t condition_psp_prometheus = 0;
 uint64_t vsh_check;
 //uint8_t condition_game_ext_psx=0;
+int bc_to_net_status=0;
 
 //uint8_t block_peek = 0;
 
@@ -115,6 +117,30 @@ SprxPatch cex_vsh_patches[] =
 	//{ cex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate }, [DISABLED by DEFAULT since 4.46]
 	{ cex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ cex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
+	/*{ cex_mlt_rif_patch_func2, LI(R3, 0), &condition_true },               // NOT NEEDED
+	{ cex_mlt_rif_patch_func2+0x1368, LI(R3, 0), &condition_true },    		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func2+0x1680, LI(R3, 0), &condition_true },   	 	 // NOT NEEDED
+	{ cex_mlt_rif_patch_func2+0x1CC4, LI(R3, 0), &condition_true },  		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func2+0x20F4, LI(R3, 0), &condition_true },  		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func2+0x2434, LI(R3, 0), &condition_true },		 	 // NOT NEEDED
+	{ cex_mlt_rif_patch_func3, LI(R0, 0), &condition_true },				 // NOT NEEDED
+	{ cex_mlt_rif_patch_func3+0x04, NOP, &condition_true },	        		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func3+0x64, LI(R0, 0), &condition_true },    		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func3+0x68, NOP, &condition_true },		    		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func4, LI(R3, 0), &condition_true },	           	 // NOT NEEDED */
+	//{ cex_mlt_rif_patch_func4+0x14FC, LI(R3, 0), &condition_true },	         // C00 Unlock, Hard-coded in REX 4.81.2	
+	/*{ cex_mlt_rif_patch_func4+0x1C84, LI(R3, 0), &condition_true },		 // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x1D88, LI(R3, 0), &condition_true },		     // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x2210, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x2260, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x2538, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x2560, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x28B8, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x2BD4, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x3248, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x376C, LI(R3, 0), &condition_true },	         // NOT NEEDED
+	{ cex_mlt_rif_patch_func4+0x39BC, LI(R3, 0), &condition_true },		     // NOT NEEDED
+	{ cex_mlt_rif_patch_func5, 0x409E0014, &condition_true },*/
 	{ 0 }
 };
 
@@ -130,8 +156,32 @@ SprxPatch dex_vsh_patches[] =
 	//{ dex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate },
 	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ dex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
-	//{ dex_enable_dlna_patch, LI(R4, 1), &condition_true },
-
+	//{ dex_enable_dlna_patch, LI(R4, 1), &condition_true },	
+	/*{ dex_mlt_rif_patch_func2, LI(R3, 0), &condition_true },
+	{ dex_mlt_rif_patch_func2+0x1368, LI(R3, 0), &condition_true },
+	{ dex_mlt_rif_patch_func2+0x1680, LI(R3, 0), &condition_true },
+	{ dex_mlt_rif_patch_func2+0x1CC4, LI(R3, 0), &condition_true },
+	{ dex_mlt_rif_patch_func2+0x20F4, LI(R3, 0), &condition_true },
+	{ dex_mlt_rif_patch_func2+0x2434, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func3, LI(R0, 0), &condition_true },
+	{ dex_mlt_rif_patch_func3+0x04, NOP, &condition_true },	
+	{ dex_mlt_rif_patch_func3+0x64, LI(R0, 0), &condition_true },
+	{ dex_mlt_rif_patch_func3+0x68, NOP, &condition_true },		
+	{ dex_mlt_rif_patch_func4, LI(R3, 0), &condition_true },*/	
+	//{ dex_mlt_rif_patch_func4+0x14FC, LI(R3, 0), &condition_true }, // C00 Unlock, Hard-coded in REX 4.81.2	
+	/*{ dex_mlt_rif_patch_func4+0x1C84, LI(R3, 0), &condition_true },		
+	{ dex_mlt_rif_patch_func4+0x1D88, LI(R3, 0), &condition_true },		
+	{ dex_mlt_rif_patch_func4+0x2210, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x2260, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x2538, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x2560, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x28B8, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x2BD4, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x3248, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x376C, LI(R3, 0), &condition_true },	
+	{ dex_mlt_rif_patch_func4+0x39BC, LI(R3, 0), &condition_true },		
+	{ dex_mlt_rif_patch_func5, 0x409E0014, &condition_true },	
+	{ dex_fake_owner_popup_patch, NOP, &condition_true },*/ // Hard-coded in REX 4.81.2	
 	{ 0 }
 };
 
@@ -188,6 +238,7 @@ SprxPatch game_ext_plugin_patches[] =
 	{ ps_region_error_offset, NOP, &condition_true }, /* Needed sometimes... */
 	/*{ ps_video_error_offset, LI(R3, 0), &condition_game_ext_psx },
 	{ ps_video_error_offset+4, BLR, &condition_game_ext_psx },*/ // experimental, disabled due to its issue with remote play
+	//{ game_exit_popup_patch, NOP, &condition_true }, // Hard-coded in REX 4.81.2
 	{ 0 }
 };
 
@@ -685,13 +736,32 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 	if (((ptr[0x10/8] << 24) >> 56) == 0xFF)
 	{
 		uint64_t hash = 0;
-
+/*
 		for (int i = 0; i < 0x100; i++)
 		{
 			hash ^= buf[i];
 		}
 
 		hash = (hash << 32) | total;
+*/ // OLD COBRA 7 METHOD
+// COBRA 7.5 
+
+		for (int i = 0; i < 0x8; i++)  //0x20 bytes only
+		{
+			hash ^= buf[i+0xb0];  //unique location in all files+static hashes between firmware
+		}
+
+			/*if((total & 0xff0000)==0)
+			{*/
+				total=(total&0xfff000); //if size is less than 0x10000 then check for next 4 bits
+			/*}
+			else
+			{
+				total=(total&0xff0000); //copy third byte
+			}*/
+			
+			hash = ((hash << 32)&0xfffff00000000000)|(total);  //20 bits check, prevent diferent hash just because of minor changes
+// COBRA 7.5 END
 		total = 0;
 		
 		#ifdef  DEBUG
@@ -734,11 +804,13 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 				//Do nothing
 			break;
 		}
+		//uint64_t trunc_hash = (hash >> 16), plugin_trunc_hash = 0; // rancid's trunc_hash from MAMBA 3.X
 		for (int i = 0; i < N_PATCH_TABLE_ENTRIES; i++)
 		{
 			if (patch_table[i].hash == hash)  
 			{		
 				#ifdef  DEBUG
+				//DPRINTF("Now patching %s %lx\n", hash_to_name(trunc_hash), hash);  // rancid's trunc_hash from MAMBA 3.X
 				DPRINTF("Now patching  %s %lx\n", hash_to_name(hash), hash); 
 				#endif
 
@@ -858,6 +930,66 @@ LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, load_process_hooked, (process_t proce
 	
 	return 0;
 }
+// COBRA 7.5, PS2NETEMU Toggler for BC/Semi-BC Consoles
+int bc_to_net(int param)
+
+{	
+//returns:
+//0=disabled
+//1=enabled
+//-1=its not a bc/semi-bc console
+	if(condition_ps2softemu)
+	{
+		return -1;
+	}
+
+	if(param==1) //enable netemu
+	{
+		switch(vsh_check) 
+		{
+			case VSH_CEX_HASH:
+			copy_to_process(vsh_process, &cex_vsh_patches[0].data, (void *)(uint64_t)(0x10000+cex_vsh_patches[0].offset), 4);
+			copy_to_process(vsh_process, &cex_vsh_patches[1].data, (void *)(uint64_t)(0x10000+cex_vsh_patches[1].offset), 4);
+			break;
+			
+			case VSH_DEX_HASH:
+			copy_to_process(vsh_process, &dex_vsh_patches[0].data, (void *)(uint64_t)(0x10000+dex_vsh_patches[0].offset), 4);
+			copy_to_process(vsh_process, &dex_vsh_patches[1].data, (void *)(uint64_t)(0x10000+dex_vsh_patches[1].offset), 4);
+			break;
+		}
+			bc_to_net_status=1;
+			return 1;			
+
+
+	}
+	if(param==0) //restore
+	{
+		switch(vsh_check) 
+		{
+			case VSH_CEX_HASH:		
+			copy_to_process(vsh_process, &cex_vsh_patches[2].data, (void *)(uint64_t)(0x10000+cex_vsh_patches[2].offset), 4);
+			copy_to_process(vsh_process, &cex_vsh_patches[3].data, (void *)(uint64_t)(0x10000+cex_vsh_patches[3].offset), 4);
+			break;
+		
+			case VSH_DEX_HASH:		
+			copy_to_process(vsh_process, &dex_vsh_patches[2].data, (void *)(uint64_t)(0x10000+dex_vsh_patches[2].offset), 4);
+			copy_to_process(vsh_process, &dex_vsh_patches[3].data, (void *)(uint64_t)(0x10000+dex_vsh_patches[3].offset), 4);
+			break;
+		}	
+			bc_to_net_status=0;
+			return 0;
+	
+		
+	}
+	
+	if(param==2)
+	{
+		return bc_to_net_status;
+	}
+	
+	return -2;
+}
+// COBRA 7.5 END
 
 /*void do_spoof_patches(void)
 {
@@ -1179,6 +1311,7 @@ void load_boot_plugins(void)
 	}
 	cellFsClose(fd);
 }
+
 /*
 // Habib's hash update , COBRA 7.4 start
 unsigned int as_hex(char c)
@@ -1278,7 +1411,7 @@ void update_hashes(void) //renewal of cobra hashes in txt file format filename:h
 					{
 						memcpy(buf+i, new_hash, 8);
 						DPRINTF("found\n");
-						break;
+						//break;
 					}
 				}
 #if defined (FIRMWARE_4_81)	
@@ -1305,6 +1438,7 @@ void update_hashes(void) //renewal of cobra hashes in txt file format filename:h
 }
 // Habib's hash update end
 */
+
 #ifdef DEBUG
 LV2_HOOKED_FUNCTION_PRECALL_SUCCESS_8(int, create_process_common_hooked, (process_t parent, uint32_t *pid, int fd, char *path, int r7, uint64_t r8,
 									  uint64_t r9, void *argp, uint64_t args, void *argp_user, uint64_t sp_80,

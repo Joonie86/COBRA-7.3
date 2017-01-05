@@ -1,10 +1,11 @@
-# COBRA 7.31 Source
+# COBRA 7.5 Source
 
 	[Supported CFW]
 
 	REBUG 4.81.1 REX/D-REX
+	REBUG 4.81.2 REX/D-REX
 
-As of December 14th 2016, following has been changed and updated since 4.46 COBRA 7
+As of January 5th 2017, following has been changed and updated since 4.46 COBRA 7
 
 	[ Joonie's Changes ]
 
@@ -22,6 +23,8 @@ As of December 14th 2016, following has been changed and updated since 4.46 COBR
 	* Allow Syscall 11 to gain full access to syscall 6/7/9/10 to prevent modification from homebrews like multiMAN.
 	* PS2 Launcher is no longer needed due to new codes in storage_ext, now COBRA can behave the same way that VSH does to apply configuration of DS3 controllers. 
 	* PS2 Launcher can still be used, which allows PS2ISO with netemu on backward compatible consoles.
+	* PS2 Netemu toggle is added for Backward compatible consoles, it is very useful for those units with broken EE/GS chips as well.
+	* HASH calculation algorithm is changed, now it uses static hashes, so the hashes will not be changed unless modules have major changes.
  
 	[ KW's changes ]
 

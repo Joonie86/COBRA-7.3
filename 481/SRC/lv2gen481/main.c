@@ -242,7 +242,15 @@ static void patch_elf(char *elf, char *stage0, char *bin, uint64_t address, uint
 		exit(-1);
 	}
 	
-	memcpy(buf1+0x10000+stage0_addr, buf3, fread(buf3, 1, sizeof(buf3), f));
+	//memcpy(buf1+0x10000+stage0_addr, buf3, fread(buf3, 1, sizeof(buf3), f)); // old
+	// New fix
+	int size_stage0=fread(buf3, 1, sizeof(buf3), f);
+	if(size_stage0>0x110)
+	{
+		size_stage0=0x110;
+	}
+	memcpy(buf1+0x10000+stage0_addr, buf3, size_stage0);
+	// New Fix 
 	uint32_t inst = MAKE_CALL_VALUE(stage0_addr+0xc, 0x3d98);
  	inst=swap32(inst);
 	memcpy(buf1+0x10000+stage0_addr+0xc, &inst, 0x4);

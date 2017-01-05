@@ -412,6 +412,8 @@
 #define ufs_write_symbol   0x1ED458 // 0x1ED3D8
 #define ufs_fstat_symbol   0x1EC760 // 0x1EC6E0
 
+#define decrypt_symbol		0x1377c4
+
 #define log_printf_symbol  0xB8E30  // same as 4.65-4.75
 
 #define memcpy_symbol      0x118A90 // 0x118A10

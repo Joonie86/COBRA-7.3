@@ -56,7 +56,7 @@
 // F = 7.0
 
 #define COBRA_VERSION		0x0F
-#define COBRA_VERSION_BCD	0x0731
+#define COBRA_VERSION_BCD	0x0750
 
 #if defined(FIRMWARE_3_41)
 #define FIRMWARE_VERSION	0x0000
@@ -129,6 +129,7 @@ static Patch kernel_patches[] =
 	// We don't need that, but let's dummy the function just in case that patch is really necessary
 	{ mem_base2, LI(R3, 1) },
 	{ mem_base2 + 4, BLR },
+	//{ sc870, LI(R3, 0) }, For testing only, successfully dumped IDPS by using this syscall
 
 	// sys_sm_shutdown, for ps2 let's pass to copy_from_user a fourth parameter
 	{ shutdown_patch_offset, MR(R6, R31) },
@@ -235,11 +236,11 @@ LV2_SYSCALL2(void, sys_cfw_poke, (uint64_t *ptr, uint64_t value))
 				DPRINTF("Adding syscall 8 extension %p %p\n", extended_syscall8.addr, extended_syscall8.toc);
 				return;
 			}
-			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow removing protected syscall 6 7 9 10 35 NOT 8
+			else if (((value == sc_null) ||(value == syscall_not_impl)) && (syscall_num != 8)) //Allow removing protected syscall 6 7 9 10 11 35 36 38 NOT 8
 			{
 				DPRINTF("HB remove syscall %ld\n", syscall_num);
 			}
-			else //Prevent syscall 6 7 9 10 and 35 from being re-written
+			else //Prevent syscall 6 7 9 10 11 and 35 from being re-written
 			{
 				DPRINTF("HB has been blocked from rewritting syscall %ld\n", syscall_num);
 				return;
@@ -421,7 +422,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 {
 	extend_kstack(0);
 
-	//DPRINTF("Syscall 8 -> %lx\n", function);
+	DPRINTF("Syscall 8 -> %lx\n", function);
 	if(function>=0x8000000000000000ULL)
 	{
 	  DPRINTF("LV1 peek %lx %llux\n", function, (long long unsigned int)(lv1_peekd(function)));
@@ -673,6 +674,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 9) = syscall_not_impl;
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 10) = syscall_not_impl;
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 11) = syscall_not_impl;
+				*(uint64_t *)MKA(syscall_table_symbol + 8 * 15) = syscall_not_impl;
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 35) = syscall_not_impl;
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 36) = syscall_not_impl;
 				*(uint64_t *)MKA(syscall_table_symbol + 8 * 38) = syscall_not_impl;
@@ -685,7 +687,11 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		case SYSCALL8_OPCODE_GET_VERSION:
 			return sys_get_version((uint32_t *)param1);
 		break;
-
+// 7.5
+		case SYSCALL8_OPCODE_USE_PS2NETEMU:
+			return bc_to_net((int)param1);
+		break;
+// 7.5
 		case SYSCALL8_OPCODE_GET_VERSION2:
 			return sys_get_version2((uint16_t *)param1);
 		break;
