@@ -196,7 +196,7 @@ SprxPatch basic_plugins_patches[] =
 SprxPatch explore_plugin_patches[] =
 {
         { app_home_offset, 0x2f646576, &condition_apphome }, 
-	{ app_home_offset+4, 0x5f626478, &condition_apphome }, 
+	{ app_home_offset+4, 0x5f626476, &condition_apphome }, 
 	{ app_home_offset+8, 0x642f5053, &condition_apphome }, 
 	{ ps2_nonbw_offset, LI(0, 1), &condition_ps2softemu },
 	{ 0 }
