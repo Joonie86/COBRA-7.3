@@ -56,7 +56,7 @@
 // F = 7.0
 
 #define COBRA_VERSION		0x0F
-#define COBRA_VERSION_BCD	0x0750
+#define COBRA_VERSION_BCD	0x0751
 
 #if defined(FIRMWARE_3_41)
 #define FIRMWARE_VERSION	0x0000
@@ -142,6 +142,11 @@ static Patch kernel_patches[] =
 	{ lic_patch, LI(R3, 1) },
 	{ ode_patch, LI(R3, 0) },
 	{ ode_patch+4, STD(R3, 0, R9) },
+#if defined(FIRMWARE_4_81DEX)
+	// Patch is_debuggable to allow VSH to be attached on Target Manager
+	{ vsh_patch, LI(R3, 1) },
+	{ vsh_patch + 4, BLR },
+#endif
 
 
 };

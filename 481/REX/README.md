@@ -1,11 +1,11 @@
-# COBRA 7.5 Source
+# COBRA 7.51 Source
 
 	[Supported CFW]
 
 	REBUG 4.81.1 REX/D-REX
 	REBUG 4.81.2 REX/D-REX
 
-As of January 5th 2017, following has been changed and updated since 4.46 COBRA 7
+As of Feburary 2nd 2017, following has been changed and updated since 4.46 COBRA 7
 
 	[ Joonie's Changes ]
 
@@ -14,6 +14,7 @@ As of January 5th 2017, following has been changed and updated since 4.46 COBRA 
 	* unknown E3 patches are removed to fix an issue with XMB, [Originally found by rancid-0, from his PS3ITA 4.50 COBRA]
 	* Dual VSH supported for REBUG REX / D-REX CFW, with the proper hash check code was developed by habib and Nzv recently. 
 	* NPDRM Fself fix is no longer used due to improved fself patches hard coded within the firmware modules on REX/D-REX 
+	* TMAPI can now attach any module [Thanks to aerosoul who reversed this!] 
 
 	[ Habib's changes ]
 
@@ -41,6 +42,7 @@ As of January 5th 2017, following has been changed and updated since 4.46 COBRA 
 	* Permission protection is disabled to increase game compatiblity and full DEX support.[no more issue with Target Manager or CCAPI]
 	* 80010017 / 8001002B Error fix is added since 4.60, this was developed to prevent issues with games when game disc is inserted in BD Drive.
 	* LIC.DAT check is patched to fix the issue with launching homebrew since 4.60
+	* Full burned optical media support for PS3 Games. (CD-R, DVD-R SL/DL, BD-R SL/DL, BD-RE)
 
 	[ Nzv's changes]
 

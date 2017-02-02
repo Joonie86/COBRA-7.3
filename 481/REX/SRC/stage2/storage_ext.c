@@ -44,6 +44,7 @@
 
 #define PS2EMU_STAGE2_FILE	"/dev_hdd0/vm/pm0"
 #define PS2EMU_CONFIG_FILE	"/dev_hdd0/tmp/cfg.bin"
+#define cfg_suffix "CONFIG"
 
 #define MIN(a, b)	((a) <= (b) ? (a) : (b))
 #define ABS(a)		(((a) < 0) ? -(a) : (a))
@@ -131,6 +132,7 @@ static event_queue_t proxy_result_queue;
 
 static int discfd = -1;
 static int disc_emulation;
+static int emu_ps3_rec = 0; // Support for burned PS3 DVD/BD Discs by deank
 static int total_emulation;
 static int skip_emu_check = 0;
 static volatile int loop = 0;
@@ -1175,6 +1177,12 @@ int is_psx(int check_ps2)
 		if (result == 0)
 		{
 			// Probably not the best way to say if a disc is psx...
+			if(check_ps2==3)
+			{
+				ret = (memcmp(buf+1, "CD001", 5) == 0 && memcmp(buf+0x28, "PS3VOLUME", 9) == 0);
+				page_free(NULL, buf, 0x2F);
+				return ret;
+			}
 			ret = (memcmp(buf+1, "CD001", 5) == 0 && memcmp(buf+8, "PLAYSTATION ", 12) == 0);
 			if (ret && check_ps2)
 			{
@@ -1221,6 +1229,7 @@ void process_disc_insert(uint32_t disctype)
 	real_disctype = disctype;
 	effective_disctype = real_disctype;
 	fake_disctype = 0;
+	emu_ps3_rec = 0;	
 	#ifdef DEBUG
 	DPRINTF("real disc type = %x\n", real_disctype);
 	#endif
@@ -1295,6 +1304,13 @@ void process_disc_insert(uint32_t disctype)
 					fake_disctype = effective_disctype = DEVICE_TYPE_PS2_DVD;
 				}
 			}
+			
+			if(real_disctype && real_disctype != DEVICE_TYPE_PS3_BD && fake_disctype == 0 && is_psx(3))
+			{
+				fake_disctype = effective_disctype = DEVICE_TYPE_PS3_BD;
+				emu_ps3_rec=1;
+			}
+
 		break;
 	}
 
@@ -2512,7 +2528,7 @@ LV2_HOOKED_FUNCTION_COND_POSTCALL_2(int, emu_disc_auth, (uint64_t func, uint64_t
 			return 0;
 		}
 
-		if (disc_emulation == EMU_PS3 && real_disctype != DEVICE_TYPE_PS3_BD)
+		if (( (emu_ps3_rec && disc_emulation == EMU_OFF) || disc_emulation == EMU_PS3) && real_disctype != DEVICE_TYPE_PS3_BD)
 		{
 			static int inloop = 0;
 
@@ -3065,6 +3081,7 @@ static INLINE void do_umount_discfile(void)
 
 	disc_emulation = EMU_OFF;
 	total_emulation = 0;
+	emu_ps3_rec=0;
 }
 
 static INLINE int check_files_and_allocate(unsigned int filescount, char *files[])
