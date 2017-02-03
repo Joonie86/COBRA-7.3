@@ -14,7 +14,6 @@ As of Feburary 2nd 2017, following has been changed and updated since 4.46 COBRA
 	* unknown E3 patches are removed to fix an issue with XMB, [Originally found by rancid-0, from his PS3ITA 4.50 COBRA]
 	* Dual VSH supported for REBUG REX / D-REX CFW, with the proper hash check code was developed by habib and Nzv recently. 
 	* NPDRM Fself fix is no longer used due to improved fself patches hard coded within the firmware modules on REX/D-REX 
-	* TMAPI can now attach any module [Thanks to aerosoul who reversed this!] 
 
 	[ Habib's changes ]
 
