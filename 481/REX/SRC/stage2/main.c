@@ -445,12 +445,15 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 	else tmp_lv1peek=0;
 	// --
 
-/*
+
 	static uint32_t pid_blocked = 0;
 	uint32_t pid;
 
 	// Some processsing to avoid crashes with lv1 dumpers
 	pid = get_current_process_critical()->pid;
+
+	if(!disable_cobra)
+	{
 
 	if (pid == pid_blocked)
 	{
@@ -478,7 +481,8 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		pid_blocked = pid;
 		return ENOSYS;
 	}
-*/
+	}
+
 
 	if ((function == SYSCALL8_OPCODE_PS3MAPI) && ((int)param1 == PS3MAPI_OPCODE_REQUEST_ACCESS) && (param2 == ps3mapi_key) && (ps3mapi_access_tries < 3)) {ps3mapi_access_tries = 0; ps3mapi_access_granted = 1;}
 
