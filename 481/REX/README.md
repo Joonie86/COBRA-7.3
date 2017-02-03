@@ -30,6 +30,7 @@ As of Feburary 2nd 2017, following has been changed and updated since 4.46 COBRA
 			dev_hdd0/PS2ISO/GOW.ISO.CONFIG 
 	* HASH calculation algorithm is changed, now it uses static hashes, so the hashes will not be changed unless modules have major changes.
 	* Stealth extension support to disable Syscall 15
+	* Allows temporary LV1 peek from syscall 8 when "disabling COBRA" is not used
 	
 	[ KW's changes ]
 
