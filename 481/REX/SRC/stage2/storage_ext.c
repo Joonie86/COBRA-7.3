@@ -44,7 +44,6 @@
 
 #define PS2EMU_STAGE2_FILE	"/dev_hdd0/vm/pm0"
 #define PS2EMU_CONFIG_FILE	"/dev_hdd0/tmp/cfg.bin"
-#define cfg_suffix "CONFIG"
 
 #define MIN(a, b)	((a) <= (b) ? (a) : (b))
 #define ABS(a)		(((a) < 0) ? -(a) : (a))
@@ -1176,13 +1175,20 @@ int is_psx(int check_ps2)
 
 		if (result == 0)
 		{
-			// Probably not the best way to say if a disc is psx...
+			// Check if it is a burned PS3 disk (deank)
 			if(check_ps2==3)
 			{
 				ret = (memcmp(buf+1, "CD001", 5) == 0 && memcmp(buf+0x28, "PS3VOLUME", 9) == 0);
+				if(!ret)
+				{
+					result = read_real_disc_sector(buf, 0x01, 1, 3);
+					ret = (memcmp(buf, "PlayStation3", 12) == 0);
+				}
 				page_free(NULL, buf, 0x2F);
 				return ret;
 			}
+
+			// Probably not the best way to say if a disc is psx...
 			ret = (memcmp(buf+1, "CD001", 5) == 0 && memcmp(buf+8, "PLAYSTATION ", 12) == 0);
 			if (ret && check_ps2)
 			{
