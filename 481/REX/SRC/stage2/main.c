@@ -149,10 +149,7 @@ static Patch kernel_patches[] =
 	{ vsh_patch + 4, BLR },
 #endif
 */ // Currently disabled to fix the issue with modding tools 
-#if defined(FIRMWARE_4_81DEX)
-	{ sc864, 0x38600000 },
-	{ sc864 + 4, 0x4e800020 },
-#endif
+
 };
 
 #define N_KERNEL_PATCHES	(sizeof(kernel_patches) / sizeof(Patch))

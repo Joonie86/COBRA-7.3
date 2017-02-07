@@ -145,7 +145,7 @@
 #define VSH_DEX_HASH					0xb6b6d000002e4000 // STATIC HASH, COBRA 7.5
 #define VSH_CEX_HASH					0xb6b6d000002e3000 // STATIC HASH, COBRA 7.5
 #define BDP_DISC_CHECK_PLUGIN_HASH  	0x9940000000003000 // STATIC HASH, COBRA 7.5, 4.53-4.81
-#define BASIC_PLUGINS_HASH				0xb5988dba00020157 // STATIC HASH, COBRA 7.5
+//#define BASIC_PLUGINS_HASH			0xb5988dba00020157 // STATIC HASH, COBRA 7.5
 #define EXPLORE_PLUGIN_HASH				0xc50d0000000ec000 // STATIC HASH, COBRA 7.5, 4.53-4.81
 #define EXPLORE_CATEGORY_GAME_HASH		0xde52c00000056000 // STATIC HASH, COBRA 7.5, 4.53-4.81
 #define PS1_EMU_HASH     				0xcc2850000009a000 // STATIC HASH, COBRA 7.5, 4.53-4.81
@@ -219,11 +219,11 @@
 
 
 /* basic_plugins *///  4.78 - 4.81 DEX
-
+/*
 #define ps1emu_type_check_offset	0x20234 // Same as 4.70 //DEX Disabled by default
 #define pspemu_path_offset		0x4BBC8 //  DEX *Search /dev_bdvd/PS3_GM01"
 #define psptrans_path_offset		0x4C830 //  DEX *Search /dev_flash/pspemu/psp_translator.self"
-
+*/
 
 /* explore_plugin */// 4.81 DEX
 #define app_home_offset		0x2514C0 //*aApp_homePs3_ga:.string "/app_home/PS3_GAME"* 
