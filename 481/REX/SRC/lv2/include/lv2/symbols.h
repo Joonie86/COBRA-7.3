@@ -3574,7 +3574,7 @@
 #define patch_func9_offset 								0x4B8      // Done
 #define mem_base2										0x3D90     // Done
 //#define sc870                                           0x231DCC // DEX 4.81
-
+#define sc864											0x22CC88 // DEX 4.81 , Syscall 864
 /* vars */
 #define thread_info_symbol    							0x3A4A30   // Done
 
