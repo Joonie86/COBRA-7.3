@@ -1155,7 +1155,8 @@ int sys_prx_unload_vsh_plugin(unsigned int slot)
 
 }
 
-static int read_text_line(int fd, char *line, unsigned int size, int *eof)
+// static int was removed to support cfg implementation for homebrew blocker by KW & AV
+int read_text_line(int fd, char *line, unsigned int size, int *eof)
 {
 	int i = 0;
 	int line_started = 0;

@@ -1,11 +1,11 @@
-# COBRA 7.51 Source
+# COBRA 7.52 Source
 
 	[Supported CFW]
 
 	REBUG 4.81.1 REX/D-REX
 	REBUG 4.81.2 REX/D-REX
 
-As of Feburary 2nd 2017, following has been changed and updated since 4.46 COBRA 7
+As of Feburary 21st 2017, following has been changed and updated since 4.46 COBRA 7
 
 	[ Joonie's Changes ]
 
@@ -35,6 +35,7 @@ As of Feburary 2nd 2017, following has been changed and updated since 4.46 COBRA
 
 	* webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
 	* PSN Patch stealth mode, it remove custom syscall from the ps3
+	* Homebrew blocker added, when Syscalls are disabled by plugins or homebrews, it will prevent homebrews from being launched, and it will return as 800100016 on XMB.
 
 	[ Dean's changes ] 
 
