@@ -56,7 +56,7 @@
 // F = 7.0
 
 #define COBRA_VERSION		0x0F
-#define COBRA_VERSION_BCD	0x0751
+#define COBRA_VERSION_BCD	0x0752
 
 #if defined(FIRMWARE_3_41)
 #define FIRMWARE_VERSION	0x0000
