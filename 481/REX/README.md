@@ -35,7 +35,7 @@ As of Feburary 21st 2017, following has been changed and updated since 4.46 COBR
 
 	* webMAN integration on boot. Also disables external webMAN plugin located in dev_hdd0
 	* PSN Patch stealth mode, it remove custom syscall from the ps3
-	* Homebrew blocker added, when Syscalls are disabled by plugins or homebrews, it will prevent homebrews from being launched, and it will return as 800100016 on XMB.
+	* Homebrew blocker added, when Syscalls are disabled by plugins or homebrews, it will prevent homebrews from being launched, and it will return as 80010006 on XMB.
 
 	[ Dean's changes ] 
 
