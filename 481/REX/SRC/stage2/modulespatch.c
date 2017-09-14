@@ -102,6 +102,7 @@ uint8_t condition_psp_dec = 0;
 uint8_t condition_psp_keys = 0;
 uint8_t condition_psp_change_emu = 0;
 uint8_t condition_psp_prometheus = 0;
+uint8_t condition_pemucorelib = 1;
 uint64_t vsh_check;
 //uint8_t condition_game_ext_psx=0;
 int bc_to_net_status=0;
@@ -359,10 +360,10 @@ SprxPatch pemucorelib_patches[] =
 	{ psp_prx_patch+0x84, BLR, &condition_psp_iso },
 	// Prometheus
 	{ psp_prometheus_patch, '.OLD', &condition_psp_prometheus },
-#if defined(FIRMWARE_4_30) || defined(FIRMWARE_4_75) || defined(FIRMWARE_4_75DEX) || defined(FIRMWARE_4_80) || defined(FIRMWARE_4_80DEX) || defined(FIRMWARE_4_81) || defined(FIRMWARE_4_81DEX)
+/* #if defined(FIRMWARE_4_30) || defined(FIRMWARE_4_75) || defined(FIRMWARE_4_75DEX) || defined(FIRMWARE_4_80) || defined(FIRMWARE_4_80DEX) || defined(FIRMWARE_4_81) || defined(FIRMWARE_4_81DEX)
 	// Extra save data patch required since some 3.60+ firmware
 	{ psp_extra_savedata_patch, LI(R31, 1), &condition_psp_iso },
-#endif
+#endif */
 	{ 0 }
 };
 
@@ -770,7 +771,8 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 		
 		switch(hash)
 		{
-		
+            pad_data data;
+            
 			case VSH_CEX_HASH:
 				vsh_check = hash;
 			break;
@@ -800,6 +802,28 @@ LV2_PATCHED_FUNCTION(int, modules_patching, (uint64_t *arg1, uint32_t *arg2))
 				}
 			break;
 			*/
+
+			case PEMUCORELIB_HASH:
+				if (condition_pemucorelib)
+				{
+
+					if (pad_get_data(&data) >= ((PAD_BTN_OFFSET_DIGITAL+1)*2)){
+
+						if((data.button[PAD_BTN_OFFSET_DIGITAL] & (PAD_CTRL_CROSS|PAD_CTRL_R1)) == (PAD_CTRL_CROSS|PAD_CTRL_R1)){
+
+							DPRINTF("Button Shortcut detected! Applying pemucorelib Extra Savedata Patch...\n");
+
+							DPRINTF("Now patching %s %lx\n", hash_to_name(hash), hash);
+
+							uint32_t data = LI(R31, 1);
+							buf[psp_extra_savedata_patch/4] = data;			
+
+							DPRINTF("Offset: 0x%08X | Data: 0x%08X\n", psp_extra_savedata_patch, data);
+						}
+					}
+				}
+			break;
+
 			default:
 				//Do nothing
 			break;
@@ -1546,3 +1570,4 @@ int ps3mapi_get_vsh_plugin_info(unsigned int slot, char *name, char *filename)
 	dealloc(segments, 0x35);
 	return ret;
 }
+
