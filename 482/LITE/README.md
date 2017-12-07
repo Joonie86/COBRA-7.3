@@ -63,5 +63,7 @@ As of December 3rd 2017, following has been changed and updated since 4.46 COBRA
 	(also as PS3MAPI opcodes)
 	* Added temporary disablement of Cobra syscall8 to allow dumpers peek 0x1000 to 0x9800
 	* BASIC_PLUGIN hash is commented.
+	
+	[ Haxxxen's changes ]
 
 STILL IN W.I,P, please let me know if anyone is interested in making changes in this note :)
