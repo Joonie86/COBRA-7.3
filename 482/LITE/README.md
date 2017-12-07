@@ -65,5 +65,7 @@ As of December 3rd 2017, following has been changed and updated since 4.46 COBRA
 	* BASIC_PLUGIN hash is commented.
 	
 	[ Haxxxen's changes ]
+        * Extra patch for PSP SAVE DATA is disabled by default to improve compatibility,
+         however can be toggled by CROSS+R1 when launching PSP launcher.
 
 STILL IN W.I,P, please let me know if anyone is interested in making changes in this note :)
