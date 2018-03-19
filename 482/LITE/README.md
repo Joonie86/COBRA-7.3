@@ -1,10 +1,11 @@
-# COBRA 7.54 Source
+# COBRA 7.55 Source
 
 	[Supported CFW]
 
 	REBUG 4.82.1 LITE
+	REBUG 4.82.2 LITE
 
-As of December 3rd 2017, following has been changed and updated since 4.46 COBRA 7
+As of March 18th 2018, following has been changed and updated since 4.46 COBRA 7
 
 	[ Joonie's Changes ]
 
