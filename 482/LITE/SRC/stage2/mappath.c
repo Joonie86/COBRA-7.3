@@ -302,6 +302,7 @@ LV2_HOOKED_FUNCTION_POSTCALL_2(void, open_path_hook, (char *path0, int mode))
 		!strncmp(gameid, "BL", 2) ||
 		!strncmp(gameid, "BC", 2) ||
 		!strncmp(gameid, "_INST_", 6) ||
+		!strncmp(gameid, "_DEL_", 5) ||
 		!strncmp(gameid, "KOEI3", 5) ||
 		!strncmp(gameid, "KTGS3", 5) ||
 		!strncmp(gameid, "MRTC0", 5) ||
