@@ -1,10 +1,11 @@
-# COBRA 7.54 Source
+# COBRA 7.55 Source
 
 	[Supported CFW]
 
 	REBUG 4.82.1 LITE
+	REBUG 4.82.2 LITE
 
-As of December 3rd 2017, following has been changed and updated since 4.46 COBRA 7
+As of March 18th 2018, following has been changed and updated since 4.46 COBRA 7
 
 	[ Joonie's Changes ]
 
@@ -63,5 +64,9 @@ As of December 3rd 2017, following has been changed and updated since 4.46 COBRA
 	(also as PS3MAPI opcodes)
 	* Added temporary disablement of Cobra syscall8 to allow dumpers peek 0x1000 to 0x9800
 	* BASIC_PLUGIN hash is commented.
+	
+	[ Haxxxen's changes ]
+        * Extra patch for PSP SAVE DATA is disabled by default to improve compatibility,
+         however can be toggled by CROSS+R1 when launching PSP launcher.
 
 STILL IN W.I,P, please let me know if anyone is interested in making changes in this note :)
