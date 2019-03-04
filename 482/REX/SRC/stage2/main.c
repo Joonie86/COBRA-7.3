@@ -143,11 +143,11 @@ static Patch kernel_patches[] =
 	{ ode_patch, LI(R3, 0) },
 	{ ode_patch+4, STD(R3, 0, R9) },
 	
-/*#if defined(FIRMWARE_4_82DEX)
+#if defined(FIRMWARE_4_82DEX)
 	// Patch is_debuggable to allow VSH to be attached on Target Manager
 	{ vsh_patch, LI(R3, 1) },
 	{ vsh_patch + 4, BLR },
-#endif*/
+#endif
  // Currently disabled to fix the issue with modding tools 
 
 };
@@ -936,7 +936,7 @@ int main(void)
 	//do_pad_test();
 #endif
 
-	//map_path("/app_home", "/dev_usb000", 0); //Not needed
+	map_path("/app_home", "/dev_usb000", 0); //Not needed
 
 	return 0;
 }
