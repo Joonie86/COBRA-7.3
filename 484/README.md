@@ -1,3 +1,9 @@
+[Supported CFW]
+
+REBUG 4.84.1 CEX LITE
+REBUG 4.84.1 DECR LITE
+REBUG 4.84.1 REX/D-REX
+
 COBRA 8.01 Source
 [ Joonie's Changes ]
 
