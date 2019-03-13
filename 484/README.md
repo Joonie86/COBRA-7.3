@@ -5,6 +5,7 @@ REBUG 4.84.1 DECR LITE
 REBUG 4.84.1 REX/D-REX
 
 COBRA 8.01 Source
+
 [ Joonie's Changes ]
 
 * Firmware spoofing is disabled due to the changes of PSN Auth since 4.60
@@ -28,12 +29,13 @@ COBRA 8.01 Source
 * HASH calculation algorithm is changed, now it uses static hashes, so the hashes will not be changed unless modules have major changes.
 * Stealth extension support to disable Syscall 15
 * Allows temporary LV1 peek from syscall 8 when "disabling COBRA" is not used
-*Run payload with Kernel privileges - Added option to run payload with kernel privileges like ps vita skprx. this is a big thing! one can make hooks, printf to socat, do whatever they feel like they need to do. at the current time only one payload is supported at a time. in the future i might increase this 
-*Boot times speed improved - as there is no stage1.
-*PS2 bc and semi bc consoles wont load iso when cobra disabled - disable cobra using opcode)
-*Added support for dynamic memory payloads, 5 of them can be started from "/dev_hdd0/boot_plugins_kernel.txt"
-*toolchain updated to support dynamic address loading.
-*For applications, you can also mount em, and unmount em separately
+* Run payload with Kernel privileges - Added option to run payload with kernel privileges like ps vita skprx. this is a big thing! one can make hooks, printf to socat, do whatever they feel like they need to do. at the current time only one payload is supported at a time. in the future i might increase this 
+* Boot times speed improved - as there is no stage1.
+* PS2 bc and semi bc consoles wont load iso when cobra disabled - disable cobra using opcode)
+* Added support for dynamic memory payloads, 5 of them can be started from "/dev_hdd0/boot_plugins_kernel.txt"
+* Toolchain updated to support dynamic address loading.
+* For applications, you can also mount em, and unmount em separately
+
 Please review this post for further detail via http://www.psx-place.com/threads/update-4-84-1-starbuged-cfw-includes-new-cobra-8-00-payload-by-habib.22810/
 
 [ KW's changes ]
