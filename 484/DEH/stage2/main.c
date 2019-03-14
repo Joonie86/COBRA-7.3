@@ -94,6 +94,12 @@ static Patch kernel_patches[] =
 	// We don't need that, but let's dummy the function just in case that patch is really necessary
 	{ mem_base2, LI(R3, 1) },
 	{ mem_base2 + 4, BLR },
+	
+#ifdef DEBUG
+	// Patch is_debuggable to allow VSH to be attached on Target Manager
+	{ vsh_patch, LI(R3, 1) },
+	{ vsh_patch + 4, BLR },
+#endif
 
 	// sys_sm_shutdown, for ps2 let's pass to copy_from_user a fourth parameter
 	{ shutdown_patch_offset, MR(R6, R31) },

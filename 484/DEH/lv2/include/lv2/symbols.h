@@ -705,6 +705,8 @@
 // ODE Protection Removal patches
 #define lic_patch					0x59FE8 // 
 #define ode_patch					0x22E718 // 
+// VSH is debuggable on TM
+#define vsh_patch								0x3B38
 
 /* Rtoc entries */
 
