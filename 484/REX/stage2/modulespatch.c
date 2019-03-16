@@ -120,6 +120,8 @@ SprxPatch cex_vsh_patches[] =
 	// { cex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate }, [DISABLED by DEFAULT since 4.46]
 	{ cex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ cex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
+	{ cex_ps2tonet_patch, ORI(R3, R3, 0x8202), &condition_false },
+	{ cex_ps2tonet_size_patch, LI(R5, 0x4f0), &condition_false },
 	{ 0 }
 };
 
@@ -128,6 +130,8 @@ SprxPatch dex_vsh_patches[] =
 	//{ dex_game_update_offset, LI(R3, -1), &condition_disable_gameupdate },
 	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8204), &condition_ps2softemu },
 	{ dex_ps2tonet_size_patch, LI(R5, 0x40), &condition_ps2softemu },
+	{ dex_ps2tonet_patch, ORI(R3, R3, 0x8202), &condition_false },
+	{ dex_ps2tonet_size_patch, LI(R5, 0x4f0), &condition_false },
 	//{ dex_enable_dlna_patch, LI(R4, 1), &condition_true },		
 	//{ dex_fake_owner_popup_patch, NOP, &condition_true }, // Hard-coded in REX 4.81.2	
 	{ 0 }
