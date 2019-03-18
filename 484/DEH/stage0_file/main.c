@@ -8,8 +8,6 @@
 
 #if defined (FIRMWARE_4_84DEH)
 	#define STAGE2_FILE	"/dev_flash/rebug/cobra/stage2.deh"
-#elif defined (FIRMWARE_4_84DEX)
-	#define STAGE2_FILE	"/dev_flash/rebug/cobra/stage2.dex"
 #endif
 
 void main(void)
@@ -44,11 +42,15 @@ void main(void)
 
 	if (stage2)
 	{
-		for (int i = 0; i < 128; i++)
+
+		for (int i = 0; i < 160; i++)
+
 		{
 			uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
 			uint64_t pte1 = *(uint64_t *)(MKA(0xf000000 | ((i<<7) + 8)));
-			
+		#ifdef	DEBUG
+			DPRINTF("%pte0:%016llX\npte1:%016llX\n", pte0, pte1);
+		#endif			
 			lv1_write_htab_entry(0, i << 3, pte0, (pte1 & 0xff0000) | 0x190);
 		}
 
