@@ -107,6 +107,12 @@ static Patch kernel_patches[] =
 	{ lic_patch, LI(R3, 1) },
 	{ ode_patch, LI(R3, 0) },
 	{ ode_patch + 4, STD(R3, 0, R9) },
+	
+	#ifdef DEBUG
+	// Patch is_debuggable to allow VSH to be attached on Target Manager
+	{ vsh_patch, LI(R3, 1) },
+	{ vsh_patch + 4, BLR },
+#endif
 };
 
 #define N_KERNEL_PATCHES	(sizeof(kernel_patches) / sizeof(Patch))

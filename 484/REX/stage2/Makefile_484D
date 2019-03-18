@@ -54,7 +54,7 @@ OBJS += laboratory.o ../debug/src/debug.o ../debug/src/printf.o ../debug/src/deb
 endif
 
 all: $(OUTPUT)
-	@cp -r $(OUTPUT) ../../BIN
+	@cp -r $(OUTPUT) ../
 	@rm -f *.o *.elf *.map *.lzma ../lv2/src/*.o ../lv1/src/*.o ../debug/src/*.o
 
 objdump: $(OUTPUT)

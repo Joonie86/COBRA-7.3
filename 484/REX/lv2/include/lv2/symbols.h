@@ -495,6 +495,9 @@
 #define patch_func9_offset 								0x5E0C8
 #define mem_base2										0x3D90
 
+// VSH is debuggable on TM
+#define vsh_patch								0x3B38
+
 /* vars */
 #define thread_info_symbol								0x3A4A30
 
