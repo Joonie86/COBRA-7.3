@@ -42,7 +42,6 @@ void main(void)
 
 	if (stage2)
 	{
-
 		for (int i = 0; i < 160; i++)
 
 		{
