@@ -42,7 +42,7 @@ void main(void)
 
 	if (stage2)
 	{
-		for (int i = 0; i < 160; i++)
+		for (int i = 0; i < 288; i++)
 
 		{
 			uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
