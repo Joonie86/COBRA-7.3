@@ -133,7 +133,7 @@ void debug_install(void)
 	suspend_intr();
 	change_function(printf_symbol, debug_printf);
 	change_function(printfnull_symbol, debug_printf);
-	patch_syscall(SYS_TTY_WRITE, ttyWrite);
+	//patch_syscall(SYS_TTY_WRITE, ttyWrite); Improve compatibility with TM
 	patch_syscall(SYS_CONSOLE_WRITE, consoleWrite);
 	resume_intr();
 }
