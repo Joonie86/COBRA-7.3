@@ -95,7 +95,7 @@ uint8_t safe_mode;
 static uint32_t caller_process = 0;
 
 static uint8_t condition_true = 1;
-//static uint8_t condition_false = 0;
+static uint8_t condition_false = 0;
 uint8_t condition_ps2softemu = 0;
 uint8_t condition_apphome = 0;
 uint8_t condition_disable_gameupdate = 0; // Disabled
@@ -1330,4 +1330,3 @@ int ps3mapi_get_vsh_plugin_info(unsigned int slot, char *name, char *filename)
 	dealloc(segments, 0x35);
 	return ret;
 }
-
