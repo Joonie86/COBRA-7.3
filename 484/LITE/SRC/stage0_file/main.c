@@ -19,6 +19,13 @@ void main(void)
 	int fd;
 	uint64_t rs;
 
+	for (int i = 0; i < 128; i++)
+	{
+		uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
+		uint64_t pte1 = *(uint64_t *)(MKA(0xf000000 | ((i<<7)+8)));
+		
+		lv1_write_htab_entry(0, i << 3, pte0, (pte1 & 0xff0000) | 0x190);
+	}
 	
 	if (cellFsStat(STAGE2_FILE, &stat) == 0)
 	{
@@ -39,19 +46,18 @@ void main(void)
 		}
 	}	
 
+	f.toc = (void *)MKA(TOC);
+	
 	if (stage2)
 	{
-		for (int i = 0; i < 128; i++)
-		{
-			uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
-			uint64_t pte1 = *(uint64_t *)(MKA(0xf000000 | ((i<<7)+8)));
-			
-			lv1_write_htab_entry(0, i << 3, pte0, (pte1 & 0xff0000) | 0x190);
-		}
-		f.toc = (void *)MKA(TOC);
 		f.addr = stage2;			
-		func = (void *)&f;	
-		func();
 	}
+	else
+	{
+		f.addr=(void *)MKA(0x17e0);
+	}
+		
+	func = (void *)&f;	
+	func();
 
 }

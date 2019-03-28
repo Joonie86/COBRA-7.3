@@ -58,7 +58,7 @@
 #define CB_LOCATION "/dev_habib/rebug/cobra/stage2.cex"
 
 #define COBRA_VERSION		0x0F
-#define COBRA_VERSION_BCD	0x0801
+#define COBRA_VERSION_BCD	0x0810
 
 #if defined(FIRMWARE_4_84)
 	#define FIRMWARE_VERSION	0x0484
