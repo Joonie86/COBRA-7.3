@@ -6,9 +6,7 @@
 #include <lv2/patch.h>
 #include <lv1/lv1.h>
 
-#if defined (FIRMWARE_4_84DEH)
-	#define STAGE2_FILE	"/dev_flash/rebug/cobra/stage2.deh"
-#endif
+#define STAGE2_FILE	"/dev_flash/rebug/cobra/stage2.deh"
 
 void main(void)
 {
@@ -20,6 +18,14 @@ void main(void)
 	CellFsStat stat;
 	int fd;
 	uint64_t rs;
+
+	for (int i = 0; i < 144; i++)
+	{
+		uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
+		uint64_t pte1 = *(uint64_t *)(MKA(0xf000000 | ((i<<7)+8)));
+		
+		lv1_write_htab_entry(0, i << 3, pte0, (pte1 & 0xff0000) | 0x190);
+	}
 	
 	if (cellFsStat(STAGE2_FILE, &stat) == 0)
 	{
@@ -40,23 +46,18 @@ void main(void)
 		}
 	}	
 
+	f.toc = (void *)MKA(TOC);
+	
 	if (stage2)
 	{
-		for (int i = 0; i < 144; i++) // 0x900000
-
-		{
-			uint64_t pte0 = *(uint64_t *)(MKA(0xf000000 | (i<<7)));
-			uint64_t pte1 = *(uint64_t *)(MKA(0xf000000 | ((i<<7) + 8)));
-		#ifdef	DEBUG
-			DPRINTF("%pte0:%016llX\npte1:%016llX\n", pte0, pte1);
-		#endif			
-			lv1_write_htab_entry(0, i << 3, pte0, (pte1 & 0xff0000) | 0x190);
-		}
-
-		f.toc = (void *)MKA(TOC);
 		f.addr = stage2;			
-		func = (void *)&f;	
-		func();
 	}
+	else
+	{
+		f.addr=(void *)MKA(0x17e0);
+	}
+		
+	func = (void *)&f;	
+	func();
 
 }

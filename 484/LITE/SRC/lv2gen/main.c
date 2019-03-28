@@ -49,9 +49,9 @@ static void command8(char *cmd, char *arg1, char *arg2, char *arg3, char *arg4, 
 
 int main(int argc, char **argv)
 {
-	if(argc!=4)
+	if(argc!=5)
 	{
-		printf("usage:kernel payload stage0_addr");
+		printf("usage:kernel payload stage0_addr nocfw_kern_plugin");
 		exit(0);
 	}
 	command3("scetool", "--decrypt", argv[1], "lv2_kernel.elf");	
@@ -69,12 +69,33 @@ int main(int argc, char **argv)
 	fread(kernel_buf,kernel_len,1,kernel);
 	
 	
+	FILE *plugin=fopen(argv[4], "rb");
+	if(!plugin)
+	{
+		printf("no plugin found!");
+		exit(0);
+	}
+
+	
+	fseek(plugin, 0, SEEK_END);
+	
+	int plugin_len=ftell(plugin);
+	printf("plugin_len:%x\n", plugin_len);
+
+	fseek(plugin, 0, SEEK_SET);
+	uint8_t *plugin_buf=(uint8_t *)malloc(plugin_len);	
+	fread(plugin_buf, plugin_len, 1, plugin);
+	fclose(plugin);
+	memcpy(kernel_buf+0x10000+0x17e0, plugin_buf, plugin_len);
+	free(plugin_buf);
+
 	FILE *payload=fopen(argv[2], "rb");
 	if(!payload)
 	{
 		printf("no payload found!");
 		exit(0);
 	}
+	
 	fseek(payload, 0, SEEK_END);
 	
 	int payload_len=ftell(payload);
