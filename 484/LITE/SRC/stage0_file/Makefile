@@ -30,7 +30,7 @@ all: $(TARGET).bin
 
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@	
-	$(LV2GEN) $(LV2_KERNEL) $(STAGE0) $(STAGE0_ADDR_CEX) ../noncfw_kern_plugin/payload/payload.bin
+	$(LV2GEN) $(LV2_KERNEL) $(STAGE0) $(STAGE0_ADDR_CEX) ../nocfw_kern_plugin/payload/payload.bin
 	@rm -f *.o *.elf ../lv1/src/*.o
 
 $(TARGET).elf: $(OBJS) $(TARGET).ld
