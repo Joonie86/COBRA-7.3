@@ -4,7 +4,7 @@
 * REBUG 4.84.1 DECR LITE
 * REBUG 4.84.1 REX/D-REX
 
-COBRA 8.01 Source
+COBRA 8.1 Source
 
 [ Joonie's Changes ]
 
@@ -35,6 +35,8 @@ COBRA 8.01 Source
 * Added support for dynamic memory payloads, 5 of them can be started from "/dev_hdd0/boot_plugins_kernel.txt"
 * Toolchain updated to support dynamic address loading.
 * For applications, you can also mount em, and unmount em separately
+* Stage0 now supports kernel & vsh plugins without Stage2
+* loadoptical flag will be created to ensure optical ps2 media would be played on bc/semi-bc models at all times
 
 Please review this post for further detail via http://www.psx-place.com/threads/update-4-84-1-starbuged-cfw-includes-new-cobra-8-00-payload-by-habib.22810/
 
