@@ -59,7 +59,7 @@
 #define CB_LOCATION_DEX "/dev_blind/rebug/cobra/stage2.dex"
 
 #define COBRA_VERSION		0x0F
-#define COBRA_VERSION_BCD	0x0801
+#define COBRA_VERSION_BCD	0x0810
 
 #if defined(FIRMWARE_4_84)
 #define FIRMWARE_VERSION	0x0484
@@ -464,7 +464,7 @@ static INLINE int sys_get_version2(uint16_t *version)
 
 LV2_SYSCALL2(uint64_t, sys_cfw_lv1_peek, (uint64_t lv1_addr))
 {
-	DPRINTF("lv1_peek %p\n", (void*)lv1_addr);
+	//DPRINTF("lv1_peek %p\n", (void*)lv1_addr);
 	
     uint64_t ret;
     ret = lv1_peekd(lv1_addr);
