@@ -36,6 +36,13 @@ COBRA 8.1 Source
 * Toolchain updated to support dynamic address loading.
 * For applications, you can also mount em, and unmount em separately
 * Stage0 now supports kernel & vsh plugins without Stage2
+	Cobra mode
+	- dev_hdd0/boot_plugins_kernel.txt* required for kernel plugin
+	- dev_hdd0/boot_plugins.txt* required for VSH boot plugin
+
+	non-Cobra mode
+	- dev_hdd0/boot_plugins_kernel_nocobra(_dex).txt* required for kernel plugin
+	- dev_hdd0/boot_plugins_nocobra(_dex).txt* required for VSH boot plugin
 * loadoptical flag will be created to ensure optical ps2 media would be played on bc/semi-bc models at all times
 
 Please review this post for further detail via http://www.psx-place.com/threads/update-4-84-1-starbuged-cfw-includes-new-cobra-8-00-payload-by-habib.22810/
