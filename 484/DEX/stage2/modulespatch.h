@@ -73,7 +73,7 @@
 #define ps1_emu_get_region_offset		0x3E74
 
 /* ps1_netemu */
-#define ps1_netemu_get_region_offset	0xA4D74
+#define ps1_netemu_get_region_offset	0xA4E74 // seg003:00000000000A4E74                 lwzu      r11, 4(r4)
 
 /* game_ext_plugin */
 #define sfo_check_offset				0x23DAC
