@@ -209,34 +209,6 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 }
 
 //-----------------------------------------------
-//THREAD
-//-----------------------------------------------
-
-int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, const char *threadname)
-{
-	process_t process = ps3mapi_internal_get_process_by_pid(pid);
-
-	if (process <= 0)
-		return ESRCH;
-
-	thread = get_secure_user_ptr(thread);
-	entry = get_secure_user_ptr(entry);
-	threadname = get_secure_user_ptr(threadname);
-
-	int ret;
-	uint64_t exit_code;
-
-	ret = ppu_user_thread_create(process, thread, entry, arg, prio, stacksize, PPU_THREAD_CREATE_JOINABLE, threadname);
-
-	if (ret != 0)
-		return ret;
-
-	ppu_thread_join(thread, &exit_code);
-
-	return ret;
-}
-
-//-----------------------------------------------
 //MODULES
 //-----------------------------------------------
 
@@ -456,6 +428,34 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id)
 
 	if (ret == SUCCEEDED) 
 		ret = prx_unload_module(prx_id, process);
+
+	return ret;
+}
+
+//-----------------------------------------------
+//THREAD
+//-----------------------------------------------
+
+int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, const char *threadname)
+{
+	process_t process = ps3mapi_internal_get_process_by_pid(pid);
+
+	if (process <= 0)
+		return ESRCH;
+
+	thread = get_secure_user_ptr(thread);
+	entry = get_secure_user_ptr(entry);
+	threadname = get_secure_user_ptr(threadname);
+
+	int ret;
+	uint64_t exit_code;
+
+	ret = ppu_user_thread_create(process, thread, entry, arg, prio, stacksize, PPU_THREAD_CREATE_JOINABLE, threadname);
+
+	if (ret != 0)
+		return ret;
+
+	ppu_thread_join(thread, &exit_code);
 
 	return ret;
 }
