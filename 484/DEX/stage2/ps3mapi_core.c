@@ -151,7 +151,7 @@ int ps3mapi_set_process_mem(process_id_t pid, uint64_t addr, char *buf, int size
 	if (process <= 0)
 		return ESRCH;
 	else 
-		return copy_to_process(process, (void *)get_secure_user_ptr(buf), (void *)addr, size);
+		return process_write_memory(process, (void *)addr, (void *)get_secure_user_ptr(buf), size, 1);
 }
 
 int ps3mapi_get_process_mem(process_id_t pid, uint64_t addr, char *buf, int size)
@@ -173,6 +173,37 @@ int ps3mapi_get_process_mem(process_id_t pid, uint64_t addr, char *buf, int size
 
 	ret = copy_to_user(buff, (void *)get_secure_user_ptr(buf), size);
 	dealloc(buff, 0x27);
+	return ret;
+}
+int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint32_t *start_address)
+{
+	process_t process = ps3mapi_internal_get_process_by_pid(pid);
+
+	if (process <= 0)
+		return ESRCH;
+
+	int ret;
+	uint8_t *kbuf, *vbuf;
+	ret = page_allocate(process, size, flags, page_size, (void **)&kbuf);
+	if (ret != SUCCEEDED)
+	{
+		return ret;
+	}
+
+	ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+	if (ret != SUCCEEDED)
+	{
+		return ret;
+	}
+
+	uint32_t page_address = (uint32_t)vbuf;
+	ret = copy_to_user(&page_address, get_secure_user_ptr(start_address), sizeof(uint32_t));
+
+	if (vbuf)
+	{
+		page_free(process, kbuf, flags);
+	}
+
 	return ret;
 }
 
@@ -352,6 +383,78 @@ int ps3mapi_unload_process_modules(process_id_t pid, sys_prx_id_t prx_id)
 
 	if (ret == SUCCEEDED) 
 		ret = prx_unload_module(prx_id, process);
+
+	return ret;
+}
+
+int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_prx_module_info_t *info)
+{
+	process_t process = ps3mapi_internal_get_process_by_pid(pid);
+
+	if (process <= 0)
+		return ESRCH;
+
+	char *filename = alloc(512, 0x35);
+
+	if (!filename)
+		return ENOMEM;
+
+	sys_prx_segment_info_t *segments = alloc(10 * sizeof(sys_prx_segment_info_t), 0x35);
+
+	if (!segments)
+	{
+		dealloc(filename, 0x35);
+		return ENOMEM;
+	}
+
+	sys_prx_module_info_t modinfo;
+	memset(&modinfo, 0, sizeof(sys_prx_module_info_t));
+
+	modinfo.size = sizeof(modinfo);
+	modinfo.segments = segments;
+	modinfo.segments_num = 10;
+	modinfo.filename = filename;
+	modinfo.filename_size = 512;
+
+	int ret = prx_get_module_info(process, prx_id, &modinfo, filename, segments);
+
+	if (ret == SUCCEEDED)
+	{
+		memcpy(modinfo.segments, segments, 10 * sizeof(sys_prx_segment_info_t));
+		memcpy(modinfo.filename, filename, 512);
+
+		ret = copy_to_user(&modinfo, get_secure_user_ptr(info), sizeof(modinfo));
+	}
+
+	dealloc(filename, 0x35);
+	dealloc(segments, 0x35);
+	return ret;
+}
+
+//-----------------------------------------------
+//THREAD
+//-----------------------------------------------
+
+int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, const char *threadname)
+{
+	process_t process = ps3mapi_internal_get_process_by_pid(pid);
+
+	if (process <= 0)
+		return ESRCH;
+
+	thread = get_secure_user_ptr(thread);
+	entry = get_secure_user_ptr(entry);
+	threadname = get_secure_user_ptr(threadname);
+
+	int ret;
+	uint64_t exit_code;
+
+	ret = ppu_user_thread_create(process, thread, entry, arg, prio, stacksize, PPU_THREAD_CREATE_JOINABLE, threadname);
+
+	if (ret != 0)
+		return ret;
+
+	ppu_thread_join(thread, &exit_code);
 
 	return ret;
 }
