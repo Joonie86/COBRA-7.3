@@ -176,7 +176,7 @@ int ps3mapi_get_process_mem(process_id_t pid, uint64_t addr, char *buf, int size
 	return ret;
 }
 
-int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint32_t *start_address)
+int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint64_t export_flags, uint32_t *start_address)
 {
 	process_t process = ps3mapi_internal_get_process_by_pid(pid);
 
@@ -191,7 +191,7 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 		return ret;
 	}
 
-	ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+	ret = page_export_to_proc(process, kbuf, export_flags, (void **)&vbuf);
 	if (ret != SUCCEEDED)
 	{
 		return ret;
@@ -395,12 +395,25 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 	if (process <= 0)
 		return ESRCH;
 
-	char *filename = alloc(512, 0x35);
+	info = get_secure_user_ptr(info);
+	sys_prx_module_info_t modinfo;
+
+	int ret = copy_from_user(info, &modinfo, 0x48);
+
+	if (ret != SUCCEEDED)
+		return EINVAL;
+
+	if ((modinfo.segments == NULL) || (modinfo.filename == NULL) || (modinfo.segments_num == 0) || (modinfo.filename_size == 0))
+	{
+		return EFAULT;
+	}
+
+	char *filename = alloc(modinfo.filename_size, 0x35);
 
 	if (!filename)
 		return ENOMEM;
 
-	sys_prx_segment_info_t *segments = alloc(10 * sizeof(sys_prx_segment_info_t), 0x35);
+	sys_prx_segment_info_t *segments = alloc(modinfo.segments_num * sizeof(sys_prx_segment_info_t), 0x35);
 
 	if (!segments)
 	{
@@ -408,23 +421,27 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 		return ENOMEM;
 	}
 
-	sys_prx_module_info_t modinfo;
-	memset(&modinfo, 0, sizeof(sys_prx_module_info_t));
-
-	modinfo.size = sizeof(modinfo);
-	modinfo.segments = segments;
-	modinfo.segments_num = 10;
-	modinfo.filename = filename;
-	modinfo.filename_size = 512;
-
-	int ret = prx_get_module_info(process, prx_id, &modinfo, filename, segments);
+	ret = prx_get_module_info(process, prx_id, &modinfo, filename, segments);
 
 	if (ret == SUCCEEDED)
 	{
-		memcpy(modinfo.segments, segments, 10 * sizeof(sys_prx_segment_info_t));
-		memcpy(modinfo.filename, filename, 512);
+		ret = copy_to_user(segments, modinfo.segments, modinfo.segments_num * sizeof(sys_prx_segment_info_t));
 
-		ret = copy_to_user(&modinfo, get_secure_user_ptr(info), sizeof(modinfo));
+		if (ret != SUCCEEDED)
+		{
+			dealloc(segments, 0x35);
+			return ret;
+		}
+
+		ret = copy_to_user(filename, modinfo.filename, modinfo.filename_size);
+
+		if (ret != SUCCEEDED)
+		{
+			dealloc(filename, 0x35);
+			return ret;
+		}
+
+		ret = copy_to_user(&modinfo, info, 0x48);
 	}
 
 	dealloc(filename, 0x35);
