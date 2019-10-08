@@ -20,6 +20,8 @@
 #define copy_from_user_symbol							0xFA88
 #define copy_to_process_symbol							0xF924
 #define copy_from_process_symbol						0xF734
+#define process_read_memory_symbol                        0x267EC0
+#define process_write_memory_symbol                        0x267D34
 #define page_allocate_symbol							0x60394
 #define page_free_symbol								0x5FDF8
 #define page_export_to_proc_symbol						0x60530
@@ -268,6 +270,8 @@
 #define copy_from_user_symbol							0x100D0
 #define copy_to_process_symbol							0xFF6C
 #define copy_from_process_symbol						0xFD7C
+#define process_read_memory_symbol						0x26E7E4
+#define process_write_memory_symbol						0x26E658
 #define page_allocate_symbol							0x63D64
 #define page_free_symbol								0x637C8
 #define page_export_to_proc_symbol						0x63F00

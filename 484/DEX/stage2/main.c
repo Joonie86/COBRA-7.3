@@ -693,6 +693,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				case PS3MAPI_OPCODE_SET_PROC_MEM:
 					return ps3mapi_set_process_mem((process_id_t)param2, param3, (char *)param4, (int)param5);
 				break;
+				case PS3MAPI_OPCODE_PROC_PAGE_ALLOCATE:
+					return ps3mapi_process_page_allocate((process_id_t)param2, param3, param4, param5, (uint32_t *)param6);
+				break;
 
 				//----------
 				//MODULE
@@ -711,6 +714,9 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 				break;
 				case PS3MAPI_OPCODE_UNLOAD_PROC_MODULE:
 					return ps3mapi_unload_process_modules((process_id_t)param2, (sys_prx_id_t)param3);
+				break;
+				case PS3MAPI_OPCODE_GET_PROC_MODULE_INFO:
+					return ps3mapi_get_process_module_info((process_id_t)param2, (sys_prx_id_t)param3, (sys_prx_module_info_t *)param4);
 				break;
 
 				//----------
@@ -852,6 +858,10 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 			return unload_plugin_kernel(param1);
 		break;
 
+		case SYSCALL8_OPCODE_PROC_CREATE_THREAD:
+			return ps3mapi_create_process_thread((process_id_t)param1, (thread_t *)param2, (void *)param3, (uint64_t)param4, (int)param5, (size_t)param6, (const char *)param7);
+		break;
+			
 		case SYSCALL8_OPCODE_MOUNT_PSX_DISCFILE:
 			return sys_storage_ext_mount_psx_discfile((char *)param1, param2, (ScsiTrackDescriptor *)param3);
 		break;
