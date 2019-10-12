@@ -184,8 +184,8 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 		return ESRCH;
 
 	int ret;
-	uint8_t *kbuf, *vbuf;
-	ret = page_allocate(process, size, flags, page_size, (void **)&kbuf);
+	void *kbuf, *vbuf;
+	ret = page_allocate(process, size, flags, page_size, &kbuf);
 	if (ret != SUCCEEDED)
 	{
 		return ENOMEM;
@@ -193,7 +193,7 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 
 	if (is_executable == 0)
 	{
-		ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+		ret = page_export_to_proc(process, kbuf, 0x40000, &vbuf);
 		if (ret != SUCCEEDED)
 		{
 			page_free(process, kbuf, flags);
@@ -204,9 +204,9 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 	{
 		uint64_t addr = MKA(mmapper_flags_temp_patch);
 		*(uint32_t *)(addr) = 0x3B804004; // li r28, 0x4004
-		clear_icache(addr, 4);
+		clear_icache((void *)addr, 4);
 
-		ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+		ret = page_export_to_proc(process, kbuf, 0x40000, &vbuf);
 
 		if (ret != SUCCEEDED)
 		{
@@ -215,7 +215,7 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 		}
 
 		*(uint32_t *)(addr) = 0x3B804000; // li r28, 0x4000
-		clear_icache(addr, 4);
+		clear_icache((void *)addr, 4);
 	}
 
 	uint64_t temp_address = (uint64_t)vbuf;
@@ -418,12 +418,25 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 	if (process <= 0)
 		return ESRCH;
 
-	char *filename = alloc(512, 0x35);
+	info = get_secure_user_ptr(info);
+	sys_prx_module_info_t modinfo;
+
+	int ret = copy_from_user(info, &modinfo, 0x48);
+
+	if (ret != SUCCEEDED)
+		return EINVAL;
+
+	if ((modinfo.segments == 0) || (modinfo.filename == 0) || (modinfo.segments_num == 0) || (modinfo.filename_size == 0))
+	{
+		return EFAULT;
+	}
+
+	char *filename = alloc(modinfo.filename_size, 0x35);
 
 	if (!filename)
 		return ENOMEM;
 
-	sys_prx_segment_info_t *segments = alloc(10 * sizeof(sys_prx_segment_info_t), 0x35);
+	sys_prx_segment_info_t *segments = alloc(modinfo.segments_num * sizeof(sys_prx_segment_info_t), 0x35);
 
 	if (!segments)
 	{
@@ -431,23 +444,27 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 		return ENOMEM;
 	}
 
-	sys_prx_module_info_t modinfo;
-	memset(&modinfo, 0, sizeof(sys_prx_module_info_t));
-
-	modinfo.size = sizeof(modinfo);
-	modinfo.segments = segments;
-	modinfo.segments_num = 10;
-	modinfo.filename = filename;
-	modinfo.filename_size = 512;
-
-	int ret = prx_get_module_info(process, prx_id, &modinfo, filename, segments);
+	ret = prx_get_module_info(process, prx_id, &modinfo, filename, segments);
 
 	if (ret == SUCCEEDED)
 	{
-		memcpy(modinfo.segments, segments, 10 * sizeof(sys_prx_segment_info_t));
-		memcpy(modinfo.filename, filename, 512);
+		ret = copy_to_user(segments, (void *)(uintptr_t)modinfo.segments, modinfo.segments_num * sizeof(sys_prx_segment_info_t));
 
-		ret = copy_to_user(&modinfo, get_secure_user_ptr(info), sizeof(modinfo));
+		if (ret != SUCCEEDED)
+		{
+			dealloc(segments, 0x35);
+			return ret;
+		}
+
+		ret = copy_to_user(filename, (void *)(uintptr_t)modinfo.filename, modinfo.filename_size);
+
+		if (ret != SUCCEEDED)
+		{
+			dealloc(filename, 0x35);
+			return ret;
+		}
+
+		ret = copy_to_user(&modinfo, info, 0x48);
 	}
 
 	dealloc(filename, 0x35);
@@ -459,7 +476,7 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 //THREAD
 //-----------------------------------------------
 
-int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, const char *threadname)
+int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, char *threadname)
 {
 	process_t process = ps3mapi_internal_get_process_by_pid(pid);
 
@@ -473,12 +490,12 @@ int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entr
 	int ret;
 	uint64_t exit_code;
 
-	ret = ppu_user_thread_create(process, thread, entry, arg, prio, stacksize, PPU_THREAD_CREATE_JOINABLE, threadname);
+	ret = ppu_user_thread_create(process, thread, entry, arg, prio, stacksize, PPU_THREAD_CREATE_JOINABLE, (const char *)threadname);
 
 	if (ret != 0)
 		return ret;
 
-	ppu_thread_join(thread, &exit_code);
+	ppu_thread_join(*thread, &exit_code);
 
 	return ret;
 }

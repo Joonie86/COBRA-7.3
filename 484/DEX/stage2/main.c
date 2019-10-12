@@ -859,7 +859,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 		break;
 
 		case SYSCALL8_OPCODE_PROC_CREATE_THREAD:
-			return ps3mapi_create_process_thread((process_id_t)param1, (thread_t *)param2, (void *)param3, (uint64_t)param4, (int)param5, (size_t)param6, (const char *)param7);
+			return ps3mapi_create_process_thread((process_id_t)param1, (thread_t *)param2, (void *)param3, (uint64_t)param4, (int)param5, (size_t)param6, (char *)param7);
 		break;
 			
 		case SYSCALL8_OPCODE_MOUNT_PSX_DISCFILE:
