@@ -694,7 +694,7 @@ LV2_SYSCALL2(int64_t, syscall8, (uint64_t function, uint64_t param1, uint64_t pa
 					return ps3mapi_set_process_mem((process_id_t)param2, param3, (char *)param4, (int)param5);
 				break;
 				case PS3MAPI_OPCODE_PROC_PAGE_ALLOCATE:
-					return ps3mapi_process_page_allocate((process_id_t)param2, param3, param4, param5, param6, (uint32_t *)param7);
+					return ps3mapi_process_page_allocate((process_id_t)param2, param3, param4, param5, param6, (uint64_t *)param7);
 				break;
 
 				//----------
