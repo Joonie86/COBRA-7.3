@@ -97,7 +97,7 @@ int ps3mapi_get_process_module_info(process_id_t pid, sys_prx_id_t prx_id, sys_p
 
 #define SYSCALL8_OPCODE_PROC_CREATE_THREAD			0x6E03 // not eough params for PS3MAPI_OPCODE
 
-int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, const char *threadname);
+int ps3mapi_create_process_thread(process_id_t pid, thread_t *thread, void *entry, uint64_t arg, int prio, size_t stacksize, char *threadname);
 
 
 //-----------------------------------------------
