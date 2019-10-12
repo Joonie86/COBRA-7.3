@@ -80,7 +80,7 @@ int ps3mapi_get_current_process(process_t process);
 
 int ps3mapi_set_process_mem(process_id_t pid, uint64_t addr, char *buf, int size);
 int ps3mapi_get_process_mem(process_id_t pid, uint64_t addr, char *buf, int size);
-int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint32_t *start_address);
+int ps3mapi_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint64_t is_executable, uint64_t *page_address);
 
 //-----------------------------------------------
 //MODULES
