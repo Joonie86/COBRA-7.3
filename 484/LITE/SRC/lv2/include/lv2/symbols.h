@@ -252,6 +252,9 @@
 /* vars */
 #define thread_info_symbol								0x37DE30
 
+/* mmapper flags temp patch */
+#define mmapper_flags_temp_patch          0x70F78
+
 #endif /* FIRMWARE */
 
 #endif /* __FIRMWARE_SYMBOLS_H_S__ */
