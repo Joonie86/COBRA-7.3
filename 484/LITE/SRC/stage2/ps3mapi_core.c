@@ -176,7 +176,7 @@ int ps3mapi_get_process_mem(process_id_t pid, uint64_t addr, char *buf, int size
 	return ret;
 }
 
-int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint32_t *start_address)
+int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page_size, uint64_t flags, uint64_t is_executable, uint64_t *page_address)
 {
 	process_t process = ps3mapi_internal_get_process_by_pid(pid);
 
@@ -188,24 +188,47 @@ int ps3mapi_process_page_allocate(process_id_t pid, uint64_t size, uint64_t page
 	ret = page_allocate(process, size, flags, page_size, (void **)&kbuf);
 	if (ret != SUCCEEDED)
 	{
-		return ret;
+		return ENOMEM;
 	}
 
-	ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+	if (is_executable == 0)
+	{
+		ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+		if (ret != SUCCEEDED)
+		{
+			page_free(process, kbuf, flags);
+			return ENOMEM;
+		}
+	}
+	else
+	{
+		uint64_t addr = MKA(mmapper_flags_temp_patch);
+		*(uint32_t *)(addr) = 0x3B804004; // li r28, 0x4004
+		clear_icache(addr, 4);
+
+		ret = page_export_to_proc(process, kbuf, 0x40000, (void **)&vbuf);
+
+		if (ret != SUCCEEDED)
+		{
+			page_free(process, kbuf, flags);
+			return ENOMEM;
+		}
+
+		*(uint32_t *)(addr) = 0x3B804000; // li r28, 0x4000
+		clear_icache(addr, 4);
+	}
+
+	uint64_t temp_address = (uint64_t)vbuf;
+	ret = copy_to_user(&temp_address, get_secure_user_ptr(page_address), sizeof(uint64_t));
+
 	if (ret != SUCCEEDED)
 	{
+		page_unexport_from_proc(process, vbuf);
+		page_free(process, kbuf, flags);
 		return ret;
 	}
 
-	uint32_t page_address = (uint32_t)vbuf;
-	ret = copy_to_user(&page_address, get_secure_user_ptr(start_address), sizeof(uint32_t));
-
-	if (vbuf)
-	{
-		page_free(process, kbuf, flags);
-	}
-
-	return ret;
+	return SUCCEEDED;
 }
 
 //-----------------------------------------------
