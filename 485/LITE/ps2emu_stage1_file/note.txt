@@ -1,0 +1,1 @@
+left over.(see ../ps2emu_stage2/note.txt)
