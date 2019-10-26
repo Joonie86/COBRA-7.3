@@ -31,7 +31,7 @@ all: $(TARGET).bin
 
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@	
-	@rm -f *.o *.elf ../lv1/src/*.o
+	@rm -f *.o *.elf ../lv1/src/*.o ../lv2/src/*.o
 
 $(TARGET).elf: $(OBJS) $(TARGET).ld
 	$(CC) $(LDFLAGS) -o $@ $(OBJS)

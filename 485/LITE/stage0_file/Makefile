@@ -31,7 +31,7 @@ all: $(TARGET).bin
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@	
 	$(LV2GEN) $(LV2_KERNEL) $(STAGE0) $(STAGE0_ADDR_CEX) ../nocfw_kern_plugin/payload/payload.bin
-	@rm -f *.o *.elf ../lv1/src/*.o *.bin
+	@rm -f *.o *.elf ../lv2/src/*.o ../lv1/src/*.o *.bin
 	@rm ../nocfw_kern_plugin/payload/payload.bin
 	@mv lv2_kernel.self.cobra.self ../lv2_kernel.self
 

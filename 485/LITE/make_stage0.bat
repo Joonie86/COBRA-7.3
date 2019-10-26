@@ -7,7 +7,7 @@ set WIN_PS3SDK=C:/PSDK3v2
 set PATH=%WIN_PS3SDK%/mingw/msys/1.0/bin;%WIN_PS3SDK%/mingw/bin;%PS3DEV%/ppu/bin;%SCETOOL%;
 set SCETOOL=C:\PSDK3v2\MinGW\msys\1.0\bin
 
-rm *.self
+rm *.self lv2gen/*.exe
 cd lv2gen
 make
 cd ../nocfw_kern_plugin/payload
