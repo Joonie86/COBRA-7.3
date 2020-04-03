@@ -85,7 +85,7 @@ COBRA 8.2 Source
 		
     [TheRouletteBoi's changes]
 
-    * Updated KW's code to search webMAN in flash and load it firstly if it's found in /dev_hdd0, will search in the following paths:
+    * PS3MAPI improvements:
     	- Added a better set process memory by using the function used to actually write to process, this will allow user to write to memory where writing permissions are disabled. 
     	- Added ps3mapi_process_page_allocate this function will allocate memory into the eboot process allowing your to write/read/execute code into start_address parameter 
     	- Added ps3mapi_get_process_module_info which will get the name, module path, module segments, module start and module stop address all in one function 
